@@ -1,14 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ImageBackground, TouchableHighlight } from 'react-native';
-
-
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity  } from 'react-native';
 
 
 
 export class Home extends React.Component {
   
+  
   render() {
-    
+
     return (
       
       
@@ -21,13 +20,13 @@ export class Home extends React.Component {
 
           <View style={stylesHome.buttonContainer}>
 
-            <TouchableHighlight style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ThemeScreen")}>
+            <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ThemeScreen")}>
                 <Text style={stylesHome.textStyle}> Teman </Text>
-              </TouchableHighlight>  
+              </TouchableOpacity >  
 
-              <TouchableHighlight style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ThemeScreen")}>
+              <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ThemeScreen")}>
                 <Text style={stylesHome.textStyle}> Frågor </Text>
-              </TouchableHighlight>  
+              </TouchableOpacity >  
 
           </View>
          
@@ -49,7 +48,7 @@ const stylesHome = StyleSheet.create({
 
   titleContainer: {
     marginTop: "10%",
-    alignItems: "center"
+    alignItems: "center",
   },
 
   titleStyle: {
@@ -74,8 +73,8 @@ const stylesHome = StyleSheet.create({
     backgroundColor: "green",
     borderRadius: 30,
     marginTop: 20,
-    marginRight: 40,
-    marginLeft: 40,
+    marginRight: 70,
+    marginLeft: 70,
     marginBottom: 20,
     padding: 10
   }
