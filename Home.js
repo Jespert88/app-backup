@@ -3,15 +3,32 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity  } from 'reac
 
 
 
+
+
 export class Home extends React.Component {
   
+  //This is for styling the stacknavigator
+  static navigationOptions = {
+    title: 'Hem',
+    headerStyle: {
+      textAlign: "center",
+      backgroundColor: '#539631',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      textAlign: "center"
+    },
+  };
+
+
   
   render() {
 
     return (
       
       
-     <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
+     <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
 
             <View style={stylesHome.titleContainer}>
@@ -24,7 +41,7 @@ export class Home extends React.Component {
                 <Text style={stylesHome.textStyle}> Teman </Text>
               </TouchableOpacity >  
 
-              <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ThemeScreen")}>
+              <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("QuestionScreen")}>
                 <Text style={stylesHome.textStyle}> Frågor </Text>
               </TouchableOpacity >  
 
@@ -53,12 +70,12 @@ const stylesHome = StyleSheet.create({
 
   titleStyle: {
     fontSize: 30,
-    color: "#fff"
+    color: "#000"
   },
 
   textStyle: {
     fontSize: 18,
-    color: "#fff",
+    color: "#000",
     textAlign: "center"
   },
 
@@ -70,13 +87,15 @@ const stylesHome = StyleSheet.create({
   },
 
   buttonStyle: {
-    backgroundColor: "green",
     borderRadius: 30,
     marginTop: 20,
     marginRight: 70,
     marginLeft: 70,
     marginBottom: 20,
-    padding: 10
+    padding: 10,
+    backgroundColor: "#fff",
+    opacity: 0.7,
+    borderRadius: 30
   }
 
 

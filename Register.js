@@ -11,7 +11,7 @@ export class Register extends React.Component {
 
 
     return (
-     <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
+     <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
         <View style={stylesRegister.mainContainer}>
 
 

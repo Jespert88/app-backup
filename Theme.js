@@ -16,7 +16,7 @@ export class Theme extends React.Component {
             })
             .then((response) => response.json())
             .then((responseJson) => {
-               console.log(responseJson);
+               
                this.setState({
                   data: responseJson.randomObj
                })
@@ -26,10 +26,25 @@ export class Theme extends React.Component {
             });
          }
 
+          //This is for styling the stacknavigator
+         static navigationOptions = {
+          title: 'Teman',
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: '#539631',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        };
+
+
+
   render() {
     return (
 
-      <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
+      <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
 
         <View style={stylesHome.titleContainer}>
@@ -58,19 +73,19 @@ const stylesHome = StyleSheet.create({
   titleContainer: {
     marginTop: "20%",
     alignItems: "center",
-    backgroundColor: "green",
     width: "100%"
   },
 
   titleStyle: {
     fontSize: 50,
     alignItems: "center",
-    color: "#fff",
+    color: "#000",
   },
 
   textStyle: {
     fontSize: 18,
-    color: "#fff"
+    color: "#000",
+    textAlign: "center"
   },
 
 
@@ -81,14 +96,15 @@ const stylesHome = StyleSheet.create({
   },
 
   buttonStyle: {
-    alignItems: "center",
-    backgroundColor: "green",
     borderRadius: 30,
     marginTop: 20,
     marginRight: 70,
     marginLeft: 70,
     marginBottom: 20,
-    padding: 10
+    padding: 10,
+    backgroundColor: "#fff",
+    opacity: 0.7,
+    borderRadius: 30
   }
 
 

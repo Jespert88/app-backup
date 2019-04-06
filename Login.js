@@ -30,7 +30,7 @@ export class Login extends React.Component {
 
 
     return (
-     <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
+     <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
         <View style={stylesLogin.mainContainer}>
 
 
@@ -49,7 +49,7 @@ export class Login extends React.Component {
               onChangeText={(text) => this.setState({text})}
               />
               
-              <TouchableOpacity style={{marginTop: 20}}> 
+              <TouchableOpacity style={{marginTop: 20}} onPress={() => this.props.navigation.navigate("HomeScreen")}> 
                   <Text style={stylesLogin.textStyle}> Logga in </Text>
               </TouchableOpacity>
 
