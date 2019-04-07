@@ -9,17 +9,18 @@ export class Home extends React.Component {
   
   //This is for styling the stacknavigator
   static navigationOptions = {
-    title: 'Hem',
+    
+   // title: 'Home',
     headerStyle: {
-      textAlign: "center",
-      backgroundColor: '#539631',
+      backgroundColor: '#b0ff32',
     },
-    headerTintColor: '#fff',
+    headerTintColor: '#000',
     headerTitleStyle: {
       fontWeight: 'bold',
-      textAlign: "center"
     },
-  };
+
+  
+};
 
 
   
@@ -69,7 +70,7 @@ const stylesHome = StyleSheet.create({
   },
 
   titleStyle: {
-    fontSize: 30,
+    fontSize: 40,
     color: "#000"
   },
 

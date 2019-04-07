@@ -17,14 +17,7 @@ const MainNavigator = createStackNavigator({
   QuestionScreen: { screen: Question } 
 });
 
-/*
-navigationOptions = {
-  headerStyle: { backgroundColor: 'red' },
-  headerTitleStyle: { color: 'green' }
-}
-*/
-
-
+const App = createAppContainer(MainNavigator);
 
 
 state = {
@@ -82,7 +75,5 @@ getData()
 }
 checkData()
 */
-
-const App = createAppContainer(MainNavigator);
 
 export default App;
