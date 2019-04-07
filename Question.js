@@ -29,16 +29,14 @@ export class Question extends React.Component {
 
          //This is for styling the stacknavigator
          static navigationOptions = {
-            title: 'Frågor',
-            headerStyle: {
-              textAlign: "center",
-              backgroundColor: '#539631',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          };
+          headerStyle: {
+            backgroundColor: '#b0ff32',
+          },
+          headerTintColor: '#000',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        };
 
 
 
@@ -80,7 +78,7 @@ const stylesQuestion = StyleSheet.create({
   titleStyle: {
     fontSize: 30,
     padding: 10,
-    alignItems: "center",
+    textAlign: "center",
     color: "#000",
   },
 

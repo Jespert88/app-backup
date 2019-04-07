@@ -7,8 +7,18 @@ import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpa
 export class Register extends React.Component {
   
 
-  render() {
+  static navigationOptions = {
+    header: null
+  }
 
+  state = {
+   modalVisible: false,
+ };
+
+
+
+
+  render() {
 
     return (
      <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>

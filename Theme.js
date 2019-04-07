@@ -28,12 +28,10 @@ export class Theme extends React.Component {
 
           //This is for styling the stacknavigator
          static navigationOptions = {
-          title: 'Teman',
           headerStyle: {
-            textAlign: "center",
-            backgroundColor: '#539631',
+            backgroundColor: '#b0ff32',
           },
-          headerTintColor: '#fff',
+          headerTintColor: '#000',
           headerTitleStyle: {
             fontWeight: 'bold',
           },

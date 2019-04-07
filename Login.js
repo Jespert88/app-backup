@@ -1,7 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal  } from 'react-native';
-
-
+import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, ScrollView  } from 'react-native';
 
 
 
@@ -53,7 +51,7 @@ export class Login extends React.Component {
               />
               
               <TouchableOpacity style={{marginTop: 20}} onPress={() => this.props.navigation.navigate("HomeScreen")}>
-                  <Text style={stylesLogin.textStyle}> Logga in </Text>
+                  <Text style={stylesLogin.buttonTextStyle}> Logga in </Text>
               </TouchableOpacity>
             </View>
         </View>
@@ -70,31 +68,40 @@ export class Login extends React.Component {
           }}>
           <View style={{marginTop: 22}}>
 
-            <View>
-              <Text>
-              Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. 
-              Lorem ipsum har varit standard ända sedan 1500-talet, 
-              när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett 
-              provexemplar av en bok. Lorem ipsum har inte bara överlevt fem århundraden, 
-              utan även övergången till elektronisk typografi utan större förändringar. 
-              Det blev allmänt känt på 1960-talet i samband med lanseringen av Letraset-ark 
-              med avsnitt av Lorem Ipsum, och senare med mjukvaror som Aldus PageMaker.
-              </Text>
+            <View style={stylesLogin.textContainer}>
 
+              <Text style={stylesLogin.infoTitle}> Välkommen till Samtalsgeneratorn {"\n"}</Text>
+              <ScrollView>
+                <Text style={stylesLogin.textStyle}>
+                Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. 
+                Lorem ipsum har varit standard ända sedan 1500-talet, 
+                när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett 
+                provexemplar av en bok. Lorem ipsum har inte bara överlevt fem århundraden, 
+                utan även övergången till elektronisk typografi utan större förändringar. 
+                Det blev allmänt känt på 1960-talet i samband med lanseringen av Letraset-ark 
+                med avsnitt av Lorem Ipsum, och senare med mjukvaror som Aldus PageMaker.{"\n"}
+
+                </Text>
+              </ScrollView>
+             
+
+              <View style={stylesLogin.CloseBtnContainer}>
               <TouchableOpacity
-                style={stylesLogin.CloseBtnStyle}
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}>
-                <Text>Stäng</Text>
-              </TouchableOpacity>
+                  style={stylesLogin.CloseBtnStyle}
+                  onPress={() => {
+                    this.setModalVisible(!this.state.modalVisible);
+                  }}>
+                  <Text style={stylesLogin.CloseBtnText}>Stäng</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+
 
           </View>
         </Modal>
 
         <View style={stylesLogin.infoButtonContainer}>
-          <TouchableOpacity onPress={() => { this.setModalVisible(true); }} style={stylesLogin.CloseBtnContainer}>
+          <TouchableOpacity onPress={() => { this.setModalVisible(true); }}>
             <Image source={require("../assets/info.png")} style={{width: 30, height: 30}}></Image>
             <Text> Info </Text>
           </TouchableOpacity>
@@ -103,8 +110,6 @@ export class Login extends React.Component {
 
       </View>
       {/* End of Modal */}
-
-
      </ImageBackground> 
     )
   }
@@ -127,18 +132,37 @@ const stylesLogin = StyleSheet.create({
     color: "#000"
   },
 
+  infoTitle: {
+    fontSize: 30,
+    textAlign:"center"
+  },
+
+  textContainer: {
+    margin:"5%"
+  },
   textStyle: {
+    fontSize: 18,
+    textAlign: "left"
+  },
+
+  scrollViewContainer: {
+    margin: "20%"
+  },
+
+
+  buttonTextStyle: {
     fontSize: 18,
     color: "#000",
     textAlign: "center"
   },
+
+
 
   textInputContainer: {
       marginTop: "40%",
       marginLeft: "10%",
       marginRight: "10%",
   },
-
   textInputStyle: {
       textAlign: "center",
       margin: "5%",
@@ -148,6 +172,8 @@ const stylesLogin = StyleSheet.create({
       opacity: 0.7,
       borderRadius: 30
   },
+
+
 
   buttonStyle: {
     backgroundColor: "green",
@@ -160,27 +186,29 @@ const stylesLogin = StyleSheet.create({
   },
 
   infoButtonContainer: {
-    backgroundColor: "green",
-    marginLeft: "65%"
+    alignItems: "flex-end",
+    margin: "5%",
+    padding: 10
   },
-  infoButtonStyle: {
-
-  },
+  
 
 
-  CloseBtnContainer: {
-    margin: "40%"
-  },
+  CloseBtnContainer: {},
 
   CloseBtnText: {
-    textAlign: "center"
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold"
   },
 
   CloseBtnStyle: {
-    backgroundColor: "green",
-      opacity: 0.7,
+    backgroundColor: "#34a023",
       borderRadius: 30,
-      padding: 10
+      marginTop: 20,
+      marginRight: "35%",
+      marginLeft: "35%",
+      marginBottom: 20,
+      padding: 8
   }
 
 

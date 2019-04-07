@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity  } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
 
 
 
@@ -31,6 +31,22 @@ export class Home extends React.Component {
       
      <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
+
+
+          {/* Go back Button */}
+          <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
+          <Image source={require('../assets/back.png')} 
+            style={{
+              margin: 5,
+              padding: 10,
+              height: 20,
+              width: 20,
+              resizeMode: 'stretch',
+            }}></Image>
+            <Text>Tillbaka</Text>
+          </TouchableOpacity>
+            
+
 
             <View style={stylesHome.titleContainer}>
               <Text style={stylesHome.titleStyle}> Välkommen </Text>
