@@ -7,21 +7,57 @@ import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpa
 export class Register extends React.Component {
   
 
-  static navigationOptions = {
-    header: null
+  
+  state = {
+    data: "",
+    modalVisible: false,
+    userState: "",
+    passwordState: ""
   }
 
-  state = {
-   modalVisible: false,
- };
+   static navigationOptions = {
+     header: null
+   }
 
+   setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+  
+
+  createUser = () => {
+    fetch('http://samtal-server.herokuapp.com/register', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.userState ,
+        password: this.state.passwordState
+      })
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        
+        if (responseJson == false) {
+          console.log("Error") //Here will a alert pop up, check out example on docs.
+        } else {
+          this.props.navigation.navigate('HomeScreen');
+        }
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
 
 
   render() {
 
     return (
-     <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
+      <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesRegister.mainContainer}>
 
 
@@ -29,19 +65,20 @@ export class Register extends React.Component {
               <TextInput
                 style={stylesRegister.textInputStyle}
                 placeholderTextColor ="#000"
-                placeholder="användarnamn"
-                onChangeText={(text) => this.setState({text})}
-              />
+                placeholder="Användarnamn"
+                onChangeText={(user) => this.setState({userState: user})}
+                />
 
               <TextInput
               style={stylesRegister.textInputStyle}
               placeholderTextColor ="#000"
+              secureTextEntry={true}
               placeholder="lösenord"
-              onChangeText={(text) => this.setState({text})}
+              onChangeText={(password) => this.setState({passwordState: password})}
               />
               
 
-              <TouchableOpacity style={stylesRegister.buttonStyle}> 
+              <TouchableOpacity style={stylesRegister.buttonStyle} onPress={this.createUser}> 
                   <Text style={{color: "#000", textAlign: "center", fontSize: 15}}> Skapa användare </Text>
               </TouchableOpacity>
 

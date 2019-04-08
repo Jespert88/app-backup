@@ -1,28 +1,67 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, ScrollView  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, ScrollView, Alert  } from 'react-native';
 
 
 
 
 
 export class Login extends React.Component {
-      
+    
+    state = {
+      data: "",
+      modalVisible: false,
+      userState: "",
+      passwordState: ""
+    }
+
      static navigationOptions = {
        header: null
      }
 
-     state = {
-      modalVisible: false,
-    };
-  
-    setModalVisible(visible) {
+     setModalVisible(visible) {
       this.setState({modalVisible: visible});
     }
 
+    
+
+    checkUser = () => {
+      fetch('http://samtal-server.herokuapp.com/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: this.state.userState ,
+          password: this.state.passwordState
+        })
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          
+          if (responseJson == false) {
+            console.log("Wrong user") //Here will a alert pop up, check out example on docs.
+          } else {
+            this.props.navigation.navigate('HomeScreen');
+          }
+
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+ 
+    
+
+    
+    
+
+      
   render() {
 
     return (
-     <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
+     <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         
         <View style={stylesLogin.mainContainer}>
 
@@ -31,31 +70,36 @@ export class Login extends React.Component {
           </View>
            
              <View style={stylesLogin.textInputContainer}>
-              <TextInput 
-                ref= "username"
-                style={stylesLogin.textInputStyle}
-                placeholderTextColor ="#000"
-                placeholder="användarnamn"
-                onChangeText={(text) => this.setState({text})}
-                value={this.state.username}
-              />
 
+             <TextInput
+              style={stylesLogin.textInputStyle}
+              placeholderTextColor ="#000"
+              placeholder="Användarnamn"
+              onChangeText={(user) => this.setState({userState: user})}
+              />
+            
               <TextInput
-              ref = "password"
               style={stylesLogin.textInputStyle}
               placeholderTextColor ="#000"
               secureTextEntry={true}
               placeholder="lösenord"
-              onChangeText={(text) => this.setState({text})}
-              value={this.state.password}
+              onChangeText={(password) => this.setState({passwordState: password})}
               />
               
-              <TouchableOpacity style={{marginTop: 20}} onPress={() => this.props.navigation.navigate("HomeScreen")}>
+
+
+              <TouchableOpacity style={{marginTop: 20}} onPress={this.checkUser}>
                   <Text style={stylesLogin.buttonTextStyle}> Logga in </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={{marginTop: 20}} onPress={() => this.props.navigation.navigate("RegisterScreen")}>
+                  <Text style={stylesLogin.buttonTextStyle}> Registrera </Text>
               </TouchableOpacity>
             </View>
         </View>
 
+        
+        {/*onPress={() => this.props.navigation.navigate("HomeScreen")}*/}
 
       {/* Modal */}
         <View style={{marginTop: 22}}>
@@ -71,7 +115,7 @@ export class Login extends React.Component {
             <View style={stylesLogin.textContainer}>
 
               <Text style={stylesLogin.infoTitle}> Välkommen till Samtalsgeneratorn {"\n"}</Text>
-              <ScrollView>
+              <ScrollView style={stylesLogin.scrollViewContainer}>
                 <Text style={stylesLogin.textStyle}>
                 Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. 
                 Lorem ipsum har varit standard ända sedan 1500-talet, 
@@ -102,8 +146,8 @@ export class Login extends React.Component {
 
         <View style={stylesLogin.infoButtonContainer}>
           <TouchableOpacity onPress={() => { this.setModalVisible(true); }}>
-            <Image source={require("../assets/info.png")} style={{width: 30, height: 30}}></Image>
-            <Text> Info </Text>
+            <Image source={require("../assets/infov3.png")} style={{width: 30, height: 30}}></Image>
+            <Text style={stylesLogin.infoButtonText}> Info </Text>
           </TouchableOpacity>
         </View>
         
@@ -114,8 +158,6 @@ export class Login extends React.Component {
     )
   }
 }
-
-
 
 
 const stylesLogin = StyleSheet.create({
@@ -129,12 +171,18 @@ const stylesLogin = StyleSheet.create({
 
   titleStyle: {
     fontSize: 40,
-    color: "#000"
+    color: "#fff",
+    textShadowColor: '#0e5572',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
   },
 
   infoTitle: {
     fontSize: 30,
-    textAlign:"center"
+    textAlign:"center",
+     textShadowColor: '#0e5572',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
   },
 
   textContainer: {
@@ -146,20 +194,21 @@ const stylesLogin = StyleSheet.create({
   },
 
   scrollViewContainer: {
-    margin: "20%"
+    marginTop: 20,
+    height: 400
   },
 
 
   buttonTextStyle: {
     fontSize: 18,
-    color: "#000",
+    color: "#fff",
     textAlign: "center"
   },
 
 
 
   textInputContainer: {
-      marginTop: "40%",
+      marginTop: "30%",
       marginLeft: "10%",
       marginRight: "10%",
   },
@@ -191,6 +240,12 @@ const stylesLogin = StyleSheet.create({
     padding: 10
   },
   
+  infoButtonText: {
+    fontSize: 14,
+    color: "#fff",
+    textAlign: "center"
+  },
+  
 
 
   CloseBtnContainer: {},
@@ -202,7 +257,7 @@ const stylesLogin = StyleSheet.create({
   },
 
   CloseBtnStyle: {
-    backgroundColor: "#34a023",
+    backgroundColor: "#56b2d8",
       borderRadius: 30,
       marginTop: 20,
       marginRight: "35%",
@@ -215,25 +270,3 @@ const stylesLogin = StyleSheet.create({
 });
 
 export default Login
-
-
-/*
-state = { data: "" }
-
-     componentWillMount = () => {
-        fetch("https://samtal-server.herokuapp.com/users", {
-           method: "GET"
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-           //console.log(responseJson);
-           this.setState({
-              data: responseJson.username
-           })
-           //console.log(responseJson)
-        })
-        .catch((error) => {
-           console.error(error);
-        });
-     }
-*/

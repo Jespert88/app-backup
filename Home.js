@@ -7,20 +7,10 @@ import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } fro
 
 export class Home extends React.Component {
   
-  //This is for styling the stacknavigator
+  //This is for styling the stacknavigator backgroundColor: '#56b2d8',
   static navigationOptions = {
-    
-   // title: 'Home',
-    headerStyle: {
-      backgroundColor: '#b0ff32',
-    },
-    headerTintColor: '#000',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-
-  
-};
+    header: null
+  };
 
 
   
@@ -29,23 +19,27 @@ export class Home extends React.Component {
     return (
       
       
-     <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
+      <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
 
+          <View style={stylesHome.backBtnContainer}>
+            <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
+            <Image source={require('../assets/back.png')} 
+              style={{
+                margin: 5,
+                padding: 10,
+                height: 20,
+                width: 20,
+                resizeMode: 'stretch',
+              }}></Image>
+            </TouchableOpacity>
+          </View>
 
-          {/* Go back Button */}
-          <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
-          <Image source={require('../assets/back.png')} 
-            style={{
-              margin: 5,
-              padding: 10,
-              height: 20,
-              width: 20,
-              resizeMode: 'stretch',
-            }}></Image>
-            <Text>Tillbaka</Text>
-          </TouchableOpacity>
-            
+          
+
+         
+          
+       
 
 
             <View style={stylesHome.titleContainer}>
@@ -87,7 +81,10 @@ const stylesHome = StyleSheet.create({
 
   titleStyle: {
     fontSize: 40,
-    color: "#000"
+    color: "#fff",
+    textShadowColor: '#0e5572',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
   },
 
   textStyle: {
@@ -113,7 +110,13 @@ const stylesHome = StyleSheet.create({
     backgroundColor: "#fff",
     opacity: 0.7,
     borderRadius: 30
+  },
+
+  backBtnContainer: {
+    margin: "5%",
+    marginTop: 40
   }
+
 
 
 });

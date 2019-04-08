@@ -29,7 +29,8 @@ export class Theme extends React.Component {
           //This is for styling the stacknavigator
          static navigationOptions = {
           headerStyle: {
-            backgroundColor: '#b0ff32',
+            backgroundColor: '#56b2d8',
+            color: "#fff"
           },
           headerTintColor: '#000',
           headerTitleStyle: {
@@ -42,7 +43,7 @@ export class Theme extends React.Component {
   render() {
     return (
 
-      <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
+      <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
 
         <View style={stylesHome.titleContainer}>
@@ -77,7 +78,10 @@ const stylesHome = StyleSheet.create({
   titleStyle: {
     fontSize: 50,
     alignItems: "center",
-    color: "#000",
+    color: "#fff",
+    textShadowColor: '#0e5572',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
   },
 
   textStyle: {

@@ -30,7 +30,7 @@ export class Question extends React.Component {
          //This is for styling the stacknavigator
          static navigationOptions = {
           headerStyle: {
-            backgroundColor: '#b0ff32',
+            backgroundColor: '#56b2d8',
           },
           headerTintColor: '#000',
           headerTitleStyle: {
@@ -43,7 +43,7 @@ export class Question extends React.Component {
   render() {
     return (
 
-      <ImageBackground source={require('../assets/green-wallpaper.png')} style={{width: "100%", height: "100%"}}>
+      <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesQuestion.mainContainer}>
 
         <View style={stylesQuestion.titleContainer}>
@@ -79,7 +79,10 @@ const stylesQuestion = StyleSheet.create({
     fontSize: 30,
     padding: 10,
     textAlign: "center",
-    color: "#000",
+    color: "#fff",
+    textShadowColor: '#0e5572',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
   },
 
   textStyle: {
