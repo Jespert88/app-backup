@@ -8,10 +8,9 @@ import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpa
 export class Login extends React.Component {
     
     state = {
-      data: "",
       modalVisible: false,
-      userState: "",
-      passwordState: ""
+      userStoreData: "",
+      passwordStoreData: ""
     }
 
      static navigationOptions = {
@@ -23,7 +22,7 @@ export class Login extends React.Component {
     }
 
     
-
+    //Post a user object to the /login route that handels the req. If the request is false, then console.log else go to home screen.
     checkUser = () => {
       fetch('http://samtal-server.herokuapp.com/login', {
         method: 'POST',
@@ -32,32 +31,43 @@ export class Login extends React.Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          username: this.state.userState ,
-          password: this.state.passwordState
+          username: this.state.userStoreData ,
+          password: this.state.passwordStoreData
         })
       })
         .then((response) => response.json())
         .then((responseJson) => {
           
           if (responseJson == false) {
-            console.log("Wrong user") //Here will a alert pop up, check out example on docs.
+
+            // Works on both iOS and Android
+            alert(
+              'Båda fälten måste vara ifyllda',
+              [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              {cancelable: false},
+            );
+
           } else {
-            this.props.navigation.navigate('HomeScreen');
+           // this.props.navigation.navigate('HomeScreen');
+           this.props.navigation.navigate('HomeScreen', {
+              NameOBJ: this.state.userStoreData
+          });
           }
 
         })
         .catch((error) => {
           console.log(error);
-        });
-    }
+        })
+    };
 
  
-    
-
-    
-    
-
-      
   render() {
 
     return (
@@ -66,41 +76,36 @@ export class Login extends React.Component {
         <View style={stylesLogin.mainContainer}>
 
           <View style={stylesLogin.titleContainer}>
-           <Text style={stylesLogin.titleStyle}> Samtalsgeneratorn </Text>
+            <Text style={stylesLogin.titleStyle}> Samtalsgeneratorn </Text>
           </View>
            
              <View style={stylesLogin.textInputContainer}>
-
-             <TextInput
-              style={stylesLogin.textInputStyle}
-              placeholderTextColor ="#000"
-              placeholder="Användarnamn"
-              onChangeText={(user) => this.setState({userState: user})}
-              />
-            
               <TextInput
-              style={stylesLogin.textInputStyle}
-              placeholderTextColor ="#000"
-              secureTextEntry={true}
-              placeholder="lösenord"
-              onChangeText={(password) => this.setState({passwordState: password})}
-              />
+                style={stylesLogin.textInputStyle}
+                placeholderTextColor ="#000"
+                placeholder="Användarnamn"
+                onChangeText={(user) => this.setState({userStoreData: user})}
+                />
               
+                <TextInput
+                style={stylesLogin.textInputStyle}
+                placeholderTextColor ="#000"
+                secureTextEntry={true}
+                placeholder="lösenord"
+                onChangeText={(password) => this.setState({passwordStoreData: password})}
+                />
+                
+                <TouchableOpacity style={{marginTop: 20}} onPress={this.checkUser}>
+                    <Text style={stylesLogin.buttonTextStyle}> Logga in </Text>
+                </TouchableOpacity>
 
-
-              <TouchableOpacity style={{marginTop: 20}} onPress={this.checkUser}>
-                  <Text style={stylesLogin.buttonTextStyle}> Logga in </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={{marginTop: 20}} onPress={() => this.props.navigation.navigate("RegisterScreen")}>
-                  <Text style={stylesLogin.buttonTextStyle}> Registrera </Text>
-              </TouchableOpacity>
+                <TouchableOpacity style={{marginTop: 20}} onPress={() => this.props.navigation.navigate("RegisterScreen")}>
+                    <Text style={stylesLogin.buttonTextStyle}> Registrera </Text>
+                </TouchableOpacity>
             </View>
         </View>
 
         
-        {/*onPress={() => this.props.navigation.navigate("HomeScreen")}*/}
-
       {/* Modal */}
         <View style={{marginTop: 22}}>
         <Modal
@@ -114,16 +119,18 @@ export class Login extends React.Component {
 
             <View style={stylesLogin.textContainer}>
 
-              <Text style={stylesLogin.infoTitle}> Välkommen till Samtalsgeneratorn {"\n"}</Text>
+              <Text style={{textAlign: "center", fontSize: 30}}> Välkommen till Samtalsgeneratorn {"\n"}</Text>
               <ScrollView style={stylesLogin.scrollViewContainer}>
                 <Text style={stylesLogin.textStyle}>
                 Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. 
                 Lorem ipsum har varit standard ända sedan 1500-talet, 
                 när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett 
-                provexemplar av en bok. Lorem ipsum har inte bara överlevt fem århundraden, 
+                provexemplar av en bok.{"\n"} {"\n"} 
+                
+                Lorem ipsum har inte bara överlevt fem århundraden, 
                 utan även övergången till elektronisk typografi utan större förändringar. 
                 Det blev allmänt känt på 1960-talet i samband med lanseringen av Letraset-ark 
-                med avsnitt av Lorem Ipsum, och senare med mjukvaror som Aldus PageMaker.{"\n"}
+                med avsnitt av Lorem Ipsum, och senare med mjukvaror som Aldus PageMaker.
 
                 </Text>
               </ScrollView>
@@ -166,7 +173,7 @@ const stylesLogin = StyleSheet.create({
 
   titleContainer: {
     alignItems: "center",
-    marginTop: "30%"
+    marginTop: "10%"
   },
 
   titleStyle: {
@@ -179,6 +186,7 @@ const stylesLogin = StyleSheet.create({
 
   infoTitle: {
     fontSize: 30,
+    color: "#fff",
     textAlign:"center",
      textShadowColor: '#0e5572',
     textShadowOffset: {width: -1, height: 1},
@@ -186,7 +194,7 @@ const stylesLogin = StyleSheet.create({
   },
 
   textContainer: {
-    margin:"5%"
+    margin: "5%",
   },
   textStyle: {
     fontSize: 18,
@@ -208,7 +216,7 @@ const stylesLogin = StyleSheet.create({
 
 
   textInputContainer: {
-      marginTop: "30%",
+      marginTop: "10%",
       marginLeft: "10%",
       marginRight: "10%",
   },

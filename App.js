@@ -14,66 +14,23 @@ const MainNavigator = createStackNavigator({
   HomeScreen: { screen: Home },
   ThemeScreen: { screen: Theme }, 
   RegisterScreen: { screen: Register},
-  QuestionScreen: { screen: Question } 
+  QuestionScreen: { screen: Question }
 });
 
 const App = createAppContainer(MainNavigator);
 
 
-state = {
-  data: ""
-}
-
-componentWillMount = () => {
-  fetch("https://samtal-server.herokuapp.com/users", {
-     method: "GET"
-  })
-  .then((response) => response.json())
-  .then((responseJson) => {
-    console.log(responseJson);
-  })
-  .catch((error) => {
-     console.error(error);
-  });
-}
-
-
-
 /*
+determineScreen = () => {
 
-_storeData = async () => {
-  try {
-    await AsyncStorage.setItem('@user', 'Det sparade värdet');
-  } catch (error) {
-    // Error saving data
-  }
-};
-_storeData()
-
-getData = async () => {
-  try {
-    const value = await AsyncStorage.getItem('@user')
-    if (value !== null) {
-      console.log(value);
-    }
-  } catch(e) {
-    console.log(e);
-  }
-};
-getData()
-*/
-
-/* This function will check if user already exists. If user already does, send user to home screen */
-/*function checkData() {
-  var data = null;
-
-  if (data != null) {
-    console.log("logged in")
-  } else {
-    console.log("you need to register")
-  }
 }
-checkData()
 */
+
+
+
+
+
+
+
 
 export default App;

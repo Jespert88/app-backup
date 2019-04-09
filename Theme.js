@@ -6,6 +6,12 @@ import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } fro
 
 
 export class Theme extends React.Component {
+
+        //This is for styling the stacknavigator backgroundColor: '#56b2d8',
+        static navigationOptions = {
+          header: null
+        };
+
         state = {
             data: ""
          }
@@ -26,18 +32,7 @@ export class Theme extends React.Component {
             });
          }
 
-          //This is for styling the stacknavigator
-         static navigationOptions = {
-          headerStyle: {
-            backgroundColor: '#56b2d8',
-            color: "#fff"
-          },
-          headerTintColor: '#000',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        };
-
+        
 
 
   render() {
@@ -45,6 +40,22 @@ export class Theme extends React.Component {
 
       <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
+
+        
+        <View style={stylesHome.backBtnContainer}>
+            <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
+            <Image source={require('../assets/back.png')} 
+              style={{
+                margin: 5,
+                padding: 10,
+                height: 20,
+                width: 20,
+                resizeMode: 'stretch',
+              }}></Image>
+            </TouchableOpacity>
+          </View>
+
+
 
         <View style={stylesHome.titleContainer}>
           <Text style={stylesHome.titleStyle}>{this.state.data} </Text>
@@ -91,6 +102,10 @@ const stylesHome = StyleSheet.create({
   },
 
 
+  backBtnContainer: {
+    margin: "5%",
+    marginTop: 40
+  },
 
   buttonContainer: {
     //backgroundColor:"#303",

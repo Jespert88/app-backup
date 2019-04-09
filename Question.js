@@ -6,9 +6,17 @@ import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } fro
 
 
 export class Question extends React.Component {
+        
+  
+        //This is for styling the stacknavigator backgroundColor: '#56b2d8',
+        static navigationOptions = {
+          header: null
+        };
+
+
         state = {
             data: ""
-         }
+        }
   
          componentWillMount = () => {
             fetch("https://samtal-server.herokuapp.com/question/random-question", {
@@ -27,17 +35,6 @@ export class Question extends React.Component {
          }
 
 
-         //This is for styling the stacknavigator
-         static navigationOptions = {
-          headerStyle: {
-            backgroundColor: '#56b2d8',
-          },
-          headerTintColor: '#000',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        };
-
 
 
   render() {
@@ -45,6 +42,22 @@ export class Question extends React.Component {
 
       <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesQuestion.mainContainer}>
+
+          
+        <View style={stylesQuestion.backBtnContainer}>
+            <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
+            <Image source={require('../assets/back.png')} 
+              style={{
+                margin: 5,
+                padding: 10,
+                height: 20,
+                width: 20,
+                resizeMode: 'stretch',
+              }}></Image>
+            </TouchableOpacity>
+          </View>
+
+
 
         <View style={stylesQuestion.titleContainer}>
           <Text style={stylesQuestion.titleStyle}>{this.state.data} </Text>
@@ -54,7 +67,14 @@ export class Question extends React.Component {
           <TouchableOpacity  style={stylesQuestion.buttonStyle} onPress={this.componentWillMount}>
             <Text style={stylesQuestion.textStyle}> Välj ny fråga </Text>
           </TouchableOpacity >  
+
+          <TouchableOpacity  style={stylesQuestion.buttonStyle} onPress={this.componentWillMount}>
+            <Text style={stylesQuestion.textStyle}> Timer </Text>
+          </TouchableOpacity >
         </View>
+
+
+        
 
 
         </View>
@@ -70,7 +90,8 @@ const stylesQuestion = StyleSheet.create({
   },
 
   titleContainer: {
-    marginTop: "20%",
+    position: "absolute",
+    marginTop: "50%",
     alignItems: "center",
     width: "100%"
   },
@@ -91,20 +112,20 @@ const stylesQuestion = StyleSheet.create({
     textAlign: "center"
   },
 
-
+  backBtnContainer: {
+    margin: "5%",
+    marginTop: 40
+  },
 
   buttonContainer: {
-    //backgroundColor:"#303",
-    marginTop: "30%"
+    marginTop: 250
   },
 
   buttonStyle: {
-    borderRadius: 30,
-    marginTop: 20,
-    marginRight: 70,
-    marginLeft: 70,
-    marginBottom: 20,
-    padding: 10,
+    margin: 10,
+    marginRight: 80,
+    marginLeft: 80,
+    padding: 5,
     backgroundColor: "#fff",
     opacity: 0.7,
     borderRadius: 30

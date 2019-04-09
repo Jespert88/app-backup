@@ -1,15 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, Alert  } from 'react-native';
 
 
 
 
 export class Register extends React.Component {
   
-
-  
   state = {
-    data: "",
     modalVisible: false,
     userState: "",
     passwordState: ""
@@ -41,7 +38,21 @@ export class Register extends React.Component {
       .then((responseJson) => {
         
         if (responseJson == false) {
-          console.log("Error") //Here will a alert pop up, check out example on docs.
+        
+          // Works on both iOS and Android
+          alert(
+            'Denna användare existerar redan.',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            {cancelable: false},
+          );
+          console.log("User already exist") //Here will a alert pop up, check out example on docs.
         } else {
           this.props.navigation.navigate('HomeScreen');
         }
@@ -59,6 +70,20 @@ export class Register extends React.Component {
     return (
       <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesRegister.mainContainer}>
+
+             
+            <View style={stylesRegister.backBtnContainer}>
+                <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
+                <Image source={require('../assets/back.png')} 
+                  style={{
+                    margin: 5,
+                    padding: 10,
+                    height: 20,
+                    width: 20,
+                    resizeMode: 'stretch',
+                  }}></Image>
+                </TouchableOpacity>
+              </View>
 
 
              <View style={stylesRegister.textInputContainer}>
@@ -92,6 +117,13 @@ export class Register extends React.Component {
     )
   }
 }
+
+
+
+
+
+
+
 
 const stylesRegister = StyleSheet.create({
   mainContainer: {
@@ -131,6 +163,10 @@ const stylesRegister = StyleSheet.create({
       borderRadius: 30
   },
 
+  backBtnContainer: {
+    margin: "5%",
+    marginTop: 40
+  },
 
   buttonStyle: {
     backgroundColor: "#fff",

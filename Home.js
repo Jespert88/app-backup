@@ -13,6 +13,7 @@ export class Home extends React.Component {
   };
 
 
+
   
   render() {
 
@@ -38,7 +39,10 @@ export class Home extends React.Component {
           
 
          
-          
+            <Text style={stylesHome.usernameContainer}>
+              Inloggad: {"\n"} 
+              {this.props.navigation.state.params.NameOBJ}
+            </Text>
        
 
 
@@ -46,6 +50,7 @@ export class Home extends React.Component {
               <Text style={stylesHome.titleStyle}> Välkommen </Text>
             </View>
 
+            
           <View style={stylesHome.buttonContainer}>
 
             <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ThemeScreen")}>
@@ -115,10 +120,16 @@ const stylesHome = StyleSheet.create({
   backBtnContainer: {
     margin: "5%",
     marginTop: 40
+  },
+
+  usernameContainer: {
+    marginLeft: "70%",
+    textAlign: "center"
   }
 
 
 
 });
+
 
 export default Home
