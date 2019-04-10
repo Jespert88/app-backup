@@ -54,7 +54,7 @@ export class Register extends React.Component {
           );
           console.log("User already exist") //Here will a alert pop up, check out example on docs.
         } else {
-          this.props.navigation.navigate('HomeScreen');
+          this.props.navigation.navigate('LoginScreen', {nameObj: this.state.userState});
         }
 
       })

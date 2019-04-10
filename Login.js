@@ -78,7 +78,8 @@ export class Login extends React.Component {
           <View style={stylesLogin.titleContainer}>
             <Text style={stylesLogin.titleStyle}> Samtalsgeneratorn </Text>
           </View>
-           
+
+            
              <View style={stylesLogin.textInputContainer}>
               <TextInput
                 style={stylesLogin.textInputStyle}
@@ -99,7 +100,7 @@ export class Login extends React.Component {
                     <Text style={stylesLogin.buttonTextStyle}> Logga in </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{marginTop: 20}} onPress={() => this.props.navigation.navigate("RegisterScreen")}>
+                <TouchableOpacity style={{marginTop: 220}} onPress={() => this.props.navigation.navigate("RegisterScreen")}>
                     <Text style={stylesLogin.buttonTextStyle}> Registrera </Text>
                 </TouchableOpacity>
             </View>

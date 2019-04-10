@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
-
-
+import CountDown from 'react-native-countdown-component';
+//import CountDown to show the timer
+import moment from 'moment';
+//import moment to help you play with date and time
 
 
 
@@ -34,7 +36,45 @@ export class Question extends React.Component {
             });
          }
 
+         componentDidMount() {
+          var that = this;
+          //We are showing the coundown timer for a given expiry date-time
+          //If you are making a quize type app then you need to make a simple timer
+          //which can be done by using the simple like given below
+          //that.setState({ totalDuration: 30 }); //which is 30 sec
+          var date = moment()
+            .utcOffset('+05:30')
+            .format('YYYY-MM-DD hh:mm:ss');
+          //Getting the current date-time with required formate and UTC   
+          var expirydate = '2030-08-23 04:00:45';//You can set your own date-time
+          //Let suppose we have to show the countdown for above date-time 
+          var diffr = moment.duration(moment(expirydate).diff(moment(date)));
+          //difference of the expiry date-time given and current date-time
+          var hours = parseInt(diffr.asHours());
+          var minutes = parseInt(diffr.minutes());
+          var seconds = parseInt(diffr.seconds());
+          var d = hours * 60 * 60 + minutes * 60 + seconds;
+          //converting in seconds
+          that.setState({ totalDuration: d });
+          //Settign up the duration of countdown in seconds to re-render
+        }
 
+        /*
+        startTimer = () => {
+          var date = moment()
+            .utcOffset('+05:30')
+            .format('YYYY-MM-DD hh:mm:ss');
+
+          var hours = parseInt(date.getHours());
+          var minutes = parseInt(date.minutes());
+          var seconds = parseInt(date.seconds());
+          var d = hours * 60 * 60 + minutes * 60 + seconds;
+          //converting in seconds
+          that.setState({ totalDuration: d });
+          //Settign up the duration of countdown in seconds to re-render
+
+        }
+      */
 
 
   render() {
@@ -57,6 +97,17 @@ export class Question extends React.Component {
             </TouchableOpacity>
           </View>
 
+          <CountDown
+          until={this.state.totalDuration}
+          //duration of countdown in seconds
+          timetoShow={('H', 'M', 'S')}
+          >
+          </CountDown>
+          
+      
+       
+          
+
 
 
         <View style={stylesQuestion.titleContainer}>
@@ -68,7 +119,7 @@ export class Question extends React.Component {
             <Text style={stylesQuestion.textStyle}> Välj ny fråga </Text>
           </TouchableOpacity >  
 
-          <TouchableOpacity  style={stylesQuestion.buttonStyle} onPress={this.componentWillMount}>
+          <TouchableOpacity  style={stylesQuestion.buttonStyle} onPress={this.startTimer}>
             <Text style={stylesQuestion.textStyle}> Timer </Text>
           </TouchableOpacity >
         </View>
@@ -125,7 +176,7 @@ const stylesQuestion = StyleSheet.create({
     margin: 10,
     marginRight: 80,
     marginLeft: 80,
-    padding: 5,
+    padding: 10,
     backgroundColor: "#fff",
     opacity: 0.7,
     borderRadius: 30

@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } fro
 
 
 
-export class Home extends React.Component {
+export class Choose extends React.Component {
   
   //This is for styling the stacknavigator backgroundColor: '#56b2d8',
   static navigationOptions = {
@@ -21,10 +21,10 @@ export class Home extends React.Component {
       
       
       <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
-        <View style={stylesHome.mainContainer}>
+        <View style={stylesChoose.mainContainer}>
 
-          <View style={stylesHome.backBtnContainer}>
-            <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
+          <View style={stylesChoose.backBtnContainer}>
+            <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
             <Image source={require('../assets/back.png')} 
               style={{
                 margin: 5,
@@ -39,33 +39,32 @@ export class Home extends React.Component {
           
 
          
-            <Text style={stylesHome.usernameTextStyle}>
+            <Text style={stylesChoose.usernameContainer}>
               Inloggad: {"\n"} 
-              {this.props.navigation.state.params.NameOBJ}
+             {/* {this.props.navigation.state.params.NameOBJ} */}
             </Text>
        
 
 
-            <View style={stylesHome.titleContainer}>
-              <Text style={stylesHome.titleStyle}> Gör ett val </Text>
+            <View style={stylesChoose.titleContainer}>
+              <Text style={stylesChoose.titleStyle}> Gör ett val </Text>
             </View>
 
             
-          <View style={stylesHome.buttonContainer}>
+          <View style={stylesChoose.buttonContainer}>
 
-            <Text style={stylesHome.textWithShadow}> Detta alternativ gör dig automatiskt till spelledare </Text>
+          <TouchableOpacity  style={stylesChoose.buttonStyle} onPress={() => this.props.navigation.navigate("ThemeScreen")}>
+                <Text style={stylesChoose.textStyle}> Tema </Text>
+              </TouchableOpacity >  
 
-            <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ChooseScreen")}>
-              <Text style={stylesHome.textStyle}> QR-Kod </Text>
-            </TouchableOpacity><Text>{"\n"}</Text>
+              <TouchableOpacity  style={stylesChoose.buttonStyle} onPress={() => this.props.navigation.navigate("QuestionScreen")}>
+                <Text style={stylesChoose.textStyle}> Fråga </Text>
+              </TouchableOpacity >  
+
+
+
             
 
-            <Text style={stylesHome.textWithShadow}> Välj detta alternativ för att skanna befintlig QR-kod </Text> 
-
-            <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ChooseScreen")}>
-              <Text style={stylesHome.textStyle}> Skanna </Text>
-            </TouchableOpacity>
-          
           </View>
          
 
@@ -78,7 +77,7 @@ export class Home extends React.Component {
   }
 }
 
-const stylesHome = StyleSheet.create({
+const stylesChoose = StyleSheet.create({
   mainContainer: {
     flex: 1,
     /*backgroundColor: "lightgreen"*/
@@ -103,28 +102,19 @@ const stylesHome = StyleSheet.create({
     textAlign: "center"
   },
 
-  textWithShadow: {
-      fontSize: 15,
-      color: "#fff",
-     // textShadowColor: '#9c29b7',
-     // textShadowOffset: {width: -1, height: 1},
-     // textShadowRadius: 10,
-      textAlign: "center"
-  },
-
 
 
   buttonContainer: {
     //backgroundColor:"#303",
-    marginTop: "10%"
+    marginTop: "30%"
   },
 
   buttonStyle: {
     borderRadius: 30,
-    marginTop: 10,
+    marginTop: 20,
     marginRight: 70,
     marginLeft: 70,
-    marginBottom: 10,
+    marginBottom: 20,
     padding: 10,
     backgroundColor: "#fff",
     opacity: 0.7,
@@ -136,14 +126,13 @@ const stylesHome = StyleSheet.create({
     marginTop: 40
   },
 
-  usernameTextStyle: {
+  usernameContainer: {
     marginLeft: "70%",
     textAlign: "center",
-    color: "#fff",
-    fontSize: 15
-  }
-
+    color: "#fff"
+  },
+ 
 });
 
 
-export default Home
+export default Choose
