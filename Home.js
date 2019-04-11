@@ -3,22 +3,17 @@ import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } fro
 
 
 
-
-
 export class Home extends React.Component {
   
-  //This is for styling the stacknavigator backgroundColor: '#56b2d8',
+  //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
   static navigationOptions = {
     header: null
   };
 
 
-
-  
   render() {
 
     return (
-      
       
       <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
@@ -37,15 +32,11 @@ export class Home extends React.Component {
           </View>
 
           
-
-         
             <Text style={stylesHome.usernameTextStyle}>
               Inloggad: {"\n"} 
               {this.props.navigation.state.params.NameOBJ}
             </Text>
        
-
-
             <View style={stylesHome.titleContainer}>
               <Text style={stylesHome.titleStyle}> Gör ett val </Text>
             </View>
@@ -54,21 +45,18 @@ export class Home extends React.Component {
           <View style={stylesHome.buttonContainer}>
 
             <Text style={stylesHome.textWithShadow}> Detta alternativ gör dig automatiskt till spelledare </Text>
-
             <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ChooseScreen")}>
               <Text style={stylesHome.textStyle}> QR-Kod </Text>
             </TouchableOpacity><Text>{"\n"}</Text>
             
 
             <Text style={stylesHome.textWithShadow}> Välj detta alternativ för att skanna befintlig QR-kod </Text> 
-
             <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ChooseScreen")}>
               <Text style={stylesHome.textStyle}> Skanna </Text>
             </TouchableOpacity>
           
           </View>
          
-
       </View>
      </ImageBackground> 
       
@@ -144,6 +132,5 @@ const stylesHome = StyleSheet.create({
   }
 
 });
-
 
 export default Home

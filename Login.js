@@ -2,9 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, ScrollView, Alert  } from 'react-native';
 
 
-
-
-
 export class Login extends React.Component {
     
     state = {
@@ -74,20 +71,18 @@ export class Login extends React.Component {
      <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         
         <View style={stylesLogin.mainContainer}>
+            <View style={stylesLogin.titleContainer}>
+              <Text style={stylesLogin.titleStyle}> Samtalsgeneratorn </Text>
+            </View>
 
-          <View style={stylesLogin.titleContainer}>
-            <Text style={stylesLogin.titleStyle}> Samtalsgeneratorn </Text>
-          </View>
-
-            
-             <View style={stylesLogin.textInputContainer}>
+            <View style={stylesLogin.textInputContainer}>
               <TextInput
                 style={stylesLogin.textInputStyle}
                 placeholderTextColor ="#000"
                 placeholder="Användarnamn"
                 onChangeText={(user) => this.setState({userStoreData: user})}
                 />
-              
+            
                 <TextInput
                 style={stylesLogin.textInputStyle}
                 placeholderTextColor ="#000"
@@ -166,7 +161,6 @@ export class Login extends React.Component {
     )
   }
 }
-
 
 const stylesLogin = StyleSheet.create({
   mainContainer: { flex: 1,},

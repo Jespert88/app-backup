@@ -7,7 +7,7 @@ import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } fro
 
 export class Theme extends React.Component {
 
-        //This is for styling the stacknavigator backgroundColor: '#56b2d8',
+        //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
         static navigationOptions = {
           header: null
         };

@@ -2,19 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
 
 
-
-
-
 export class Choose extends React.Component {
   
-  //This is for styling the stacknavigator backgroundColor: '#56b2d8',
+  //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
   static navigationOptions = {
     header: null
   };
 
-
-
-  
   render() {
 
     return (
@@ -37,15 +31,11 @@ export class Choose extends React.Component {
           </View>
 
           
-
-         
             <Text style={stylesChoose.usernameContainer}>
               Inloggad: {"\n"} 
              {/* {this.props.navigation.state.params.NameOBJ} */}
             </Text>
        
-
-
             <View style={stylesChoose.titleContainer}>
               <Text style={stylesChoose.titleStyle}> Gör ett val </Text>
             </View>
@@ -61,13 +51,8 @@ export class Choose extends React.Component {
                 <Text style={stylesChoose.textStyle}> Fråga </Text>
               </TouchableOpacity >  
 
-
-
-            
-
           </View>
          
-
       </View>
      </ImageBackground> 
       
@@ -133,6 +118,5 @@ const stylesChoose = StyleSheet.create({
   },
  
 });
-
 
 export default Choose

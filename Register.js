@@ -2,8 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, Alert  } from 'react-native';
 
 
-
-
 export class Register extends React.Component {
   
   state = {
@@ -118,17 +116,9 @@ export class Register extends React.Component {
   }
 }
 
-
-
-
-
-
-
-
 const stylesRegister = StyleSheet.create({
   mainContainer: {
-    flex: 1,
-    /*backgroundColor: "lightgreen"*/
+    flex: 1
   },
 
   titleContainer: {
@@ -178,7 +168,6 @@ const stylesRegister = StyleSheet.create({
     marginBottom: 20,
     padding: 10
   }
-
 
 });
 

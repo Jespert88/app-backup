@@ -9,7 +9,6 @@ import Register from "./screens/Register";
 import Choose from "./screens/Choose.js";
 
 
-
 // set any object to first in this list to see it on mobile device. 
 const MainNavigator = createStackNavigator({
   LoginScreen: { screen: Login},
@@ -19,14 +18,7 @@ const MainNavigator = createStackNavigator({
   ThemeScreen: { screen: Theme }, 
   QuestionScreen: { screen: Question },
 });
-
 const App = createAppContainer(MainNavigator);
 
-
-/*
-determineScreen = () => {
-
-}
-*/
 
 export default App;
