@@ -68,7 +68,7 @@ export class Login extends React.Component {
   render() {
 
     return (
-     <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
+     <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         
         <View style={stylesLogin.mainContainer}>
             <View style={stylesLogin.titleContainer}>
@@ -149,7 +149,7 @@ export class Login extends React.Component {
 
         <View style={stylesLogin.infoButtonContainer}>
           <TouchableOpacity onPress={() => { this.setModalVisible(true); }}>
-            <Image source={require("../assets/infov3.png")} style={{width: 30, height: 30}}></Image>
+            <Image source={require("../assets/infoIcon.png")} style={{width: 30, height: 30}}></Image>
             <Text style={stylesLogin.infoButtonText}> Info </Text>
           </TouchableOpacity>
         </View>

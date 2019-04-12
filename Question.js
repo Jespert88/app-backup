@@ -36,7 +36,7 @@ export class Question extends React.Component {
   render() {
     return (
 
-      <ImageBackground source={require('../assets/blue-wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
+      <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesQuestion.mainContainer}>
 
         <View style={stylesQuestion.backBtnContainer}>
