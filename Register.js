@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, Alert  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, KeyboardAvoidingView, Alert  } from 'react-native';
 
 
 export class Register extends React.Component {
@@ -84,7 +84,7 @@ export class Register extends React.Component {
               </View>
 
 
-             <View style={stylesRegister.textInputContainer}>
+              <KeyboardAvoidingView style={stylesRegister.textInputContainer} behavior="padding" enabled>
               <TextInput
                 style={stylesRegister.textInputStyle}
                 placeholderTextColor ="#000"
@@ -102,10 +102,10 @@ export class Register extends React.Component {
               
 
               <TouchableOpacity style={stylesRegister.buttonStyle} onPress={this.createUser}> 
-                  <Text style={{color: "#000", textAlign: "center", fontSize: 15}}> Skapa användare </Text>
+                  <Text style={{color: "#fff", textAlign: "center", fontSize: 18}}> Skapa användare </Text>
               </TouchableOpacity>
 
-            </View>
+              </KeyboardAvoidingView>
            
         </View>
      </ImageBackground> 
@@ -121,15 +121,6 @@ const stylesRegister = StyleSheet.create({
     flex: 1
   },
 
-  titleContainer: {
-    backgroundColor: "green",
-    alignItems: "center",
-  },
-
-  titleStyle: {
-    fontSize: 30,
-    color: "#fff"
-  },
 
   textStyle: {
     fontSize: 18,
@@ -138,36 +129,32 @@ const stylesRegister = StyleSheet.create({
   },
 
   textInputContainer: {
-      marginTop: "30%",
-      marginLeft: "10%",
-      marginRight: "10%",
-  },
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: "30%",
+    marginLeft: "10%",
+    marginRight: "10%",
+    padding: 20
+},
+textInputStyle: {
+    width: "100%",
+    margin: 10,
+    textAlign: "center",
+    padding: 10,
+    fontSize: 18,
+    backgroundColor: "#fff",
+    opacity: 0.7,
+    borderRadius: 30
+},
 
-  textInputStyle: {
-      textAlign: "center",
-      margin: 10,
-      padding: 10,
-      fontSize: 18,
-      backgroundColor: "#fff",
-      opacity: 0.7,
-      borderRadius: 30
-  },
+buttonStyle: {
+  padding: 10
+},
 
   backBtnContainer: {
     margin: "5%",
     marginTop: 40
   },
-
-  buttonStyle: {
-    backgroundColor: "#fff",
-    opacity: 0.7,
-    borderRadius: 30,
-    marginTop: 50,
-    marginRight: 60,
-    marginLeft: 60,
-    marginBottom: 20,
-    padding: 10
-  }
 
 });
 

@@ -1,5 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, ScrollView, Alert  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, ScrollView, Alert, KeyboardAvoidingView  } from 'react-native';
+
+
+
 
 
 export class Login extends React.Component {
@@ -70,12 +73,13 @@ export class Login extends React.Component {
     return (
      <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         
+
         <View style={stylesLogin.mainContainer}>
             <View style={stylesLogin.titleContainer}>
               <Text style={stylesLogin.titleStyle}> Samtalsgeneratorn </Text>
             </View>
 
-            <View style={stylesLogin.textInputContainer}>
+            <KeyboardAvoidingView style={stylesLogin.textInputContainer} behavior="padding" enabled>
               <TextInput
                 style={stylesLogin.textInputStyle}
                 placeholderTextColor ="#000"
@@ -91,14 +95,15 @@ export class Login extends React.Component {
                 onChangeText={(password) => this.setState({passwordStoreData: password})}
                 />
                 
-                <TouchableOpacity style={{marginTop: 20}} onPress={this.checkUser}>
+                <TouchableOpacity style={stylesLogin.buttonStyle} onPress={this.checkUser}>
                     <Text style={stylesLogin.buttonTextStyle}> Logga in </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{marginTop: 220}} onPress={() => this.props.navigation.navigate("RegisterScreen")}>
+                <TouchableOpacity style={stylesLogin.buttonStyle} onPress={() => this.props.navigation.navigate("RegisterScreen")}>
                     <Text style={stylesLogin.buttonTextStyle}> Registrera </Text>
                 </TouchableOpacity>
-            </View>
+
+           </KeyboardAvoidingView>
         </View>
 
         
@@ -168,7 +173,7 @@ const stylesLogin = StyleSheet.create({
 
   titleContainer: {
     alignItems: "center",
-    marginTop: "10%"
+    marginTop: "20%",
   },
 
   titleStyle: {
@@ -198,7 +203,7 @@ const stylesLogin = StyleSheet.create({
 
   scrollViewContainer: {
     marginTop: 20,
-    height: 400
+    height: "auto"
   },
 
 
@@ -208,16 +213,18 @@ const stylesLogin = StyleSheet.create({
     textAlign: "center"
   },
 
-
-
   textInputContainer: {
-      marginTop: "10%",
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: "30%",
       marginLeft: "10%",
       marginRight: "10%",
+      padding: 20
   },
   textInputStyle: {
+      width: "100%",
+      margin: 10,
       textAlign: "center",
-      margin: "5%",
       padding: 10,
       fontSize: 18,
       backgroundColor: "#fff",
@@ -225,17 +232,11 @@ const stylesLogin = StyleSheet.create({
       borderRadius: 30
   },
 
-
-
   buttonStyle: {
-    backgroundColor: "green",
-    borderRadius: 30,
-    marginTop: 20,
-    marginRight: 70,
-    marginLeft: 70,
-    marginBottom: 20,
     padding: 10
   },
+
+
 
   infoButtonContainer: {
     alignItems: "flex-end",

@@ -31,16 +31,11 @@ export class Choose extends React.Component {
           </View>
 
           
-            <Text style={stylesChoose.usernameContainer}>
-              Inloggad: {"\n"} 
-             {/* {this.props.navigation.state.params.NameOBJ} */}
-            </Text>
-       
             <View style={stylesChoose.titleContainer}>
-              <Text style={stylesChoose.titleStyle}> Gör ett val </Text>
+              <Text style={stylesChoose.titleStyle}> Här kommer en qr-kod visas </Text>
             </View>
 
-            
+
           <View style={stylesChoose.buttonContainer}>
 
           <TouchableOpacity  style={stylesChoose.buttonStyle} onPress={() => this.props.navigation.navigate("ThemeScreen")}>

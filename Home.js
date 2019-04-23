@@ -18,6 +18,7 @@ export class Home extends React.Component {
       <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
 
+
           <View style={stylesHome.backBtnContainer}>
             <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
             <Image source={require('../assets/back.png')} 
@@ -30,8 +31,8 @@ export class Home extends React.Component {
               }}></Image>
             </TouchableOpacity>
           </View>
-
           
+
             <Text style={stylesHome.usernameTextStyle}>
               Inloggad: {"\n"} 
               {this.props.navigation.state.params.NameOBJ}
@@ -43,18 +44,13 @@ export class Home extends React.Component {
 
             
           <View style={stylesHome.buttonContainer}>
-
-            <Text style={stylesHome.textWithShadow}> Detta alternativ gör dig automatiskt till spelledare </Text>
             <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ChooseScreen")}>
-              <Text style={stylesHome.textStyle}> QR-Kod </Text>
+              <Text style={stylesHome.textStyle}> Starta samtal </Text>
             </TouchableOpacity><Text>{"\n"}</Text>
             
-
-            <Text style={stylesHome.textWithShadow}> Välj detta alternativ för att skanna befintlig QR-kod </Text> 
             <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ChooseScreen")}>
-              <Text style={stylesHome.textStyle}> Skanna </Text>
+              <Text style={stylesHome.textStyle}> Delta i samtal </Text>
             </TouchableOpacity>
-          
           </View>
          
       </View>
@@ -82,7 +78,7 @@ const stylesHome = StyleSheet.create({
     color: "#fff",
     textShadowColor: '#9c29b7',
     textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10
+    textShadowRadius: 10 
   },
 
   textStyle: {
@@ -120,9 +116,14 @@ const stylesHome = StyleSheet.create({
   },
 
   backBtnContainer: {
-    margin: "5%",
-    marginTop: 40
+    marginTop: 40,
+    flexDirection: "row"
   },
+
+  logoutText: {
+    flexDirection: "row"
+  },
+
 
   usernameTextStyle: {
     marginLeft: "70%",
