@@ -32,6 +32,62 @@ export class Theme extends React.Component {
             });
          }
 
+
+        // Timer example.     
+        constructor(props) {
+            super(props);
+        
+            this.state = {
+              timer: null,
+              minutes_Counter: '00',
+              seconds_Counter: '00',
+              startDisable: false
+            }
+          }
+
+          componentWillUnmount() {
+            clearInterval(this.state.timer);
+          }
+       
+          //Start timer.
+          onButtonStart = () => {
+
+            let timer = setInterval(() => {
+         
+              var num = (Number(this.state.seconds_Counter) + 1).toString(),
+                count = this.state.minutes_Counter;
+         
+              if (Number(this.state.seconds_Counter) == 59) {
+                count = (Number(this.state.minutes_Counter) + 1).toString();
+                num = '00';
+              }
+         
+              this.setState({
+                minutes_Counter: count.length == 1 ? '0' + count : count,
+                seconds_Counter: num.length == 1 ? '0' + num : num
+              });
+            }, 1000);
+            this.setState({ timer });
+         
+            this.setState({startDisable : true})
+          }
+
+          //Stop timer.
+          onButtonStop = () => {
+              clearInterval(this.state.timer);
+              this.setState({startDisable : false})
+            }
+
+          //Clear timer.
+          onButtonClear = () => {
+            this.setState({
+              timer: null,
+              minutes_Counter: '00',
+              seconds_Counter: '00',
+            });
+          }
+
+        //End of timer example.
         
 
 
@@ -39,10 +95,9 @@ export class Theme extends React.Component {
     return (
 
       <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
-        <View style={stylesHome.mainContainer}>
+        <View style={stylesTheme.mainContainer}>
 
-        
-        <View style={stylesHome.backBtnContainer}>
+        <View style={stylesTheme.backBtnContainer}>
             <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
             <Image source={require('../assets/back.png')} 
               style={{
@@ -56,72 +111,135 @@ export class Theme extends React.Component {
           </View>
 
 
-
-        <View style={stylesHome.titleContainer}>
-          <Text style={stylesHome.titleStyle}>{this.state.data} </Text>
+              
+        <View style={stylesTheme.titleContainer}>
+          <Text style={stylesTheme.titleStyle}>{this.state.data} </Text>
         </View>
 
-        <View style={stylesHome.buttonContainer}>
-          <TouchableOpacity  style={stylesHome.buttonStyle} onPress={this.componentWillMount}>
-            <Text style={stylesHome.textStyle}> Välj nytt tema </Text>
+        <View style={stylesTheme.nextBtnContainer}>
+          <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.componentWillMount}>
+            <Text style={stylesTheme.buttonText}> Välj nytt tema </Text>
           </TouchableOpacity >  
         </View>
 
 
-        </View>
 
+            {/* This is for show buttons and timer */}
+            <View style={stylesTheme.timerContainer}>
+
+              <View style={stylesTheme.timerView}>
+                <Text style={stylesTheme.counterText}>{this.state.minutes_Counter} : {this.state.seconds_Counter}</Text>
+              </View>
+            
+              <TouchableOpacity
+              onPress={this.onButtonStart}
+              activeOpacity={0.6}
+              style={[stylesTheme.timerButtons, { backgroundColor: this.state.startDisable ? '#FFFFFF' : '#FFFFFF' }]} 
+              disabled={this.state.startDisable} >
+
+              <Text style={stylesTheme.buttonText}>START</Text>
+
+              </TouchableOpacity>
+
+              <TouchableOpacity
+              onPress={this.onButtonStop}
+              activeOpacity={0.6}
+              style={[stylesTheme.timerButtons, { backgroundColor:  '#FFFFFF'}]} >
+
+              <Text style={stylesTheme.buttonText}>STOP</Text>
+
+              </TouchableOpacity>
+
+              <TouchableOpacity
+              onPress={this.onButtonClear}
+              activeOpacity={0.6}
+              style={stylesTheme.timerButtons} 
+              disabled={this.state.startDisable} >
+
+              <Text style={stylesTheme.buttonText}> CLEAR </Text>
+
+              </TouchableOpacity>
+            </View>
+            {/* End */}
+    
+        </View>
       </ImageBackground>
     )
   }
 }
 
-const stylesHome = StyleSheet.create({
+const stylesTheme = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
 
+  //Titlestyle
   titleContainer: {
-    marginTop: "20%",
+    //backgroundColor: "green",
+    position: "absolute",
+    marginTop: "30%",
     alignItems: "center",
     width: "100%"
   },
-
   titleStyle: {
     fontSize: 50,
-    alignItems: "center",
+    padding: 10,
+    textAlign: "center",
     color: "#fff",
     textShadowColor: '#0e5572',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10
   },
 
-  textStyle: {
+  
+ //Buttonstyle
+ nextBtnContainer: {
+   // backgroundColor: "blue",
+    marginTop: 145,
+    width: "100%"
+  },
+  nexBtnStyle: {
+    margin: 10,
+    marginRight: 80,
+    marginLeft: 80,
+    padding: 10,
+    backgroundColor: "#fff",
+    opacity: 0.7,
+    borderRadius: 30
+  },
+  buttonText:{
     fontSize: 18,
     color: "#000",
     textAlign: "center"
   },
 
-
-  backBtnContainer: {
-    margin: "5%",
-    marginTop: 40
+  //Timer Style
+  timerContainer: {
+   // backgroundColor: "orange",
+    marginTop: 70,
+    width: "100%"
   },
-
-  buttonContainer: {
-    //backgroundColor:"#303",
-    marginTop: "30%"
+  timerView:{
+    alignItems: "center",
+    justifyContent: "center",
   },
-
-  buttonStyle: {
-    borderRadius: 30,
-    marginTop: 20,
-    marginRight: 70,
-    marginLeft: 70,
-    marginBottom: 20,
+  counterText:{
+    fontSize: 30,
+    color: '#000',
+  },
+  timerButtons: {
+    margin: 10,
+    marginRight: 80,
+    marginLeft: 80,
     padding: 10,
     backgroundColor: "#fff",
     opacity: 0.7,
     borderRadius: 30
+  },
+
+  backBtnContainer: {
+    margin: "5%",
+    marginTop: 40
   }
 
 

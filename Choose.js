@@ -102,8 +102,8 @@ const stylesChoose = StyleSheet.create({
   },
 
   backBtnContainer: {
-    margin: "5%",
-    marginTop: 40
+    marginTop: 50,
+    marginLeft: 20
   },
 
   usernameContainer: {

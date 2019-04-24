@@ -18,26 +18,28 @@ export class Home extends React.Component {
       <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
 
-
+        <View style={stylesHome.signOutContainer}>
           <View style={stylesHome.backBtnContainer}>
-            <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
-            <Image source={require('../assets/back.png')} 
-              style={{
-                margin: 5,
-                padding: 10,
-                height: 20,
-                width: 20,
-                resizeMode: 'stretch',
-              }}></Image>
-            </TouchableOpacity>
-          </View>
-          
-
+              <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
+              <Image source={require('../assets/back.png')} 
+                style={{
+                  margin: 5,
+                  padding: 10,
+                  height: 20,
+                  width: 20,
+                  resizeMode: 'stretch',
+                }}></Image>
+              </TouchableOpacity>
+            </View>
+  
             <Text style={stylesHome.usernameTextStyle}>
               Inloggad: {"\n"} 
               {this.props.navigation.state.params.NameOBJ}
             </Text>
-       
+        </View>
+
+
+
             <View style={stylesHome.titleContainer}>
               <Text style={stylesHome.titleStyle}> Gör ett val </Text>
             </View>
@@ -115,18 +117,20 @@ const stylesHome = StyleSheet.create({
     borderRadius: 30
   },
 
+
+  signOutContainer: {
+    flexDirection: "row"
+  },
+
+
   backBtnContainer: {
-    marginTop: 40,
-    flexDirection: "row"
+    marginTop: 50,
+    marginLeft: 20
   },
-
-  logoutText: {
-    flexDirection: "row"
-  },
-
 
   usernameTextStyle: {
-    marginLeft: "70%",
+    marginTop: 50,
+    marginLeft: "60%",
     textAlign: "center",
     color: "#fff",
     fontSize: 15
