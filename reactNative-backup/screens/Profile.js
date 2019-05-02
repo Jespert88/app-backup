@@ -3,13 +3,47 @@ import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, Scrol
 
 
 
+
+
 export class Profile extends React.Component {
-  
+
+
 //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
   static navigationOptions = {
     header: null
   };
 
+
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        myHours: 1,
+        myMinutes: 60,
+        mySeconds: 3600,
+        myPoints: 5,
+
+      
+        defaultImage: require('../assets/baby.png'),
+
+        image1: require('../assets/baby.png'),
+        image2: require('../assets/student.png'),
+        image3: require('../assets/buddha.png'),
+
+        imgText1: "Den ovetande",
+        imgText2: "Den förstående",
+        imgText3: "Den upplysta"
+        
+      }
+    }
+
+    
+            
+   
+   
+
+
+    
   render() {
 
     return (
@@ -34,27 +68,30 @@ export class Profile extends React.Component {
             </View>
         </View>
 
-        
+        {/* Username container */}
         <View style={stylesProfile.achivmentContainer}>
           <View style={{alignItems: "center", flexDirection: "row", justifyContent: "center"}}>
               <Text style={stylesProfile.titleStyle}> Jeppe </Text>
               <Image source={require('../assets/brain.png')} style={{width: 30, height: 30}}></Image>
           </View>
 
+        
+
+          {/* Profilestats container */}
           <View style={stylesProfile.StatsTextContainer}>
-              <Text style={stylesProfile.profileStatsText}>Timmar: 3</Text>
-              <Text style={stylesProfile.profileStatsText}>Minuter: 180</Text>
-              <Text style={stylesProfile.profileStatsText}>Sekunder: 10800</Text>
+              <Text style={stylesProfile.profileStatsText}>Timmar: {this.state.myHours}</Text>
+              <Text style={stylesProfile.profileStatsText}>Minuter: {this.state.myMinutes}</Text>
+              <Text style={stylesProfile.profileStatsText}>Sekunder: {this.state.mySeconds}</Text>
           </View><Text>{"\n"}</Text>
 
-
+            {/* Avatar container */}
             <View style={stylesProfile.characterContainer}>
-              <Text style={stylesProfile.characterTitle}>Samtalskaraktär</Text>
-              <Image source={require('../assets/buddha.png')} style={{width: 100, height: 100}}></Image>
-              <Text style={stylesProfile.textStyle}> Den upplysta </Text>
-            </View><Text>{"\n"}{"\n"}</Text>
+              <Text style={stylesProfile.characterTitle}> Samtalskaraktär </Text>
+              <Image style={{width: 100, height: 100}} source={this.state.defaultImage}></Image>
+              <Text style={stylesProfile.textStyle}> {this.state.imgText1} </Text>
+            </View><Text>{"\n"}</Text>
 
-
+            {/* Achievements container */}
             <Text style={stylesProfile.titleStyle}> Achievements </Text>
             <View style={stylesProfile.achivmentFlexGrid}>
               <View style={stylesProfile.achiveImgContainer}>
@@ -63,8 +100,8 @@ export class Profile extends React.Component {
               <Text style={stylesProfile.textStyle}>1 Timme</Text>
               </View>
 
-              <View style={stylesProfile.achiveImgContainer}>
-              <Image source={require('../assets/chat2.png')} style={{width: 50, height: 50}}></Image>
+              <View style={stylesProfile.achiveImgContainerNoColor}>
+              <Image source={require('../assets/chat2NoColor.png')} style={{width: 50, height: 50}}></Image>
               <Text style={stylesProfile.textStyle}>None Stop</Text>
               <Text style={stylesProfile.textStyle}>3 Timmar</Text>
               </View>
@@ -75,11 +112,7 @@ export class Profile extends React.Component {
               <Text style={stylesProfile.textStyleNoColor}>5 Timmar</Text>
               </View>
 
-              <View style={stylesProfile.achiveImgContainerNoColor}>
-              <Image source={require('../assets/brain2.png')} style={{width: 50, height: 50}}></Image>
-              <Text style={stylesProfile.textStyleNoColor}>Learning</Text>
-              <Text style={stylesProfile.textStyleNoColor}>5 Timmar</Text>
-              </View>
+            
             </View>
               
 

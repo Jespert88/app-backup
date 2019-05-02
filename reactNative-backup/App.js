@@ -63,8 +63,8 @@ import Profile from "./screens/Profile.js";
 
 // set any object to first in this list to see it on mobile device. 
 const MainNavigator = createStackNavigator({
-  //LoginScreen: { screen: Login},
-  //RegisterScreen: { screen: Register},
+  LoginScreen: { screen: Login},
+  RegisterScreen: { screen: Register},
   ProfileScreen: { screen: Profile},
   HomeScreen: { screen: Home },
   ChooseScreen: { screen: Choose},
