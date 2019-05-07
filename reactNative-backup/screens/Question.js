@@ -16,7 +16,7 @@ export class Question extends React.Component {
             data: ""
         }
   
-         componentWillMount = () => {
+        componentDidMount = () => {
             fetch("https://samtal-server.herokuapp.com/question/random-question", {
                method: "GET"
             })
@@ -119,7 +119,7 @@ export class Question extends React.Component {
         </View>
 
         <View style={stylesQuestion.nextBtnContainer}>
-          <TouchableOpacity  style={stylesQuestion.nexBtnStyle} onPress={this.componentWillMount}>
+          <TouchableOpacity  style={stylesQuestion.nexBtnStyle} onPress={this.componentDidMount}>
             <Text style={stylesQuestion.buttonText}> Välj ny fråga </Text>
           </TouchableOpacity >  
         </View>

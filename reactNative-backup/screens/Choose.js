@@ -80,7 +80,7 @@ export class Choose extends React.Component {
             </TouchableOpacity >  
 
             <TouchableOpacity  style={stylesChoose.buttonStyle} onPress={() => this.props.navigation.navigate("QuestionScreen")}>
-              <Text style={stylesChoose.textStyle}> Fråga </Text>
+              <Text style={stylesChoose.textStyle}> Frågor </Text>
             </TouchableOpacity >  
           </View>
           

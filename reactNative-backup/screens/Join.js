@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 
-export class Home extends React.Component {
+export class Join extends React.Component {
 //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
 static navigationOptions = {
   header: null
@@ -32,9 +32,7 @@ static navigationOptions = {
     }
   }
   
-  componentDidMount() {
-    this.getAsyncUserTest()
-  }
+ 
 
 
 
@@ -47,15 +45,14 @@ static navigationOptions = {
       
       //Main Body of the Screen.
       <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
-        <View style={stylesHome.mainContainer}>
+        <View style={stylesJoin.mainContainer}>
            
 
         {/* SignOut Container */}
-        <View style={stylesHome.signOutContainer}>
-
+        <View style={stylesJoin.signOutContainer}>
           {/* Back arrow Container */}
-          <View style={stylesHome.backBtnContainer}>
-              <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
+          <View style={stylesJoin.backBtnContainer}>
+              <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
               <Image source={require('../assets/back.png')} 
                 style={{
                   margin: 5,
@@ -66,48 +63,18 @@ static navigationOptions = {
                 }}></Image>
               </TouchableOpacity>
             </View>
-
-            {/* Profile Container */}
-            <View style={stylesHome.profileContainer}>
-              <TouchableOpacity  onPress={() => this.props.navigation.navigate("ProfileScreen")}>
-                <Image source={require('../assets/user.png')} 
-                  style={{
-                    margin: 10,
-                    padding: 10,
-                    height: 40,
-                    width: 40,
-                    resizeMode: 'stretch',
-                  }}></Image>
-
-                {/* Here we show the value from the state varible: user. */}
-                <Text style={stylesHome.profileText}>{this.state.user}</Text>
-
-              </TouchableOpacity>
-            </View>
-        </View>
-
-       
-
-
-
-        {/* Title Container */}
-        <View style={stylesHome.titleContainer}>
-            <Text style={stylesHome.titleStyle}> Gör ett val </Text>
         </View>
 
 
-        {/* Button Container */}
-        <View style={stylesHome.buttonContainer}>
-            <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ChooseScreen")}>
-              <Text style={stylesHome.textStyle}> Starta samtal </Text>
-            </TouchableOpacity><Text>{"\n"}</Text>
-            
-            <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("JoinScreen")}>
-              <Text style={stylesHome.textStyle}> Delta i samtal </Text>
-            </TouchableOpacity>
-        </View>
-        
-        
+        <Text style={stylesJoin.titleStyle}> Här ska appen starta Kameran för att kunna 
+            läsa en annan spelares QR-kod 
+        </Text>
+
+
+
+
+
+
         </View>
      </ImageBackground> 
       
@@ -115,7 +82,7 @@ static navigationOptions = {
   }
 }
 
-const stylesHome = StyleSheet.create({
+const stylesJoin = StyleSheet.create({
   mainContainer: {
     flex: 1,
     /*backgroundColor: "lightgreen"*/
@@ -210,4 +177,4 @@ const stylesHome = StyleSheet.create({
 
 });
 
-export default Home
+export default Join

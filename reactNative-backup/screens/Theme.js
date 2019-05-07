@@ -16,7 +16,7 @@ export class Theme extends React.Component {
             data: ""
          }
   
-         componentWillMount = () => {
+         componentDidMount = () => {
             fetch("https://samtal-server.herokuapp.com/theme/random-theme", {
                method: "GET"
             })
@@ -125,7 +125,7 @@ export class Theme extends React.Component {
        
 
         <View style={stylesTheme.nextBtnContainer}>
-          <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.componentWillMount}>
+          <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.componentDidMount}>
             <Text style={stylesTheme.buttonText}> Välj nytt tema </Text>
           </TouchableOpacity >  
         </View>

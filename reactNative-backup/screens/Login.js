@@ -1,75 +1,113 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, ScrollView, Alert, KeyboardAvoidingView  } from 'react-native';
-
-
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 export class Login extends React.Component {
     
-    state = {
+  constructor(props){
+    super(props);
+
+    this.state = {
       modalVisible: false,
       userStoreData: "",
-      passwordStoreData: ""
+      passwordStoreData: "",
     }
 
-     static navigationOptions = {
-       header: null
-     }
+  }
+  
+   static navigationOptions = {
+     header: null
+   }
+   setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
 
-     setModalVisible(visible) {
-      this.setState({modalVisible: visible});
+  
+
+
+
+  //If i understand, this functions gonna run these two functions when its ready
+  // -if there are no errors, send the user to homescreen directly.
+
+    /*
+    componentDidMount() {
+    this.waitForAsync().done()
+  }
+
+  //Get global varible from AsyncStorage, and if value are not null then send user to HomeScreen.
+    waitForAsync = async () => {
+      var value = await AsyncStorage.getItem('@AsyncUser');
+      if (value !== null) {
+        this.props.navigation.navigate("homeScreen", value);
+      } else {
+        console.log("error")
+      }
     }
+    */
+ 
+  
 
-    
-    //Post a user object to the /login route that handels the req. If the request is false, then console.log else go to home screen.
-    checkUser = () => {
-      fetch('http://samtal-server.herokuapp.com/login', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: this.state.userStoreData ,
-          password: this.state.passwordStoreData
-        })
+//Post a user object to the /login route that handels the req. If the request is false, then a alert comes up
+//else go to home screen.
+ checkUser = (userStoreData) => {
+    fetch('http://samtal-server.herokuapp.com/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.userStoreData,
+        password: this.state.passwordStoreData
       })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          
-          if (responseJson == false) {
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        
+      
+        // If responseJson is false, start an a Alert.
+        if (responseJson == false) {
 
-            // Works on both iOS and Android
-            alert(
-              'Båda fälten måste vara ifyllda',
-              [
-                {
-                  text: 'Cancel',
-                  onPress: () => console.log('Cancel Pressed'),
-                  style: 'cancel',
-                },
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              {cancelable: false},
-            );
+           // Works on both iOS and Android
+           alert(
+            'Fel användare, lösen eller så har du ej fyllt i alla fält',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            {cancelable: false},
+          );
 
-          } else {
-           // this.props.navigation.navigate('HomeScreen');
-           this.props.navigation.navigate('HomeScreen', {
-              NameOBJ: this.state.userStoreData
-          });
+        // Else set AsyncStorage varible = user input (userStoreData) and send user to next screen.
+        // userStoreData = "" as default.
+        } else {
+
+          setNewAsyncUser = () => {
+            var AsyncUsername = this.state.userStoreData
+            AsyncStorage.setItem("@AsyncUser" , JSON.stringify(AsyncUsername))
           }
+        
+          setNewAsyncUser()
+          this.props.navigation.navigate('HomeScreen');
+        }
 
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-    };
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .done();
+  };
+
+  
+
 
  
   render() {
-
     return (
      <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         
@@ -80,6 +118,7 @@ export class Login extends React.Component {
               <Text style={stylesLogin.subTitlestyle}> Slumpar olika teman och frågor för diskussion </Text>
             </View>
 
+            {/* Login form */}
             <KeyboardAvoidingView style={stylesLogin.textInputContainer} behavior="padding" enabled>
               <TextInput
                 style={stylesLogin.textInputStyle}
@@ -95,19 +134,18 @@ export class Login extends React.Component {
                 placeholder="lösenord"
                 onChangeText={(password) => this.setState({passwordStoreData: password})}
                 />
-                
+
                 <TouchableOpacity style={stylesLogin.buttonStyle} onPress={this.checkUser}>
                     <Text style={stylesLogin.buttonTextStyle}> Logga in </Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity style={stylesLogin.buttonStyle} onPress={() => this.props.navigation.navigate("RegisterScreen")}>
                     <Text style={stylesLogin.buttonTextStyle}> Registrera </Text>
                 </TouchableOpacity>
+                
+            </KeyboardAvoidingView>
 
-           </KeyboardAvoidingView>
         </View>
 
-        
       {/* Modal */}
         <View style={{marginTop: 22}}>
         <Modal

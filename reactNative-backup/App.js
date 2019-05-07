@@ -52,6 +52,8 @@ const styles = StyleSheet.create({
 import React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableHighlight, AsyncStorage, Dimensions } from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
+
+
 import Home from "./screens/Home";
 import Theme from "./screens/Theme";
 import Question from "./screens/Question";
@@ -59,6 +61,10 @@ import Login from "./screens/Login";
 import Register from "./screens/Register";
 import Choose from "./screens/Choose.js";
 import Profile from "./screens/Profile.js";
+import Join from "./screens/Join.js";
+
+
+
 
 
 // set any object to first in this list to see it on mobile device. 
@@ -70,6 +76,7 @@ const MainNavigator = createStackNavigator({
   ChooseScreen: { screen: Choose},
   ThemeScreen: { screen: Theme }, 
   QuestionScreen: { screen: Question },
+  JoinScreen: { screen: Join}
 });
 const App = createAppContainer(MainNavigator);
 
