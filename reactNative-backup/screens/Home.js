@@ -21,15 +21,12 @@ static navigationOptions = {
 
 
   getAsyncUserTest = async () => {
-    try {
-        await AsyncStorage.getItem("@AsyncUser").then(val => {
-          this.setState({ user: val })
-          return JSON.parse(val)
-        });
-    }
-    catch {
-      alert("Error check code..")
-    }
+    await AsyncStorage.getItem("@AsyncUser").then(val => {
+      this.setState({ user: val }).then(
+        JSON.stringify(val)
+      )
+      return JSON.parse(val)
+    });
   }
   
   componentDidMount() {
@@ -76,6 +73,7 @@ static navigationOptions = {
                     padding: 10,
                     height: 40,
                     width: 40,
+                    alignItems: "center",
                     resizeMode: 'stretch',
                   }}></Image>
 
@@ -128,21 +126,23 @@ const stylesHome = StyleSheet.create({
   titleStyle: {
     fontSize: 45,
     color: "#fff",
-    textShadowColor: '#9c29b7',
+    textShadowColor: '#570682',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10 
   },
 
   profileContainer: {
+    //backgroundColor: "green",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
-    marginLeft: "60%"
+    marginTop: 10,
+    marginLeft: "65%"
   },
   profileText: {
     fontSize: 18,
     color: "#fff",
+    textAlign: "center"
    /* textShadowColor: '#9c29b7',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10 */

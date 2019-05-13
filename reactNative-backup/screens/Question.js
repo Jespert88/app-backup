@@ -38,9 +38,15 @@ export class Question extends React.Component {
               super(props);
           
               this.state = {
+                data: "",
                 timer: null,
-                minutes_Counter: '00',
-                seconds_Counter: '00',
+                // myHours: '00',
+                myMinutes: '00', //These varibles are for saving in the database.
+                mySeconds: '00', // Same here.
+
+                hour_Counter: '00',
+                minutes_Counter: '00', //Change back to '00'
+                seconds_Counter: '00', //Change back to '00'
                 startDisable: false
               }
             }
@@ -75,7 +81,15 @@ export class Question extends React.Component {
             //Stop timer.
             onButtonStop = () => {
                 clearInterval(this.state.timer);
-                this.setState({startDisable : false})
+                this.setState({
+                  startDisable : false,
+
+                  // myHours: this.state.hour_Counter,
+                  myMinutes: this.state.minutes_Counter,
+                  mySeconds: this.state.seconds_Counter
+                 })
+   
+                 //postTime() Will execute the post function.
               }
 
 
@@ -88,6 +102,32 @@ export class Question extends React.Component {
               });
             }
 
+      // Sends a POST request to server with new time varibles.
+        /* 
+        postTime = () => {
+          fetch('http://samtal-server.herokuapp.com/login', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+
+            // Should i send strings or Ints to server? Must specify in the server and mongoDB User colletion. (Create first!)
+            body: JSON.stringify({
+              minutes: this.state.minutes_Counter,
+              seconds: this.state.seconds_Counter
+            })
+          })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              
+              
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        };
+        */
 
           //End of timer example.
 
@@ -188,7 +228,7 @@ const stylesQuestion = StyleSheet.create({
     padding: 10,
     textAlign: "center",
     color: "#fff",
-    textShadowColor: '#0e5572',
+    textShadowColor: '#570682',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10
   },
@@ -227,7 +267,10 @@ const stylesQuestion = StyleSheet.create({
   },
   counterText:{
     fontSize: 30,
-    color: '#000',
+    color: "#fff",
+    textShadowColor: '#570682',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
   },
   timerButtons: {
     margin: 10,

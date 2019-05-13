@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, KeyboardAvoidingView, Alert  } from 'react-native';
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 export class Register extends React.Component {
   

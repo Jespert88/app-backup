@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 
+
 export class Profile extends React.Component {
 //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
   static navigationOptions = {
@@ -22,17 +23,18 @@ export class Profile extends React.Component {
       myMinutes: 0,
       mySeconds: 0,
       myPoints: 0,
-      imageURI: require("../assets/student.png"),
+      imageURI: require("../assets/baby.png"),
       avatarText: "Jag lär mig",
       // bild 1 = "../assets/baby.png"
       // bild 2 = "../assets/student.png"
       // bild 3 = "../assets/buddha.png"
 
-      // bild 1 text = "Den ovetande"
-      // bild 2 text = "Den förstående"
-      // bild 3 text = "Den upplysta"
+      // bild 1 text = "Jag lär mig"
+      // bild 2 text = "Jag vill veta mer!.."
+      // bild 3 text = "Fråga mig varsom helst"
 
       //Achievements
+      A1: require("../assets/chatNoColor.png")
       /*
       A1: require("../assets/chatNoColor.png"),
       A2: require("../assets/cha2NoColor.png"),
@@ -46,39 +48,64 @@ export class Profile extends React.Component {
   }
 
 
+  TestGetUser = () => {
+    fetch('http://samtal-server.herokuapp.com/users', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      
+      /*
+      body: JSON.stringify({
+        username: this.state.userStoreData,
+        password: this.state.passwordStoreData 
+       })*/
+    }).then((response) => response.json())
+    .then((responseJson) => {
+        
+      myPoints = responseJson[0].points;
+    });
+  }
+    
+
+
+
     getAsyncUserTest = async () => {
-      
-      //this.state.A1 = require("../assets/chat.png"),
-      
-      this.state.myHours = 1,
-      this.state.myMinutes = 60,
-      this.state.mySeconds = 1200,
-      this.state.myPoints = 10,
-      this.state.imageURI = require("../assets/buddha.png"),
-      this.state.avatarText = "Jag vet allt"
 
+     // Varbiles that need to change to this! don't trow.
+     // this.state.A1 = require("../assets/chat.png"),
+      //this.state.myHours = 5,
+      //this.state.myMinutes = 60,
+      //this.state.mySeconds = 1200,
+      //this.state.myPoints = 10
+     // this.state.imageURI = require("../assets/buddha.png"),
+     // this.state.avatarText = "Jag vet allt"
       //this.state.A1 = require("../assets/chat.png")
+    
 
-
+      // Use await AsyncStorage.getAllKeys() to extract all value.
+      // Example of keys to use?  "@AsyncMinutes", "@AsyncSeconds", "@AsyncIMG",
       try {
           await AsyncStorage.getItem("@AsyncUser").then(val => {
             this.setState({ 
               myUsername: val
             })
-            return JSON.parse(val)
+            //return JSON.stringify(val)
         });
-        alert("Inloggad: " + val)
       }
       catch {
-        
       }
-
     }
 
+
+   
 
 
     componentDidMount() {
       this.getAsyncUserTest()
+     // this.TestGetUser()
+  
     }
     
   
@@ -107,7 +134,6 @@ export class Profile extends React.Component {
         </View>
 
 
-       
         {/* Username container */}
         <View style={stylesProfile.achivmentContainer}>
           <View style={{alignItems: "center", flexDirection: "row", justifyContent: "center"}}>
@@ -138,7 +164,7 @@ export class Profile extends React.Component {
             <View style={stylesProfile.achivmentFlexGrid}>
 
                 <View style={stylesProfile.achiveImgContainer}>
-                  <Image style={{width: 50, height: 50}} source={require("../assets/chat.png")}></Image>
+                  <Image style={{width: 50, height: 50}} source={require("../assets/chatNoColor.png")}></Image>
                   <Text style={stylesProfile.textStyle}> First Talk </Text>
                   <Text style={stylesProfile.textStyle}> 10 points </Text>
                 </View>
@@ -172,49 +198,9 @@ export class Profile extends React.Component {
                   <Text style={stylesProfile.textStyle}> I know all </Text>
                   <Text style={stylesProfile.textStyle}> 100 points </Text>
                 </View>
-
-               
                 
-              {/*
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={require("../assets/chatNoColor.png")}></Image>
-                <Text style={stylesProfile.textStyle}> First Talk </Text>
-                <Text style={stylesProfile.textStyle}> 10 points </Text>
-                </View>
- 
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={require("../assets/cha2NoColor.png")}></Image>
-                <Text style={stylesProfile.textStyle}> None Stop </Text>
-                <Text style={stylesProfile.textStyle}> 20 points </Text>
-                </View>
-           
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={require("../assets/brain2.png")}></Image>
-                <Text style={stylesProfile.textStyle}> Learning </Text>
-                <Text style={stylesProfile.textStyle}> 30 points </Text>
-                </View>
 
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={require("../assets/earNoColor.png")}></Image>
-                <Text style={stylesProfile.textStyle}> time to Listen </Text>
-                <Text style={stylesProfile.textStyle}> 40 points  </Text>
-                </View>
-
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={require("../assets/appleNoColor.png")}></Image>
-                <Text style={stylesProfile.textStyle}> Knowledge </Text>
-                <Text style={stylesProfile.textStyle}> 50 points  </Text>
-                </View>
-
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={require("../assets/handNoColor.png")}></Image>
-                <Text style={stylesProfile.textStyle}> I know all </Text>
-                <Text style={stylesProfile.textStyle}> 100 points  </Text>
-                </View>
-              */}
-
-
-                {/*  This is for chaning the status of img with data, dont throw!!!!
+                {/*  This is for chaning the status of img with data, dont throw!!!! 
 
                 <View style={stylesProfile.achiveImgContainer}>
                 <Image style={{width: 50, height: 50}} source={this.state.A1}></Image>

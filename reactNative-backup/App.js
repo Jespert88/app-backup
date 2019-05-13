@@ -62,6 +62,7 @@ import Register from "./screens/Register";
 import Choose from "./screens/Choose.js";
 import Profile from "./screens/Profile.js";
 import Join from "./screens/Join.js";
+import CheckLoggedIn from "./screens/CheckLoggedIn.js";
 
 
 
@@ -69,10 +70,11 @@ import Join from "./screens/Join.js";
 
 // set any object to first in this list to see it on mobile device. 
 const MainNavigator = createStackNavigator({
+  CheckLoggedInScreen: { screen: CheckLoggedIn},
   LoginScreen: { screen: Login},
   RegisterScreen: { screen: Register},
-  ProfileScreen: { screen: Profile},
   HomeScreen: { screen: Home },
+  ProfileScreen: { screen: Profile},
   ChooseScreen: { screen: Choose},
   ThemeScreen: { screen: Theme }, 
   QuestionScreen: { screen: Question },

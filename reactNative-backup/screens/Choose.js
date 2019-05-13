@@ -115,7 +115,7 @@ const stylesChoose = StyleSheet.create({
     textAlign: "center",
     fontSize: 30,
     color: "#fff",
-    textShadowColor: '#9c29b7',
+    textShadowColor: '#570682',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10
   },
