@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
+import { ifStatement } from '@babel/types';
 
 
 
@@ -25,8 +26,8 @@ export class Theme extends React.Component {
             mySeconds: '00', // Same here.
 
             hour_Counter: '00',
-            minutes_Counter: '00', //Change back to '00'
-            seconds_Counter: '00', //Change back to '00'
+            minutes_Counter: '59', //Change back to '00'
+            seconds_Counter: '59', //Change back to '00'
             startDisable: false
           }
         }
@@ -90,20 +91,31 @@ export class Theme extends React.Component {
                 
                // myHours: this.state.hour_Counter,
                 myMinutes: this.state.minutes_Counter,
-                mySeconds: this.state.seconds_Counter
+                mySeconds: this.state.seconds_Counter,
               })
 
+              postPoints = () => {
+                if (this.state.myMinutes > 59) {
+                  alert("Du har fått 1 poäng!");
+                } else {
+                  
+                }
+              }
+              postPoints()
+
+              
+              
               //postTime() Will execute the post function.
             }
 
          
           //Clear timer.
           onButtonClear = () => {
-            this.setState({
-              timer: null,
-              minutes_Counter: '00',
-              seconds_Counter: '00'
-            });
+              this.setState({
+                timer: null,
+                minutes_Counter: '00',
+                seconds_Counter: '00'
+              });
           }
         //End of timer example.
         

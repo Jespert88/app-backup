@@ -97,7 +97,7 @@ export class Login extends React.Component {
         // userStoreData = "" as default.
         } else {
 
-
+          
           storeData = async () => {
             try {
               var AsyncUsername = this.state.userStoreData;
@@ -110,16 +110,6 @@ export class Login extends React.Component {
           storeData()
           this.props.navigation.navigate('HomeScreen');
 
-
-          /*
-          setNewAsyncUser = () => {
-            var AsyncUsername = this.state.userStoreData
-            JSON.parse(val)
-            AsyncStorage.setItem("@AsyncUser" , JSON.stringify(AsyncUsername))
-          }
-        
-          setNewAsyncUser()*/
-          
         }
 
       })

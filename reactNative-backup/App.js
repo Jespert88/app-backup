@@ -68,7 +68,8 @@ import CheckLoggedIn from "./screens/CheckLoggedIn.js";
 
 
 
-// set any object to first in this list to see it on mobile device. 
+/*
+// MainStack, shows the first screen acording to the list below. (Original Code don't delete).
 const MainNavigator = createStackNavigator({
   CheckLoggedInScreen: { screen: CheckLoggedIn},
   LoginScreen: { screen: Login},
@@ -82,5 +83,45 @@ const MainNavigator = createStackNavigator({
 });
 const App = createAppContainer(MainNavigator);
 
-
 export default App;
+*/
+
+
+const MainStack = createStackNavigator({
+  HomeScreen: { screen: Home },
+  ProfileScreen: { screen: Profile},
+  ChooseScreen: { screen: Choose},
+  ThemeScreen: { screen: Theme }, 
+  QuestionScreen: { screen: Question },
+  JoinScreen: { screen: Join},
+  LoginScreen: { screen: Login},
+  RegisterScreen: { screen: Register},
+});
+
+const AuthStack = createStackNavigator({
+  LoginScreen: { screen: Login},
+  RegisterScreen: { screen: Register},
+  HomeScreen: { screen: Home },
+  ProfileScreen: { screen: Profile},
+  ChooseScreen: { screen: Choose},
+  ThemeScreen: { screen: Theme }, 
+  QuestionScreen: { screen: Question },
+  JoinScreen: { screen: Join}
+});
+
+
+var wichStack = createAppContainer("");
+
+if ('@AsyncUser' !== null) {
+
+  wichStack = createAppContainer(MainStack);
+
+} else {
+
+  wichStack = createAppContainer(AuthStack);
+  
+}
+
+export default wichStack
+
+

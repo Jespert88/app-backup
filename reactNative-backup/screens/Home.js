@@ -22,18 +22,33 @@ static navigationOptions = {
 
   getAsyncUserTest = async () => {
     await AsyncStorage.getItem("@AsyncUser").then(val => {
-      this.setState({ user: val }).then(
-        JSON.stringify(val)
-      )
-      return JSON.parse(val)
+      this.setState({ user: val })
+      
     });
   }
   
   componentDidMount() {
-    this.getAsyncUserTest()
+      this.getAsyncUserTest()
   }
 
+  
 
+
+
+  // This is for setting the AsyncStorage key = empty.
+  signOut = async () => {
+    storeData = async () => {
+      try {
+        var AsyncUsername = "";
+        await AsyncStorage.setItem('@AsyncUser', AsyncUsername)
+        JSON.parse(AsyncUsername);
+      } catch (e) {
+        // saving error
+      }
+    }
+    storeData()
+    this.props.navigation.navigate('LoginScreen');
+  }
 
 
 
@@ -52,7 +67,7 @@ static navigationOptions = {
 
           {/* Back arrow Container */}
           <View style={stylesHome.backBtnContainer}>
-              <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
+              <TouchableOpacity  onPress={this.signOut}>
               <Image source={require('../assets/back.png')} 
                 style={{
                   margin: 5,
@@ -72,13 +87,21 @@ static navigationOptions = {
                     margin: 10,
                     padding: 10,
                     height: 40,
-                    width: 40,
+                    width: "auto",
+                    justifyContent: "center",
                     alignItems: "center",
-                    resizeMode: 'stretch',
+                    resizeMode: 'contain',
                   }}></Image>
 
                 {/* Here we show the value from the state varible: user. */}
-                <Text style={stylesHome.profileText}>{this.state.user}</Text>
+                <Text style={stylesHome.profileText}>
+
+                {/* Problem: if showing this value, it shows the username that was logged in before until i restart the app?? */}
+                {/*{this.state.user}*/}
+                
+                  Min profil
+
+                </Text>
 
               </TouchableOpacity>
             </View>
@@ -137,7 +160,7 @@ const stylesHome = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
-    marginLeft: "65%"
+    marginLeft: "60%"
   },
   profileText: {
     fontSize: 18,

@@ -23,54 +23,75 @@ export class CheckLoggedIn extends React.Component {
   }
 
 
-  checkIfLogged = () => {
+  /*
 
-    // Get the AsyncStorage Key,  "@AsyncUser" = (Key).
-    
-    getAsyncUserTest = async () => {
+    This is from community react native.
+
+      STORE DATA
+    --------------
+      storeData = async () => {
         try {
-            await AsyncStorage.getItem("@AsyncUser").then(val => {
-            this.setState({ checkUser: val })
-            });
-        }
-        catch {
- 
-        }
-    }
-    getAsyncUserTest()
-
-
-
-
-    // Set new AsyncStorage Key value.
-    storeData = async () => {
-        try {
-          var AsyncUsername = this.state.checkUser;
-          await AsyncStorage.setItem('@AsyncUser', AsyncUsername)
-          JSON.parse(AsyncUsername);
+          await AsyncStorage.setItem('@storage_Key', 'stored value')
         } catch (e) {
           // saving error
         }
       }
-      storeData()
-    
 
-
-    //If else statement to check if the this.state.checkUser is empty or not.
-      var userValue = this.state.checkUser;
-     
-      if (userValue !== "") {
-        this.props.navigation.navigate("homeScreen");
-      } else {
-        this.props.navigation.navigate("LoginScreen");
+       Read Data
+    --------------
+    getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@storage_Key')
+        if (value !== null) {
+          // value previously stored
+        }
+      } catch (e) {
+        // error reading value
       }
+    }
+
+    */
+
+
+
+
+  checkIfLogged = () => {
+
+
+    getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@AsyncUser')
+        if (value !== null) {
+          this.setState({ checkUser: val })
+        }
+      } catch (e) {
+        // error reading value
+      }
+    }
+    getData()
+
+
+  
+    //If else statement to check if the this.state.checkUser is empty or not.
+    var letCheck = this.state.checkUser;
+
+    if (letCheck == "") {
+      this.props.navigation.navigate("LoginScreen");
+    } else {
+      this.props.navigation.navigate("homeScreen");
+    } 
     
   }
 
   componentDidMount() {
-      this.checkIfLogged()
+    this.checkIfLogged()
   }
 
+    /*
+  componentDidMount() {
+      this.checkIfLogged()
+  }
+  */
 
 
 
@@ -78,8 +99,14 @@ export class CheckLoggedIn extends React.Component {
   render() {
 
     return (
+
+
     
       <View style={stylesCheckLoggedIn.LoadingContainer}>
+          <Text style={{textAlign: "center"}}>  {this.state.checkUser} </Text>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate("HomeScreen")}>
+            <Text> Hem </Text>
+          </TouchableOpacity>
           <ActivityIndicator size="large" color="#9043bc" />
       </View>
       
