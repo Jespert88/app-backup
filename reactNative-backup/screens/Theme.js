@@ -21,12 +21,12 @@ export class Theme extends React.Component {
           this.state = {
             data: "",
             timer: null,
-           // myHours: '00',
+           // myHours: 0,
             myMinutes: '00', //These varibles are for saving in the database.
             mySeconds: '00', // Same here.
 
-            hour_Counter: '00',
-            minutes_Counter: '59', //Change back to '00'
+           // hour_Counter: '00',
+            minutes_Counter: '119', //Change back to '00'
             seconds_Counter: '59', //Change back to '00'
             startDisable: false
           }
@@ -70,10 +70,24 @@ export class Theme extends React.Component {
                 count = (Number(this.state.minutes_Counter) + 1).toString();
                 num = '00';
               }
-         
+
+              /*
+              if (Number(this.state.minutes_Counter) == 59) {
+                hour = (Number(this.state.hour_Counter) + 1).toString();
+                console.log(hour); */
+          
+               /* this.setState({
+
+                  myHours: myHours + 1
+              
+                }); 
+              }
+              */
+
+
               this.setState({
                // hour_Counter: How to count hours?,
-
+               
                 minutes_Counter: count.length == 1 ? '0' + count : count,
                 seconds_Counter: num.length == 1 ? '0' + num : num,
               });
@@ -89,28 +103,27 @@ export class Theme extends React.Component {
               this.setState({
                 startDisable : false,
                 
-               // myHours: this.state.hour_Counter,
                 myMinutes: this.state.minutes_Counter,
                 mySeconds: this.state.seconds_Counter,
               })
-
-              postPoints = () => {
-                if (this.state.myMinutes > 59) {
-                  alert("Du har fått 1 poäng!");
-                } else {
-                  
-                }
-              }
-              postPoints()
-
+                console.log(this.state.myHours);
               
-              
-              //postTime() Will execute the post function.
             }
 
          
           //Clear timer.
           onButtonClear = () => {
+
+            postPoints = () => {
+              if (this.state.myMinutes > 59) {
+                alert("Du har fått 1 poäng!");
+              } else {
+                
+              }
+            }
+            postPoints()
+            //postTime() Will execute the post function.
+
               this.setState({
                 timer: null,
                 minutes_Counter: '00',
@@ -214,7 +227,7 @@ export class Theme extends React.Component {
               activeOpacity={0.6}
               style={[stylesTheme.timerButtons, { backgroundColor:  '#FFFFFF'}]} >
 
-              <Text style={stylesTheme.buttonText}>STOP</Text>
+              <Text style={stylesTheme.buttonText}>PAUS</Text>
               </TouchableOpacity>
 
         
@@ -224,7 +237,7 @@ export class Theme extends React.Component {
               style={stylesTheme.timerButtons} 
               disabled={this.state.startDisable} >
 
-              <Text style={stylesTheme.buttonText}> RENSA </Text>
+              <Text style={stylesTheme.buttonText}> NOLLSTÄLL </Text>
               </TouchableOpacity>
              
             </View>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
-//import QRCode from 'react-native-qrcode';
+import QRCode from 'react-native-qrcode';
 
 
 export class Choose extends React.Component {
@@ -10,27 +10,38 @@ export class Choose extends React.Component {
     header: null
   };
 
-/*
-      state = {
-        data: ""
+  constructor(props){
+    super(props);
+
+    this.state = {
+      text: "hej"
     }
 
-    componentWillMount = () => {
-        fetch("https://samtal-server.herokuapp.com/users", {
-          method: "GET"
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          
-          data = responseJson[1].qrcode;
-          console.log(data)
+  }
 
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    componetDidMount = () => {
+
+      /* 
+      // Here we gonna fetch the right user.
+      fetch("https://samtal-server.herokuapp.com/users", {
+        method: "GET"
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        
+        data = responseJson[1].qrcode;
+        console.log(data)
+
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      */
+
     }
-*/
+
+   
+
 
 
 
@@ -55,19 +66,16 @@ export class Choose extends React.Component {
             </TouchableOpacity>
           </View>
 
-          {/* Installera innan användning ( npm install react-native-qrcode --save ).
 
+
+          {/* Installera innan användning ( npm install react-native-qrcode --save ). */}
           <View style={stylesChoose.qrcode}>
-            <QRCode size={200} value={this.state.text}></QRCode>
+            <QRCode size={135} value={this.state.text}></QRCode>
           </View>
           <View style={stylesChoose.titleContainer}>
             <Text style={stylesChoose.titleStyle}> Låt deltagare skanna </Text>
           </View>
-          */}
-
-          <View style={stylesChoose.titleContainer}>
-            <Text style={stylesChoose.titleStyle}> Skanna QR-kod för att Skapa grupp och samla poäng.</Text>
-          </View>
+        
           
 
           <View style={stylesChoose.buttonContainer}>
@@ -102,7 +110,12 @@ const stylesChoose = StyleSheet.create({
 
   qrcode: {
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    overflow: "hidden",
+    padding: 10,
+    marginLeft: 80,
+    marginRight: 80,
+    borderRadius: 20
   },
 
 
@@ -113,7 +126,7 @@ const stylesChoose = StyleSheet.create({
 
   titleStyle: {
     textAlign: "center",
-    fontSize: 30,
+    fontSize: 25,
     color: "#fff",
     textShadowColor: '#570682',
     textShadowOffset: {width: -1, height: 1},
@@ -130,7 +143,7 @@ const stylesChoose = StyleSheet.create({
 
   buttonContainer: {
     //backgroundColor:"#303",
-    marginTop: "30%"
+    marginTop: "10%"
   },
 
   buttonStyle: {

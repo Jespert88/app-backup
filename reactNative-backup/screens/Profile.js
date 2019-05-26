@@ -17,95 +17,108 @@ export class Profile extends React.Component {
     super(props);
 
     this.state = {
-      data: "",
-      myUsername: "Hämtar namn",
-      myHours: 0,
-      myMinutes: 0,
-      mySeconds: 0,
-      myPoints: 0,
-      imageURI: require("../assets/baby.png"),
+      myId: null,
+      myUsername: "Jeppe",
+      myHours: null,
+      myMinutes: null,
+      mySeconds: null,
+      myPoints: null,
+      myQrCode: null,
+
+      imageURI: require('../assets/baby.png'),
       avatarText: "Jag lär mig",
-      // bild 1 = "../assets/baby.png"
-      // bild 2 = "../assets/student.png"
-      // bild 3 = "../assets/buddha.png"
-
-      // bild 1 text = "Jag lär mig"
-      // bild 2 text = "Jag vill veta mer!.."
-      // bild 3 text = "Fråga mig varsom helst"
-
-      //Achievements
-      A1: require("../assets/chatNoColor.png")
-      /*
-      A1: require("../assets/chatNoColor.png"),
-      A2: require("../assets/cha2NoColor.png"),
-      A3: require("../assets/brain2.png"),
-      A4: require("../assets/earNoColor.png"),
-      A5: require("../assets/appleNoColor.png"),
-      A6: require("../assets/handNoColor.png")
-      */
-
     }
   }
 
 
-  TestGetUser = () => {
-    fetch('http://samtal-server.herokuapp.com/users', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      
-      /*
-      body: JSON.stringify({
-        username: this.state.userStoreData,
-        password: this.state.passwordStoreData 
-       })*/
-    }).then((response) => response.json())
-    .then((responseJson) => {
-        
-      myPoints = responseJson[0].points;
-    });
-  }
-    
 
 
 
-    getAsyncUserTest = async () => {
+  getProfileData = async () => {
+    try {
 
-     // Varbiles that need to change to this! don't trow.
-     // this.state.A1 = require("../assets/chat.png"),
-      //this.state.myHours = 5,
-      //this.state.myMinutes = 60,
-      //this.state.mySeconds = 1200,
-      //this.state.myPoints = 10
-     // this.state.imageURI = require("../assets/buddha.png"),
-     // this.state.avatarText = "Jag vet allt"
-      //this.state.A1 = require("../assets/chat.png")
-    
-
-      // Use await AsyncStorage.getAllKeys() to extract all value.
-      // Example of keys to use?  "@AsyncMinutes", "@AsyncSeconds", "@AsyncIMG",
-      try {
-          await AsyncStorage.getItem("@AsyncUser").then(val => {
-            this.setState({ 
-              myUsername: val
-            })
-            //return JSON.stringify(val)
-        });
-      }
-      catch {
-      }
-    }
-
-
-   
-
-
-    componentDidMount() {
-      this.getAsyncUserTest()
-     // this.TestGetUser()
+      // Get the AsyncStorage keys.
+      const idFromAsync = await AsyncStorage.getItem('@asyncId');
+      const nameFromAsync = await AsyncStorage.getItem('@asyncName');
   
+      /*
+        If keys are not null, then make new var and parse key from string back to object.
+        This is done becurse otherwise the this.state.key will show this in App: username example: "Jeppe".
+        And you don't wanna show " <-- this so therefor you must convert back to Json Object 
+        with JSON.parse(key); 
+      */
+      if (idFromAsync !== null) {
+
+        // New var with parsed back data from string.
+        var userJson = JSON.parse(nameFromAsync);
+
+        // Set new state to main exsistning keys.
+        this.setState({
+          myId: idFromAsync,
+          myUsername: userJson
+        })
+       
+      } else {
+        console.log("There is no id..");
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+
+
+/* 
+From React Native website.
+
+fetch('https://mywebsite.com/endpoint/', {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    firstParam: 'yourValue',
+    secondParam: 'yourOtherValue',
+  }),
+});
+
+*/
+
+
+
+  getUser = () => {
+      fetch('http://samtal-server.herokuapp.com/get-user-info-by-id', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          _id: this.state.myId,
+        }),
+      }).then((response) => response.json())
+      .then((responseJson, error) => {
+        
+         // If responseJson is false, start an a Alert.
+         if (!responseJson) {
+            console.log(responseJson);
+         } else {
+          console.log(error);
+         }
+      });
+  }
+
+
+
+
+
+
+  
+    componentDidMount() {
+      this.getProfileData();
+      this.getUser();
     }
     
   
@@ -117,25 +130,29 @@ export class Profile extends React.Component {
       <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <ScrollView style={stylesProfile.mainContainer}>
         
-        {/* SignOut Container */}
-        <View style={stylesProfile.signOutContainer}>
-                <View style={stylesProfile.backBtnContainer}>
-                    <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
-                    <Image source={require('../assets/back.png')} 
-                    style={{
-                        margin: 5,
-                        padding: 10,
-                        height: 20,
-                        width: 20,
-                        resizeMode: 'stretch',
-                    }}></Image>
-                    </TouchableOpacity>
-            </View>
-        </View>
-
 
         {/* Username container */}
         <View style={stylesProfile.achivmentContainer}>
+
+            {/* SignOut Container */}
+            <View style={stylesProfile.signOutContainer}>
+                    <View style={stylesProfile.backBtnContainer}>
+                        <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
+                        <Image source={require('../assets/back.png')} 
+                        style={{
+                            margin: 5,
+                            padding: 10,
+                            height: 20,
+                            width: 20,
+                            resizeMode: 'stretch',
+                        }}></Image>
+                        </TouchableOpacity>
+                </View>
+            </View>
+
+
+
+
           <View style={{alignItems: "center", flexDirection: "row", justifyContent: "center"}}>
               <Text style={stylesProfile.titleStyle}> {this.state.myUsername} </Text>
               <Image source={require('../assets/brain.png')} style={{width: 30, height: 30}}></Image>

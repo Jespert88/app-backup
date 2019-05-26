@@ -13,8 +13,8 @@ export class Login extends React.Component {
 
     this.state = {
       modalVisible: false,
-      userStoreData: "",
-      passwordStoreData: "",
+      givenUsername: null,
+      givenPassword: null
     }
 
   }
@@ -26,6 +26,8 @@ export class Login extends React.Component {
     this.setState({modalVisible: visible});
   }
 
+
+  
 
     /*
 
@@ -60,7 +62,7 @@ export class Login extends React.Component {
 
 //Post a user object to the /login route that handels the req. If the request is false, then a alert comes up
 //else go to home screen.
- checkUser = (userStoreData) => {
+ checkUser = () => {
     fetch('http://samtal-server.herokuapp.com/login', {
       method: 'POST',
       headers: {
@@ -68,8 +70,8 @@ export class Login extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username: this.state.userStoreData,
-        password: this.state.passwordStoreData
+        username: this.state.givenUsername,
+        password: this.state.givenPassword
       })
     })
       .then((response) => response.json())
@@ -77,7 +79,7 @@ export class Login extends React.Component {
         
       
         // If responseJson is false, start an a Alert.
-        if (responseJson == false) {
+        if (!responseJson) {
 
            // Works on both iOS and Android
            alert(
@@ -97,18 +99,26 @@ export class Login extends React.Component {
         // userStoreData = "" as default.
         } else {
 
-          
+
+          var idString = JSON.stringify(responseJson._id);
+          var userName = JSON.stringify(responseJson.username);
+          var qrCode = JSON.stringify(responseJson.qr_code);
+
+
           storeData = async () => {
             try {
-              var AsyncUsername = this.state.userStoreData;
-              await AsyncStorage.setItem('@AsyncUser', AsyncUsername)
-              JSON.parse(AsyncUsername);
-            } catch (e) {
-              // saving error
+              await AsyncStorage.setItem('@asyncId', idString);
+              await AsyncStorage.setItem('@asyncName', userName);
+              await AsyncStorage.setItem('@asyncQr', qrCode);
+              await AsyncStorage.setItem('@loggedIn', "true");
+            } 
+            catch (e) {
+              console.log(e);
             }
           }
-          storeData()
+          storeData();
           this.props.navigation.navigate('HomeScreen');
+
 
         }
 
@@ -140,7 +150,7 @@ export class Login extends React.Component {
                 style={stylesLogin.textInputStyle}
                 placeholderTextColor ="#000"
                 placeholder="Användarnamn"
-                onChangeText={(user) => this.setState({userStoreData: user})}
+                onChangeText={(user) => this.setState({givenUsername: user})}
                 />
             
                 <TextInput
@@ -148,7 +158,7 @@ export class Login extends React.Component {
                 placeholderTextColor ="#000"
                 secureTextEntry={true}
                 placeholder="lösenord"
-                onChangeText={(password) => this.setState({passwordStoreData: password})}
+                onChangeText={(password) => this.setState({givenPassword: password})}
                 />
 
                 <TouchableOpacity style={stylesLogin.buttonStyle} onPress={this.checkUser}>
@@ -178,15 +188,14 @@ export class Login extends React.Component {
               <Text style={{textAlign: "center", fontSize: 30}}> Välkommen till Samtalsgeneratorn {"\n"}</Text>
               <ScrollView style={stylesLogin.scrollViewContainer}>
                 <Text style={stylesLogin.textStyle}>
-                I motsättning till vad många tror, är inte Lorem Ipsum slumpvisa ord.
-                Det har sina rötter i ett stycke klassiskt litteratur på latin från 45 år före år 0, 
-                och är alltså över 2000 år gammalt. Richard McClintock, en professor i latin på Hampden-Sydney{"\n"}{"\n"}   
-                College i Virginia, översatte ett av de mer ovanliga orden, consectetur, från ett stycke Lorem 
-                Ipsum och fann dess ursprung genom att studera användningen av dessa ord i klassisk litteratur.
-                Lorem Ipsum kommer från styckena 1.10.32 och 1.10.33 av "de Finibus Bonorum et Malorum" 
-                (Ytterligheterna av ont och gott) av Cicero, skriven 45 före år 0. Boken är en avhandling i 
-                teorier om etik, och var väldigt populär under renäsanssen. Den inledande meningen i Lorem Ipsum, 
-                "Lorem Ipsum dolor sit amet...", kommer från stycke 1.10.32.{"\n"}{"\n"}
+                  Genom smarttelefonens genombrott och framfart har mobiltelefonen på bara några år kommit att bli en av de mest centrala delarna i många individers liv. 
+                  Den används bland annat för att hålla kontakt med familj, vänner och kollegor, för att kommunicera och vara aktiv i olika sociala flöden.{"\n"} {"\n"} 
+                  Många människor är sociala varelser som pratar och kommunicerar med andra individer hela tiden. Men det finns något som håller på att glömmas bort, något som kan tyckas självklart att kunna föra ett muntligt samtal med en annan individ utan att en mobiltelefon på något sätt finns med i bilden.
+                  Sherry Turkle och Professor Jean M. Twenge har under många år bedrivit forskning på barn och unga vuxna som är flitiga användare av sina smarttelefoner. {"\n"} {"\n"} 
+                  Många av dessa unga personer har aldrig haft något annat val än att ha en smarttelefon och hela deras sociala liv existerar genom den. Ett växande fenomen är att många av dessa unga personer kommunicerar med varandra genom text i sina smarttelefoner, även om de sitter bredvid varandra i samma rum. {"\n"} {"\n"} 
+                  Barn leker inte tillsammans som de gjorde förr och deras emotionella utveckling verkar gå allt mer långsamt. 
+                  Syftet med följande undersökning har varit att skapa en motvikt till denna utveckling och genom ett medietekniskt perspektiv presentera en mobilapplikation som uppmuntrar och inspirerar till muntlig dialog mellan individer. 
+
 
 
                 
