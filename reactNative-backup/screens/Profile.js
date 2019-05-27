@@ -18,15 +18,32 @@ export class Profile extends React.Component {
 
     this.state = {
       myId: null,
-      myUsername: "Jeppe",
+      myUsername: null,
       myHours: null,
       myMinutes: null,
       mySeconds: null,
       myPoints: null,
-      myQrCode: null,
 
+
+      //Avatas with colors.
       imageURI: require('../assets/baby.png'),
-      avatarText: "Jag lär mig",
+      avatarText: "Karaktär 1",
+
+      imageURI2: require('../assets/student.png'),
+      avatarText2: "Karaktär 2",
+
+      imageURI3: require('../assets/buddha.png'),
+      avatarText3: "Karaktär 3",
+
+      //Avatars without colors.
+      imageURIBlack: require('../assets/baby-black.png'),
+     
+      imageURI2Black: require('../assets/student-black.png'),
+
+      imageURI3Black: require('../assets/buddha-black.png'),
+
+
+
     }
   }
 
@@ -40,6 +57,7 @@ export class Profile extends React.Component {
       // Get the AsyncStorage keys.
       const idFromAsync = await AsyncStorage.getItem('@asyncId');
       const nameFromAsync = await AsyncStorage.getItem('@asyncName');
+      
   
       /*
         If keys are not null, then make new var and parse key from string back to object.
@@ -68,51 +86,64 @@ export class Profile extends React.Component {
   }
 
 
+/*
+app.post("/get-user-info-by-id", function () {
 
-/* 
-From React Native website.
-
-fetch('https://mywebsite.com/endpoint/', {
-  method: 'POST',
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    firstParam: 'yourValue',
-    secondParam: 'yourOtherValue',
-  }),
+  User.find({_id: ObjectId(req.body.id)}, function(err, data) {
+      if (data[0] != null) {
+        res.send(data)
+      } else {
+        res.send(err)
+      }
+    });    
+  
 });
-
 */
 
 
+getUser = () => {
+  
+  // Post ID to get current document keys with value.
+  fetch('http://samtal-server.herokuapp.com/get-user-data', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.myUsername
+      }),
+    }).then((response) => response.json())
+    .then((responseJson, error) => {
 
-  getUser = () => {
-      fetch('http://samtal-server.herokuapp.com/get-user-info-by-id', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          _id: this.state.myId,
-        }),
-      }).then((response) => response.json())
-      .then((responseJson, error) => {
-        
-         // If responseJson is false, start an a Alert.
-         if (!responseJson) {
-            console.log(responseJson);
-         } else {
-          console.log(error);
-         }
-      });
-  }
+      console.log(responseJson);
+
+        /*
+      if (!responseJson) {
+
+        var jsonHours = JSON.stringify(responseJson.hours);
+        var jsonMinutes = JSON.stringify(responseJson.minutes);
+        var jsonSeconds = JSON.stringify(responseJson.seconds);
+        var jsonPoints = JSON.stringify(responseJson.points);
+
+        this.setState({
+          myHours: jsonHours,
+          myMinutes: jsonMinutes,
+          mySeconds: jsonSeconds,
+          myPoints: jsonPoints,
+        })
+
+
+        console.log(responseJson);
+      } else {
+        console.log(error);
+      } */
 
 
 
+    });
 
+}
 
 
   
@@ -169,10 +200,29 @@ fetch('https://mywebsite.com/endpoint/', {
           </View><Text>{"\n"}</Text>
 
             {/* Avatar container */}
+            <Text style={stylesProfile.characterTitle}> Samtalskaraktär </Text>
             <View style={stylesProfile.characterContainer}>
-              <Text style={stylesProfile.characterTitle}> Samtalskaraktär </Text>
-              <Image style={{width: 100, height: 100}} source={this.state.imageURI}></Image>
-              <Text style={stylesProfile.textStyle}> {this.state.avatarText} </Text>
+              
+              {/* 1 avatar container */}
+              <View style={stylesProfile.characterContainer1}>
+                <Image style={{width: 80, height: 80}} source={this.state.imageURI}></Image>
+                <Text style={stylesProfile.textStyle}> {this.state.avatarText} </Text>
+              </View>
+
+              {/* 2 avatar container */}
+              <View style={stylesProfile.characterContainer2}>
+                <Image style={{width: 80, height: 80}} source={this.state.imageURI2Black}></Image>
+                <Text style={stylesProfile.textStyle}> {this.state.avatarText2} </Text>
+              </View>
+
+              {/* 3 avatar container */}
+              <View style={stylesProfile.characterContainer3}>
+                <Image style={{width: 80, height: 80}} source={this.state.imageURI3Black}></Image>
+                <Text style={stylesProfile.textStyle}> {this.state.avatarText3} </Text>
+              </View>
+
+            
+
             </View><Text>{"\n"}</Text>
 
 
@@ -309,15 +359,45 @@ const stylesProfile = StyleSheet.create({
   },
 
   characterContainer: {
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    //backgroundColor: "green",
   },
   characterTitle: {
+    textAlign: "center",
     fontSize: 20,
     color: "#fff",
     textShadowColor: '#9c29b7',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10
   },
+
+  characterContainer1: {
+    alignItems: "center",
+    padding: 10
+    //backgroundColor: "red"
+  },
+  characterContainer2: {
+    alignItems: "center",
+    padding: 10
+   // backgroundColor: "blue"
+  },
+  characterContainer3: {
+    alignItems: "center",
+    padding: 10
+    //backgroundColor: "yellow"
+  },
+
+
+
+
+
+
+
+
+
 
 
   achivmentContainer: {
