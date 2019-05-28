@@ -26,15 +26,18 @@ static navigationOptions = {
    
     getData = async () => {
         try {
-          const value = await AsyncStorage.getItem('@loggedIn')
-            console.log("result " + value);
+          const value = await AsyncStorage.getItem('@loggedIn');
 
           if(value !== null) {
+
+            console.log(value);
         
             this.props.navigation.navigate('HomeScreen');
   
           } else {
-  
+
+            console.log("hejsan" + value);
+   
             this.props.navigation.navigate('LoginScreen');
   
           }

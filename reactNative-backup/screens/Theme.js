@@ -19,18 +19,58 @@ export class Theme extends React.Component {
           super(props);
       
           this.state = {
-            data: "",
+            myId: null,
+            myUsername: null,
+
             timer: null,
            // myHours: 0,
             myMinutes: '00', //These varibles are for saving in the database.
             mySeconds: '00', // Same here.
 
            // hour_Counter: '00',
-            minutes_Counter: '119', //Change back to '00'
-            seconds_Counter: '59', //Change back to '00'
+            minutes_Counter: '00', //Change back to '00'
+            seconds_Counter: '00', //Change back to '00'
             startDisable: false
           }
         }
+
+
+
+
+        getProfileData = async () => {
+          try {
+      
+            // Get the AsyncStorage keys.
+            const idFromAsync = await AsyncStorage.getItem('@asyncId');
+            const nameFromAsync = await AsyncStorage.getItem('@asyncName');
+            
+        
+            /*
+              If keys are not null, then make new var and parse key from string back to object.
+              This is done becurse otherwise the this.state.key will show this in App: username example: "Jeppe".
+              And you don't wanna show " <-- this so therefor you must convert back to Json Object 
+              with JSON.parse(key); 
+            */
+            if (idFromAsync !== null) {
+      
+              // New var with parsed back data from string.
+              var userJson = JSON.parse(nameFromAsync);
+      
+              // Set new state to main exsistning keys.
+              this.setState({
+                myId: idFromAsync,
+                myUsername: userJson
+              })
+             
+            } else {
+              console.log("There is no id..");
+            }
+      
+          } catch (e) {
+            console.log(e);
+          }
+        }
+
 
 
 
@@ -52,11 +92,56 @@ export class Theme extends React.Component {
          }
 
 
-       
 
-          componentWillUnmount() {
-            clearInterval(this.state.timer);
-          }
+         PostData = () => {
+  
+          // Post ID to get current document keys with value.
+          fetch('http://samtal-server.herokuapp.com/post-data-to-user', {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                _id: this.state.myId,
+                //hours: this.state.myHours
+                minutes: this.state.myMinutes,
+                seconds: this.state.mySeconds,
+                points: this.state.points
+              }),
+            }).then((response) => response.json())
+            .then((responseJson, error) => {
+        
+              console.log(responseJson);
+      
+              if (!responseJson) {
+        
+                var jsonHours = JSON.stringify(responseJson.hours);
+                var jsonMinutes = JSON.stringify(responseJson.minutes);
+                var jsonSeconds = JSON.stringify(responseJson.seconds);
+                var jsonPoints = JSON.stringify(responseJson.points);
+        
+                this.setState({
+                  myHours: jsonHours,
+                  myMinutes: jsonMinutes,
+                  mySeconds: jsonSeconds,
+                  myPoints: jsonPoints,
+                })
+        
+        
+                console.log(responseJson);
+              } else {
+                console.log(error);
+              } 
+        
+            
+        
+            });
+        
+        }
+        
+        
+
        
           //Start timer.
           onButtonStart = () => {
@@ -114,6 +199,8 @@ export class Theme extends React.Component {
           //Clear timer.
           onButtonClear = () => {
 
+            
+
             postPoints = () => {
               if (this.state.myMinutes > 59) {
                 alert("Du har fått 1 poäng!");
@@ -133,38 +220,22 @@ export class Theme extends React.Component {
         //End of timer example.
         
       
+            /* 
+            This method is only called one time, which is before the initial render. 
+            Since this method is called before render() our Component will not have access to the Native UI (DOM, etc.).
+            */
+            componentWillUnmount() {
+              clearInterval(this.state.timer);
+            }
 
-        // Sends a POST request to server with new time varibles.
-        /* 
-        postTime = () => {
-          fetch('http://samtal-server.herokuapp.com/login', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            // This function is called when all the elements of the page is rendered correctly.
+            componentDidMount() {
+              this.getTheme()
+            }
 
-            // Should i send strings or Ints to server? Must specify in the server and mongoDB User colletion. (Create first!)
-            body: JSON.stringify({
-              minutes: this.state.minutes_Counter,
-              seconds: this.state.seconds_Counter
-            })
-          })
-            .then((response) => response.json())
-            .then((responseJson) => {
-              
-              
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-        };
-        */
 
-           // This function is called when all the elements of the page is rendered correctly.
-           componentDidMount(){
-            this.getTheme()
-          }
+
+
 
 
 
@@ -217,7 +288,6 @@ export class Theme extends React.Component {
               activeOpacity={0.6}
               style={[stylesTheme.timerButtons, { backgroundColor: this.state.startDisable ? '#FFFFFF' : '#FFFFFF' }]} 
               disabled={this.state.startDisable} >
-
               <Text style={stylesTheme.buttonText}>START</Text>
               </TouchableOpacity>
 
@@ -226,19 +296,29 @@ export class Theme extends React.Component {
               onPress={this.onButtonStop}
               activeOpacity={0.6}
               style={[stylesTheme.timerButtons, { backgroundColor:  '#FFFFFF'}]} >
-
               <Text style={stylesTheme.buttonText}>PAUS</Text>
               </TouchableOpacity>
 
-        
+  
               <TouchableOpacity
               onPress={this.onButtonClear}
               activeOpacity={0.6}
               style={stylesTheme.timerButtons} 
               disabled={this.state.startDisable} >
-
               <Text style={stylesTheme.buttonText}> NOLLSTÄLL </Text>
               </TouchableOpacity>
+            
+
+              {/*
+              <TouchableOpacity
+              onPress={this.PostData}
+              activeOpacity={0.6}
+              style={[stylesTheme.timerButtons, { backgroundColor: this.state.startDisable ? '#FFFFFF' : '#FFFFFF' }]} 
+              disabled={this.state.startDisable} >
+
+              <Text style={stylesTheme.buttonText}>  Post data </Text>
+              </TouchableOpacity>
+              */}
              
             </View>
             {/* End */}

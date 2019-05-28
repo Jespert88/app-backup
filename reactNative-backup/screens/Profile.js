@@ -17,12 +17,41 @@ export class Profile extends React.Component {
     super(props);
 
     this.state = {
+
+      jsonData: null,
       myId: null,
       myUsername: null,
       myHours: null,
       myMinutes: null,
       mySeconds: null,
       myPoints: null,
+
+
+      //Question Mark.
+      questionMark: require('../assets/question.png'),
+      emptyText: "",
+
+
+      //Prestation 1
+      achiveIMG1: require('../assets/chat.png'),
+      achiveText1: "Första samtalet",
+
+     
+
+
+      //Prestation 2
+
+      //Prestation 3
+
+      //Prestation 4
+
+      //Prestation 5
+
+      //Prestation 6
+
+
+
+
 
 
       //Avatas with colors.
@@ -42,118 +71,81 @@ export class Profile extends React.Component {
 
       imageURI3Black: require('../assets/buddha-black.png'),
 
-
-
     }
   }
 
 
 
 
+getProfileData = async () => {
+  try {
 
-  getProfileData = async () => {
-    try {
+    // Get the AsyncStorage keys.
+    const idFromAsync = await AsyncStorage.getItem('@asyncId');
+    const nameFromAsync = await AsyncStorage.getItem('@asyncName');
 
-      // Get the AsyncStorage keys.
-      const idFromAsync = await AsyncStorage.getItem('@asyncId');
-      const nameFromAsync = await AsyncStorage.getItem('@asyncName');
-      
-  
-      /*
-        If keys are not null, then make new var and parse key from string back to object.
-        This is done becurse otherwise the this.state.key will show this in App: username example: "Jeppe".
-        And you don't wanna show " <-- this so therefor you must convert back to Json Object 
-        with JSON.parse(key); 
-      */
-      if (idFromAsync !== null) {
 
-        // New var with parsed back data from string.
-        var userJson = JSON.parse(nameFromAsync);
+    /*
+      If keys are not null, then make new var and parse key from string back to object.
+      This is done becurse otherwise the this.state.key will show this in App: username example: "Jeppe".
+      And you don't wanna show " <-- this so therefor you must convert back to Json Object 
+      with JSON.parse(key); 
+    */
 
-        // Set new state to main exsistning keys.
-        this.setState({
-          myId: idFromAsync,
-          myUsername: userJson
+
+    if (idFromAsync !== null) {
+
+      fetch('https://samtal-server.herokuapp.com/get-user-data', {
+          method: 'POST',
+          //mode: "cors",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+
+          },
+          body: JSON.stringify({
+            username: nameFromAsync
+          })
         })
-       
-      } else {
-        console.log("There is no id..");
-      }
+        .then(response => response.json())
+        .then(jsonData => {
+          
+          this.setState({
+            myUsername: jsonData.username,
+            myHours: jsonData.hours,
+            myMinutes: jsonData.minutes,
+            mySeconds: jsonData.seconds,
+            myPoints: jsonData.points
+          });
 
-    } catch (e) {
-      console.log(e);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+    } else {
+      console.log("There is no id..");
     }
+
+  } catch (e) {
+    console.log(e);
   }
-
-
-/*
-app.post("/get-user-info-by-id", function () {
-
-  User.find({_id: ObjectId(req.body.id)}, function(err, data) {
-      if (data[0] != null) {
-        res.send(data)
-      } else {
-        res.send(err)
-      }
-    });    
-  
-});
-*/
-
-
-getUser = () => {
-  
-  // Post ID to get current document keys with value.
-  fetch('http://samtal-server.herokuapp.com/get-user-data', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: this.state.myUsername
-      }),
-    }).then((response) => response.json())
-    .then((responseJson, error) => {
-
-      console.log(responseJson);
-
-        /*
-      if (!responseJson) {
-
-        var jsonHours = JSON.stringify(responseJson.hours);
-        var jsonMinutes = JSON.stringify(responseJson.minutes);
-        var jsonSeconds = JSON.stringify(responseJson.seconds);
-        var jsonPoints = JSON.stringify(responseJson.points);
-
-        this.setState({
-          myHours: jsonHours,
-          myMinutes: jsonMinutes,
-          mySeconds: jsonSeconds,
-          myPoints: jsonPoints,
-        })
-
-
-        console.log(responseJson);
-      } else {
-        console.log(error);
-      } */
-
-
-
-    });
-
 }
 
 
+
+
   
+
     componentDidMount() {
       this.getProfileData();
-      this.getUser();
     }
     
   
   
+
+
+
   render() {
 
     return (
@@ -227,14 +219,17 @@ getUser = () => {
 
 
             {/* Achievements container */}
-            <Text style={stylesProfile.titleStyle}> Achievements </Text>
+            <Text style={stylesProfile.titleStyle}> Prestationer </Text>
             <View style={stylesProfile.achivmentFlexGrid}>
 
+
+              {/* Prestationer 1 */}   
                 <View style={stylesProfile.achiveImgContainer}>
-                  <Image style={{width: 50, height: 50}} source={require("../assets/chatNoColor.png")}></Image>
-                  <Text style={stylesProfile.textStyle}> First Talk </Text>
-                  <Text style={stylesProfile.textStyle}> 10 points </Text>
+                  <Image style={{width: 50, height: 50}} source={this.state.questionMark}></Image>
+                  <Text style={stylesProfile.textStyle}> {this.state.emptyText} </Text>
                 </View>
+
+
 
                 <View style={stylesProfile.achiveImgContainer}>
                   <Image style={{width: 50, height: 50}} source={require("../assets/chat2NoColor.png")}></Image>

@@ -14,30 +14,26 @@ export class Choose extends React.Component {
     super(props);
 
     this.state = {
-      text: "hej"
+      myQrCode: "Hejsan hoppsan"
     }
 
   }
 
+
+
+  getQR = async () => {
+    try {
+      const qrFromAsync = await AsyncStorage.getItem('@asyncQr');
+      console.log(qrFromAsync);
+    } 
+    catch (e) {
+      console.log(e);
+    }
+  }
+  
+
     componetDidMount = () => {
-
-      /* 
-      // Here we gonna fetch the right user.
-      fetch("https://samtal-server.herokuapp.com/users", {
-        method: "GET"
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        
-        data = responseJson[1].qrcode;
-        console.log(data)
-
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-      */
-
+      this.getQR();
     }
 
    
@@ -70,10 +66,19 @@ export class Choose extends React.Component {
 
           {/* Installera innan användning ( npm install react-native-qrcode --save ). */}
           <View style={stylesChoose.qrcode}>
-            <QRCode size={135} value={this.state.text}></QRCode>
+            <QRCode size={135} value={this.state.myQrCode}></QRCode>
           </View>
-          <View style={stylesChoose.titleContainer}>
-            <Text style={stylesChoose.titleStyle}> Låt deltagare skanna </Text>
+          <View style={stylesChoose.titleContainerQR}>
+            <Text style={stylesChoose.titleStyleQR}> Skapa grupp </Text>
+
+            <View style={stylesChoose.subTitlesContainer}>
+              <Text style={stylesChoose.subTitles}> 
+                1. Gå till hemskärm. {"\n"}
+                2. Klicka på delta i samtal. {"\n"}
+                3. Skanna en annan persons qr kod. {"\n"}
+              </Text>
+            </View>
+            
           </View>
         
           
@@ -118,6 +123,20 @@ const stylesChoose = StyleSheet.create({
     borderRadius: 20
   },
 
+  titleContainerQR: {
+    marginTop: "2%",
+    textAlign: "center",
+  },
+
+  titleStyleQR: {
+    textAlign: "center",
+    fontSize: 25,
+    color: "#fff",
+    textShadowColor: '#570682',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
+  },
+
 
   titleContainer: {
     marginTop: "5%",
@@ -127,6 +146,22 @@ const stylesChoose = StyleSheet.create({
   titleStyle: {
     textAlign: "center",
     fontSize: 25,
+    color: "#fff",
+    textShadowColor: '#570682',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
+  },
+
+  subTitlesContainer: {
+    //backgroundColor: "green",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 40
+  },
+
+  subTitles: {
+    textAlign: "left",
+    fontSize: 18,
     color: "#fff",
     textShadowColor: '#570682',
     textShadowOffset: {width: -1, height: 1},
@@ -143,7 +178,7 @@ const stylesChoose = StyleSheet.create({
 
   buttonContainer: {
     //backgroundColor:"#303",
-    marginTop: "10%"
+    //marginTop: "5%"
   },
 
   buttonStyle: {

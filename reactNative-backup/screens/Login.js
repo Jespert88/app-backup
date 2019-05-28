@@ -99,18 +99,13 @@ export class Login extends React.Component {
         // userStoreData = "" as default.
         } else {
 
-
-          var idString = JSON.stringify(responseJson._id);
-          var userName = JSON.stringify(responseJson.username);
-          var qrCode = JSON.stringify(responseJson.qr_code);
-
-
           storeData = async () => {
+
             try {
-              await AsyncStorage.setItem('@asyncId', idString);
-              await AsyncStorage.setItem('@asyncName', userName);
-              await AsyncStorage.setItem('@asyncQr', qrCode);
               await AsyncStorage.setItem('@loggedIn', "true");
+              await AsyncStorage.setItem('@asyncId', responseJson._id);
+              await AsyncStorage.setItem('@asyncName', responseJson.username);
+              await AsyncStorage.setItem('@asyncQr', responseJson.qrcode);
             } 
             catch (e) {
               console.log(e);

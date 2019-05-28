@@ -20,35 +20,26 @@ static navigationOptions = {
   }
 
 
-  getAsyncUserTest = async () => {
-    await AsyncStorage.getItem("@AsyncUser").then(val => {
-      this.setState({ user: val })
-      
-    });
-  }
-  
-  componentDidMount() {
-      this.getAsyncUserTest()
-  }
+
 
   
-
-
-
-  // This is for setting the AsyncStorage key = empty.
-  signOut = async () => {
-    storeData = async () => {
+  signOutUser = () => {
+   /* storeData = async () => {
       try {
-        var AsyncUsername = "";
-        await AsyncStorage.setItem('@AsyncUser', AsyncUsername)
-        JSON.parse(AsyncUsername);
-      } catch (e) {
-        // saving error
+        await AsyncStorage.setItem('@asyncId', null);
+        await AsyncStorage.setItem('@asyncName', null);
+        await AsyncStorage.setItem('@asyncQr', null);
+        await AsyncStorage.setItem('@loggedIn', "false");
+      } 
+      catch (e) {
+        console.log(e);
       }
     }
-    storeData()
+    storeData(); */
     this.props.navigation.navigate('LoginScreen');
   }
+
+
 
 
 
@@ -67,7 +58,7 @@ static navigationOptions = {
 
           {/* Back arrow Container */}
           <View style={stylesHome.backBtnContainer}>
-              <TouchableOpacity  onPress={this.signOut}>
+              <TouchableOpacity  onPress={this.signOutUser}>
               <Image source={require('../assets/back.png')} 
                 style={{
                   margin: 5,
@@ -148,6 +139,8 @@ const stylesHome = StyleSheet.create({
 
   titleStyle: {
     fontSize: 45,
+    fontWeight: "bold",
+    fontFamily: "Roboto",
     color: "#fff",
     textShadowColor: '#570682',
     textShadowOffset: {width: -1, height: 1},
