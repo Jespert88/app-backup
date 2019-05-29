@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import QRCode from 'react-native-qrcode';
 
 
@@ -14,27 +15,58 @@ export class Choose extends React.Component {
     super(props);
 
     this.state = {
-      myQrCode: "Hejsan hoppsan"
+      myQrCode: "null"
     }
 
   }
 
-
-
-  getQR = async () => {
+  getQrCode = async () => {
+    console.log("hej");
     try {
-      const qrFromAsync = await AsyncStorage.getItem('@asyncQr');
-      console.log(qrFromAsync);
-    } 
-    catch (e) {
+  
+      // Get the AsyncStorage keys.
+      const idFromAsync = await AsyncStorage.getItem('@asyncId');
+      const nameFromAsync = await AsyncStorage.getItem('@asyncName');
+  
+      if (idFromAsync !== null) {
+  
+        fetch('https://samtal-server.herokuapp.com/get-user-data', {
+            method: 'POST',
+            //mode: "cors",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+  
+            },
+            body: JSON.stringify({
+              username: nameFromAsync
+            })
+          })
+          .then(response => response.json())
+          .then(jsonData => {
+            
+            this.setState({
+              myQrCode: jsonData.qrcode
+            });
+            
+            console.log(this.state.myQrCode);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+  
+      } else {
+        console.log("There is no id..");
+      }
+  
+    } catch (e) {
       console.log(e);
     }
   }
+
   
 
-    componetDidMount = () => {
-      this.getQR();
-    }
+    
 
    
 

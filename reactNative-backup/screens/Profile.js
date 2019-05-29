@@ -12,71 +12,49 @@ export class Profile extends React.Component {
     header: null
   };
 
+constructor(props) {
+  super(props);
 
-  constructor(props) {
-    super(props);
+  this.state = {
 
-    this.state = {
-
-      jsonData: null,
-      myId: null,
-      myUsername: null,
-      myHours: null,
-      myMinutes: null,
-      mySeconds: null,
-      myPoints: null,
+    myId: null,
+    myUsername: null,
+    myHours: null,
+    myMinutes: null,
+    mySeconds: null, 
+    myPoints: null,
 
 
-      //Question Mark.
-      questionMark: require('../assets/question.png'),
-      emptyText: "",
+    test: "",
 
+    //Prestation 1
+    achiveIMG1: require('../assets/question.png'),
+    achiveText1: "",
 
-      //Prestation 1
-      achiveIMG1: require('../assets/chat.png'),
-      achiveText1: "Första samtalet",
+    //Prestation 2
+    achiveIMG2: require('../assets/question.png'),
+    achiveText2: "",
 
-     
+    //Prestation 3
+    achiveIMG3: require('../assets/question.png'),
+    achiveText3: "",
 
+    //Prestation 4
+    achiveIMG4: require('../assets/question.png'),
+    achiveText4: "",
 
-      //Prestation 2
+    //Prestation 5
+    achiveIMG5: require('../assets/question.png'),
+    achiveText5: "",
 
-      //Prestation 3
+    //Prestation 6
+    achiveIMG6: require('../assets/question.png'),
+    achiveText6: "",
 
-      //Prestation 4
-
-      //Prestation 5
-
-      //Prestation 6
-
-
-
-
-
-
-      //Avatas with colors.
-      imageURI: require('../assets/baby.png'),
-      avatarText: "Karaktär 1",
-
-      imageURI2: require('../assets/student.png'),
-      avatarText2: "Karaktär 2",
-
-      imageURI3: require('../assets/buddha.png'),
-      avatarText3: "Karaktär 3",
-
-      //Avatars without colors.
-      imageURIBlack: require('../assets/baby-black.png'),
-     
-      imageURI2Black: require('../assets/student-black.png'),
-
-      imageURI3Black: require('../assets/buddha-black.png'),
-
-    }
   }
+}
 
-
-
-
+// Get AsyncStorage value and then takes that value and make a http req with post, and sets state from that value.
 getProfileData = async () => {
   try {
 
@@ -91,7 +69,6 @@ getProfileData = async () => {
       And you don't wanna show " <-- this so therefor you must convert back to Json Object 
       with JSON.parse(key); 
     */
-
 
     if (idFromAsync !== null) {
 
@@ -108,15 +85,151 @@ getProfileData = async () => {
           })
         })
         .then(response => response.json())
-        .then(jsonData => {
-          
+        .then(responseJson => {
+
           this.setState({
-            myUsername: jsonData.username,
-            myHours: jsonData.hours,
-            myMinutes: jsonData.minutes,
-            mySeconds: jsonData.seconds,
-            myPoints: jsonData.points
+            myUsername: responseJson.username,
+            myHours: responseJson.hours,
+            myMinutes: responseJson.minutes,
+            mySeconds: responseJson.seconds,
+            myPoints: responseJson.points,
           });
+
+
+          //Check wich Achivments that should be displayed.
+          checkAchivement1 = (err) => {
+
+            if (this.state.myPoints >= 5) {
+
+              this.setState({
+                achiveIMG1: require('../assets/chat.png'),
+                achiveText1: "Första \n samtalet",
+              })
+
+            } else if (this.state.myPoints = 0) {
+              this.setState({
+                achiveIMG1: require('../assets/question.png'),
+                achiveText1: "",
+              })
+            } else {
+              console.log(err);
+            }
+
+          }
+          checkAchivement1();
+
+          checkAchivement2 = (err) => {
+
+            if (this.state.myPoints >= 10) {
+
+              this.setState({
+                achiveIMG2: require('../assets/chat2.png'),
+                achiveText2: "Pratkvarn",
+              })
+
+            } else if (this.state.myPoints = 0) {
+              this.setState({
+                achiveIMG2: require('../assets/question.png'),
+                achiveText2: "",
+              })
+            } else {
+              console.log(err);
+            }
+
+          }
+          checkAchivement2();
+
+          checkAchivement3 = (err) => {
+
+            if (this.state.myPoints >= 30) {
+
+              this.setState({
+                achiveIMG3: require('../assets/apple.png'),
+                achiveText3: "Du lär dig",
+              })
+
+            } else if (this.state.myPoints = 0) {
+              this.setState({
+                achiveIMG3: require('../assets/question.png'),
+                achiveText3: "",
+              })
+            } else {
+              console.log(err);
+            }
+
+          }
+          checkAchivement3();
+
+          checkAchivement4 = (err) => {
+
+            if (this.state.myPoints >= 40) {
+
+              this.setState({
+                achiveIMG4: require('../assets/ear.png'),
+                achiveText4: "Du lyssnar bra",
+              })
+
+            } else if (this.state.myPoints = 0) {
+              this.setState({
+                achiveIMG4: require('../assets/question.png'),
+                achiveText4: "",
+              })
+            } else {
+              console.log(err);
+            }
+
+          }
+          checkAchivement4();
+
+          checkAchivement5 = (err) => {
+
+            if (this.state.myPoints >= 50) {
+
+              this.setState({
+                achiveIMG5: require('../assets/hand.png'),
+                achiveText5: "Det är roligt \n att lära sig",
+              })
+
+            } else if (this.state.myPoints = 0) {
+              this.setState({
+                achiveIMG5: require('../assets/question.png'),
+                achiveText5: "",
+              })
+            } else {
+              console.log(err);
+            }
+
+          }
+          checkAchivement5();
+
+          checkAchivement6 = (err) => {
+
+            if (this.state.myPoints >= 60) {
+
+              this.setState({
+                achiveIMG6: require('../assets/buddha.png'),
+                achiveText6: "Nu vet jag allt",
+              })
+
+            } else if (this.state.myPoints = 0) {
+              this.setState({
+                achiveIMG6: require('../assets/question.png'),
+                achiveText6: "",
+              })
+            } else {
+              console.log(err);
+            }
+
+          }
+          checkAchivement6();
+
+
+
+          
+      
+
+
+
 
         })
         .catch((err) => {
@@ -133,17 +246,10 @@ getProfileData = async () => {
 }
 
 
-
-
   
-
-    componentDidMount() {
-      this.getProfileData();
-    }
-    
-  
-  
-
+componentDidMount() {
+  this.getProfileData();
+}
 
 
   render() {
@@ -159,21 +265,37 @@ getProfileData = async () => {
 
             {/* SignOut Container */}
             <View style={stylesProfile.signOutContainer}>
-                    <View style={stylesProfile.backBtnContainer}>
-                        <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
-                        <Image source={require('../assets/back.png')} 
-                        style={{
-                            margin: 5,
-                            padding: 10,
-                            height: 20,
-                            width: 20,
-                            resizeMode: 'stretch',
-                        }}></Image>
-                        </TouchableOpacity>
-                </View>
+
+              <View style={stylesProfile.backBtnContainer}>
+                <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
+                <Image source={require('../assets/back.png')} 
+                style={{
+                margin: 5,
+                padding: 10,
+                height: 20,
+                width: 20,
+                resizeMode: 'stretch',
+                }}></Image>
+                </TouchableOpacity>
+              </View>
+
+              <View style={stylesProfile.syncBtnContainer}>
+                <TouchableOpacity  onPress={this.getProfileData}>
+                <Image source={require('../assets/sync-arrows.png')} 
+                style={{
+                margin: 5,
+                padding: 10,
+                height: 20,
+                width: 20,
+                resizeMode: 'stretch',
+                }}></Image>
+                </TouchableOpacity>
+              </View>
+      
             </View>
 
 
+            
 
 
           <View style={{alignItems: "center", flexDirection: "row", justifyContent: "center"}}>
@@ -191,31 +313,7 @@ getProfileData = async () => {
               <Text style={stylesProfile.profileStatsText}>Poäng: {this.state.myPoints}</Text>
           </View><Text>{"\n"}</Text>
 
-            {/* Avatar container */}
-            <Text style={stylesProfile.characterTitle}> Samtalskaraktär </Text>
-            <View style={stylesProfile.characterContainer}>
-              
-              {/* 1 avatar container */}
-              <View style={stylesProfile.characterContainer1}>
-                <Image style={{width: 80, height: 80}} source={this.state.imageURI}></Image>
-                <Text style={stylesProfile.textStyle}> {this.state.avatarText} </Text>
-              </View>
-
-              {/* 2 avatar container */}
-              <View style={stylesProfile.characterContainer2}>
-                <Image style={{width: 80, height: 80}} source={this.state.imageURI2Black}></Image>
-                <Text style={stylesProfile.textStyle}> {this.state.avatarText2} </Text>
-              </View>
-
-              {/* 3 avatar container */}
-              <View style={stylesProfile.characterContainer3}>
-                <Image style={{width: 80, height: 80}} source={this.state.imageURI3Black}></Image>
-                <Text style={stylesProfile.textStyle}> {this.state.avatarText3} </Text>
-              </View>
-
-            
-
-            </View><Text>{"\n"}</Text>
+           <Text>{"\n"}</Text>
 
 
             {/* Achievements container */}
@@ -223,83 +321,45 @@ getProfileData = async () => {
             <View style={stylesProfile.achivmentFlexGrid}>
 
 
-              {/* Prestationer 1 */}   
+              {/* Prestation 1 */}   
                 <View style={stylesProfile.achiveImgContainer}>
-                  <Image style={{width: 50, height: 50}} source={this.state.questionMark}></Image>
-                  <Text style={stylesProfile.textStyle}> {this.state.emptyText} </Text>
+                  <Image style={{width: 50, height: 50}} source={this.state.achiveIMG1}></Image>
+                  <Text style={stylesProfile.achiveTextStyle}> {this.state.achiveText1} </Text>
                 </View>
 
-
-
-                <View style={stylesProfile.achiveImgContainer}>
-                  <Image style={{width: 50, height: 50}} source={require("../assets/chat2NoColor.png")}></Image>
-                  <Text style={stylesProfile.textStyle}> None Stop </Text>
-                  <Text style={stylesProfile.textStyle}> 20 points </Text>
+              {/* Prestation 2 */}   
+              <View style={stylesProfile.achiveImgContainer}>
+                  <Image style={{width: 50, height: 50}} source={this.state.achiveIMG2}></Image>
+                  <Text style={stylesProfile.achiveTextStyle}> {this.state.achiveText2} </Text>
                 </View>
 
-                <View style={stylesProfile.achiveImgContainer}>
-                  <Image style={{width: 50, height: 50}} source={require("../assets/brain2.png")}></Image>
-                  <Text style={stylesProfile.textStyle}> Learning </Text>
-                  <Text style={stylesProfile.textStyle}> 30 points </Text>
+              {/* Prestation 3 */}   
+              <View style={stylesProfile.achiveImgContainer}>
+                  <Image style={{width: 50, height: 50}} source={this.state.achiveIMG3}></Image>
+                  <Text style={stylesProfile.achiveTextStyle}> {this.state.achiveText3} </Text>
                 </View>
 
-                <View style={stylesProfile.achiveImgContainer}>
-                  <Image style={{width: 50, height: 50}} source={require("../assets/earNoColor.png")}></Image>
-                  <Text style={stylesProfile.textStyle}> time to Listen </Text>
-                  <Text style={stylesProfile.textStyle}> 40 points </Text>
+              {/* Prestation 4 */}   
+              <View style={stylesProfile.achiveImgContainer}>
+                  <Image style={{width: 50, height: 50}} source={this.state.achiveIMG4}></Image>
+                  <Text style={stylesProfile.achiveTextStyle}> {this.state.achiveText4} </Text>
                 </View>
 
-                <View style={stylesProfile.achiveImgContainer}>
-                  <Image style={{width: 50, height: 50}} source={require("../assets/appleNoColor.png")}></Image>
-                  <Text style={stylesProfile.textStyle}> Knowledge </Text>
-                  <Text style={stylesProfile.textStyle}> 50 points </Text>
-                </View>
+              {/* Prestation 5 */}   
+              <View style={stylesProfile.achiveImgContainer}>
+                <Image style={{width: 50, height: 50}} source={this.state.achiveIMG5}></Image>
+                <Text style={stylesProfile.achiveTextStyle}> {this.state.achiveText5} </Text>
+              </View>
 
-                <View style={stylesProfile.achiveImgContainer}>
-                  <Image style={{width: 50, height: 50}} source={require("../assets/handNoColor.png")}></Image>
-                  <Text style={stylesProfile.textStyle}> I know all </Text>
-                  <Text style={stylesProfile.textStyle}> 100 points </Text>
-                </View>
+              {/* Prestation 6 */}   
+              <View style={stylesProfile.achiveImgContainer}>
+                <Image style={{width: 50, height: 50}} source={this.state.achiveIMG6}></Image>
+                <Text style={stylesProfile.achiveTextStyle}> {this.state.achiveText6} </Text>
+              </View>
+
                 
-
-                {/*  This is for chaning the status of img with data, dont throw!!!! 
-
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={this.state.A1}></Image>
-                <Text style={stylesProfile.textStyle}> First Talk </Text>
-                <Text style={stylesProfile.textStyle}> 10 points </Text>
-                </View>
- 
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={this.state.A2}></Image>
-                <Text style={stylesProfile.textStyle}> None Stop </Text>
-                <Text style={stylesProfile.textStyle}> 20 points </Text>
-                </View>
-           
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={this.state.A3}></Image>
-                <Text style={stylesProfile.textStyle}> Learning </Text>
-                <Text style={stylesProfile.textStyle}> 30 points </Text>
-                </View>
-
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={this.state.A4}></Image>
-                <Text style={stylesProfile.textStyle}> time to Listen </Text>
-                <Text style={stylesProfile.textStyle}> 40 points  </Text>
-                </View>
-
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={this.state.A5}></Image>
-                <Text style={stylesProfile.textStyle}> Knowledge </Text>
-                <Text style={stylesProfile.textStyle}> 50 points  </Text>
-                </View>
-
-                <View style={stylesProfile.achiveImgContainer}>
-                <Image style={{width: 50, height: 50}} source={this.state.A6}></Image>
-                <Text style={stylesProfile.textStyle}> I know all </Text>
-                <Text style={stylesProfile.textStyle}> 100 points  </Text>
-                </View>
-              */}
+               
+               
             </View>
               
 
@@ -336,17 +396,17 @@ const stylesProfile = StyleSheet.create({
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10 
   },
-  textStyleNoColor: {
-    textAlign: "center",
-    fontSize: 15,
-    color: "#fff",
-  },
+  
+
+
+
+  
   StatsTextContainer: {
     margin: 10,
     alignItems: "center",
   },
   profileStatsText: {
-    fontSize: 20,
+    fontSize: 25,
     color: "#fff",
     textShadowColor: '#9c29b7',
     textShadowOffset: {width: -1, height: 1},
@@ -369,32 +429,7 @@ const stylesProfile = StyleSheet.create({
     textShadowRadius: 10
   },
 
-  characterContainer1: {
-    alignItems: "center",
-    padding: 10
-    //backgroundColor: "red"
-  },
-  characterContainer2: {
-    alignItems: "center",
-    padding: 10
-   // backgroundColor: "blue"
-  },
-  characterContainer3: {
-    alignItems: "center",
-    padding: 10
-    //backgroundColor: "yellow"
-  },
-
-
-
-
-
-
-
-
-
-
-
+  
   achivmentContainer: {
     flex: 1, 
     height: "auto",
@@ -414,24 +449,32 @@ const stylesProfile = StyleSheet.create({
 achiveImgContainer: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: 'rgba(81, 37, 173, 0.3)',
-    borderRadius: 10,
-    margin: 5,
-    width: 100,
-    height: 100
-},
-achiveImgContainerNoColor: {
-  alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: 'rgba(144, 146, 150, 0.5)',
+    //backgroundColor: 'rgba(81, 37, 173, 0.3)',
+    backgroundColor: 'rgba(33, 4, 61, 0.3)',
     borderRadius: 10,
     margin: 5,
     width: 100,
     height: 100
 },
 
+achiveTextStyle: {
+  textAlign: "center",
+  fontSize: 14,
+  color: "#fff",
+},
 
 
+
+
+
+
+
+
+  syncBtnContainer: {
+    flexDirection: "row",
+    marginTop: 20,
+    marginLeft: "70%"
+  },
 
 
   signOutContainer: {

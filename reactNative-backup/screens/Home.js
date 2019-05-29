@@ -157,6 +157,8 @@ const stylesHome = StyleSheet.create({
   },
   profileText: {
     fontSize: 18,
+    fontFamily: "Roboto",
+    fontWeight: "bold",
     color: "#fff",
     textAlign: "center"
    /* textShadowColor: '#9c29b7',

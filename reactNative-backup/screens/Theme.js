@@ -349,7 +349,7 @@ const stylesTheme = StyleSheet.create({
     width: "100%"
   },
   titleStyle: {
-    fontSize: 50,
+    fontSize: 40,
     padding: 10,
     textAlign: "center",
     color: "#fff",
