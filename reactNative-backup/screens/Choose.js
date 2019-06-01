@@ -106,9 +106,8 @@ export class Choose extends React.Component {
 
             <View style={stylesChoose.subTitlesContainer}>
               <Text style={stylesChoose.subTitles}> 
-                1. Gå till hemskärm. {"\n"}
-                2. Klicka på delta i samtal. {"\n"}
-                3. Skanna en annan persons qr kod. {"\n"}
+                 Andra personer måste skanna {"\n"}
+                din kod för att gruppen ska startas.
               </Text>
             </View>
             

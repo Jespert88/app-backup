@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, Alert  } from 'react-native';
 //import { ifStatement } from '@babel/types';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -22,9 +22,11 @@ static navigationOptions = {
       myId: null, //These are for mobile memory.
       myUsername: null, //These are for mobile memory.
 
-      myHours: null, //These are for saving in db.
-      myMinutes: null, //These are for saving in db.
-      mySeconds: null, //These are for saving in db.
+      myHours: 0, //These are for saving in db.
+      myMinutes: 0, //These are for saving in db.
+      mySeconds: 0, //These are for saving in db.
+      myPoints: 0, //These are for saving in db.
+    
 
       hour_Counter: '00', //These are for timer.
       minutes_Counter: '00', //These are for timer.
@@ -71,6 +73,10 @@ static navigationOptions = {
             this.setState({
               myId: responseJson._id,
               myUsername: responseJson.username,
+              myHours: responseJson.hours,
+              myMinutes: responseJson.minutes,
+              mySeconds: responseJson.seconds,
+              myPoints: responseJson.points,
             });
 
           })
@@ -103,11 +109,47 @@ static navigationOptions = {
         console.error(error);
       });
   }
+
+
+
+
+
   // Saves the time when user clicks on button.
   postTime = () => {
-    console.log("hej");
-  }
 
+      this.setState((state) => ({
+        myMinutes: state.minutes_Counter,
+        mySeconds: state.seconds_Counter,
+      }));
+
+    /*
+    var newHour = parseInt(this.state.hour_Counter);
+    var newMin = parseInt(this.state.myMinutes);
+    var newSec = parseInt(this.state.mySeconds);
+    */
+    
+    fetch('https://samtal-server.herokuapp.com/post-data-to-user', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        _id: this.state.myId,
+        hours: this.state.myHours,
+        minutes: this.state.myMinutes,
+        seconds: this.state.mySeconds,
+        points: this.state.myPoints,
+      })
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+      //console.log(responseJson);
+    }); 
+
+    alert("Tid sparad");
+  }
+  
 
   //Start timer.
   startTimer = () => {
@@ -136,13 +178,12 @@ static navigationOptions = {
   //Stop timer.
   stopTimer = () => {
     clearInterval(this.state.timer);
-    this.setState({
+    this.setState((state) => ({
       startDisable: false,
-
-      // myHours: this.state.hour_Counter,
       myMinutes: this.state.minutes_Counter,
-      mySeconds: this.state.seconds_Counter
-    })
+      mySeconds: this.state.seconds_Counter,
+      myPoints: 1
+    }));
   };
 
   //Reset timer.
@@ -155,6 +196,7 @@ static navigationOptions = {
   };
 
 
+ 
   /* 
   componentWillMount is done before the INITIAL render of a component, 
   and is used to assess props and do any extra logic based upon them (usually to also update state), 
@@ -169,10 +211,6 @@ static navigationOptions = {
     this.getProfileData();
     this.getQuestion();
   }
-
-
-
-            
 
 
 
@@ -196,12 +234,12 @@ static navigationOptions = {
           </View>
 
 
-        {/* Shows the result from getTheme req. */}
+        {/* Shows the result from getQuestion req. */}
         <View style={stylesQuestion.titleContainer}>
           <Text style={stylesQuestion.titleStyle}>{this.state.data} </Text>
         </View>
 
-        {/* GetTheme button */}
+        {/* GetQuestion button */}
         <View style={stylesQuestion.nextBtnContainer}>
           <TouchableOpacity  style={stylesQuestion.nexBtnStyle} onPress={this.getQuestion}>
             <Text style={stylesQuestion.buttonText}> Välj nytt tema </Text>
@@ -258,7 +296,7 @@ const stylesQuestion = StyleSheet.create({
     width: "100%"
   },
   titleStyle: {
-    fontSize: 30,
+    fontSize: 25,
     padding: 10,
     textAlign: "center",
     color: "#fff",
@@ -271,11 +309,11 @@ const stylesQuestion = StyleSheet.create({
  //Buttonstyle
  nextBtnContainer: {
     //backgroundColor: "blue",
-    marginTop: 120,
+    marginTop: 110,
     width: "100%"
   },
   nexBtnStyle: {
-    margin: 5,
+    margin: 10,
     marginRight: 90,
     marginLeft: 90,
     padding: 10,
@@ -292,7 +330,7 @@ const stylesQuestion = StyleSheet.create({
   //Timer Style
   timerContainer: {
     //backgroundColor: "orange",
-    marginTop: 30,
+    marginTop: 10,
     width: "100%"
   },
   timerView:{

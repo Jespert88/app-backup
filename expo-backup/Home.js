@@ -1,26 +1,65 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 
 
 export class Home extends React.Component {
+//This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
+static navigationOptions = {
+  header: null
+};
+
+
+  constructor() {
+    super()
+    this.state = {
+      user: "",
+    }
+
+  }
+
+
+
+
   
-  //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
-  static navigationOptions = {
-    header: null
-  };
+  signOutUser = () => {
+   /* storeData = async () => {
+      try {
+        await AsyncStorage.setItem('@asyncId', null);
+        await AsyncStorage.setItem('@asyncName', null);
+        await AsyncStorage.setItem('@asyncQr', null);
+        await AsyncStorage.setItem('@loggedIn', "false");
+      } 
+      catch (e) {
+        console.log(e);
+      }
+    }
+    storeData(); */
+    this.props.navigation.navigate('LoginScreen');
+  }
+
+
+
+
 
 
   render() {
 
     return (
       
+      //Main Body of the Screen.
       <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesHome.mainContainer}>
+           
 
+        {/* SignOut Container */}
         <View style={stylesHome.signOutContainer}>
+
+          {/* Back arrow Container */}
           <View style={stylesHome.backBtnContainer}>
-              <TouchableOpacity  onPress={() => this.props.navigation.navigate("LoginScreen")}>
+              <TouchableOpacity  onPress={this.signOutUser}>
               <Image source={require('../assets/back.png')} 
                 style={{
                   margin: 5,
@@ -31,34 +70,59 @@ export class Home extends React.Component {
                 }}></Image>
               </TouchableOpacity>
             </View>
-  
-            <Text style={stylesHome.usernameTextStyle}>
-              Inloggad: {"\n"} 
-              {this.props.navigation.state.params.NameOBJ}
-            </Text>
+
+            {/* Profile Container */}
+            <View style={stylesHome.profileContainer}>
+              <TouchableOpacity  onPress={() => this.props.navigation.navigate("ProfileScreen")}>
+                <Image source={require('../assets/user.png')} 
+                  style={{
+                    margin: 10,
+                    padding: 10,
+                    height: 40,
+                    width: "auto",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    resizeMode: 'contain',
+                  }}></Image>
+
+                {/* Here we show the value from the state varible: user. */}
+                <Text style={stylesHome.profileText}>
+
+                {/* Problem: if showing this value, it shows the username that was logged in before until i restart the app?? */}
+                {/*{this.state.user}*/}
+                
+                  Min profil
+
+                </Text>
+
+              </TouchableOpacity>
+            </View>
+        </View>
+
+       
+
+
+
+        {/* Title Container */}
+        <View style={stylesHome.titleContainer}>
+            <Text style={stylesHome.titleStyle}> Gör ett val </Text>
         </View>
 
 
-
-            <View style={stylesHome.titleContainer}>
-              <Text style={stylesHome.titleStyle}> Gör ett val </Text>
-            </View>
-
-            
-          <View style={stylesHome.buttonContainer}>
+        {/* Button Container */}
+        <View style={stylesHome.buttonContainer}>
             <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ChooseScreen")}>
               <Text style={stylesHome.textStyle}> Starta samtal </Text>
             </TouchableOpacity><Text>{"\n"}</Text>
             
-            <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("ChooseScreen")}>
+            <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("JoinScreen")}>
               <Text style={stylesHome.textStyle}> Delta i samtal </Text>
             </TouchableOpacity>
-          </View>
-         
-      </View>
+        </View>
+        
+        
+        </View>
      </ImageBackground> 
-      
-      
       
     )
   }
@@ -69,20 +133,49 @@ const stylesHome = StyleSheet.create({
     flex: 1,
     /*backgroundColor: "lightgreen"*/
   },
-
   titleContainer: {
-    marginTop: "10%",
+    marginTop: "20%",
     alignItems: "center",
   },
 
   titleStyle: {
-    fontSize: 40,
+    fontSize: 45,
+    fontWeight: "bold",
+    fontFamily: "Roboto",
     color: "#fff",
-    textShadowColor: '#9c29b7',
+    textShadowColor: '#570682',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10 
   },
 
+  profileContainer: {
+    //backgroundColor: "green",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    marginLeft: "60%"
+  },
+  profileText: {
+    fontSize: 18,
+    fontFamily: "Roboto",
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center"
+   /* textShadowColor: '#9c29b7',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10 */
+  },
+
+
+  signOutContainer: {
+    flexDirection: "row"
+  },
+
+  backBtnContainer: {
+    marginTop: 50,
+    marginLeft: 20
+  },
   textStyle: {
     fontSize: 18,
     color: "#000",
@@ -98,10 +191,8 @@ const stylesHome = StyleSheet.create({
       textAlign: "center"
   },
 
-
-
   buttonContainer: {
-    //backgroundColor:"#303",
+    //backgroundColor:"blue",
     marginTop: "10%"
   },
 

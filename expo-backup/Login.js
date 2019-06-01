@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpacity, Modal, ScrollView, Alert, KeyboardAvoidingView  } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
@@ -7,69 +8,127 @@ import { StyleSheet, Text, TextInput, View, Image, ImageBackground, TouchableOpa
 
 export class Login extends React.Component {
     
-    state = {
+  constructor(props){
+    super(props);
+
+    this.state = {
       modalVisible: false,
-      userStoreData: "",
-      passwordStoreData: ""
+      givenUsername: null,
+      givenPassword: null
     }
 
-     static navigationOptions = {
-       header: null
-     }
+  }
+  
+   static navigationOptions = {
+     header: null
+   }
+   setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
 
-     setModalVisible(visible) {
-      this.setState({modalVisible: visible});
+
+  
+
+    /*
+
+    This is from community react native.
+
+      STORE DATA
+    --------------
+      storeData = async () => {
+        try {
+          await AsyncStorage.setItem('@storage_Key', 'stored value')
+        } catch (e) {
+          // saving error
+        }
+      }
+
+       Read Data
+    --------------
+    getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@storage_Key')
+        if (value !== null) {
+          // value previously stored
+        }
+      } catch (e) {
+        // error reading value
+      }
     }
 
-    
-    //Post a user object to the /login route that handels the req. If the request is false, then console.log else go to home screen.
-    checkUser = () => {
-      fetch('http://samtal-server.herokuapp.com/login', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: this.state.userStoreData ,
-          password: this.state.passwordStoreData
-        })
+    */
+ 
+  
+
+//Post a user object to the /login route that handels the req. If the request is false, then a alert comes up
+//else go to home screen.
+ checkUser = () => {
+    fetch('http://samtal-server.herokuapp.com/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.givenUsername,
+        password: this.state.givenPassword
       })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          
-          if (responseJson == false) {
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        
+      
+        // If responseJson is false, start an a Alert.
+        if (!responseJson) {
 
-            // Works on both iOS and Android
-            alert(
-              'Båda fälten måste vara ifyllda',
-              [
-                {
-                  text: 'Cancel',
-                  onPress: () => console.log('Cancel Pressed'),
-                  style: 'cancel',
-                },
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              {cancelable: false},
-            );
+           // Works on both iOS and Android
+           alert(
+            'Fel användare, lösen eller så har du ej fyllt i alla fält',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            {cancelable: false},
+          );
 
-          } else {
-           // this.props.navigation.navigate('HomeScreen');
-           this.props.navigation.navigate('HomeScreen', {
-              NameOBJ: this.state.userStoreData
-          });
+        // Else set AsyncStorage varible = user input (userStoreData) and send user to next screen.
+        // userStoreData = "" as default.
+        } else {
+
+          storeData = async () => {
+
+            try {
+              await AsyncStorage.setItem('@loggedIn', "true");
+              await AsyncStorage.setItem('@asyncId', responseJson._id);
+              await AsyncStorage.setItem('@asyncName', responseJson.username);
+              await AsyncStorage.setItem('@asyncQr', responseJson.qrcode);
+            } 
+            catch (e) {
+              console.log(e);
+            }
           }
+          storeData();
+          this.props.navigation.navigate('HomeScreen');
 
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-    };
+
+        }
+
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .done();
+  };
+
+  
+
 
  
   render() {
-
     return (
      <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         
@@ -77,14 +136,16 @@ export class Login extends React.Component {
         <View style={stylesLogin.mainContainer}>
             <View style={stylesLogin.titleContainer}>
               <Text style={stylesLogin.titleStyle}> Samtalsgeneratorn </Text>
+              <Text style={stylesLogin.subTitlestyle}> Slumpar olika teman och frågor för diskussion </Text>
             </View>
 
+            {/* Login form */}
             <KeyboardAvoidingView style={stylesLogin.textInputContainer} behavior="padding" enabled>
               <TextInput
                 style={stylesLogin.textInputStyle}
                 placeholderTextColor ="#000"
                 placeholder="Användarnamn"
-                onChangeText={(user) => this.setState({userStoreData: user})}
+                onChangeText={(user) => this.setState({givenUsername: user})}
                 />
             
                 <TextInput
@@ -92,21 +153,20 @@ export class Login extends React.Component {
                 placeholderTextColor ="#000"
                 secureTextEntry={true}
                 placeholder="lösenord"
-                onChangeText={(password) => this.setState({passwordStoreData: password})}
+                onChangeText={(password) => this.setState({givenPassword: password})}
                 />
-                
+
                 <TouchableOpacity style={stylesLogin.buttonStyle} onPress={this.checkUser}>
                     <Text style={stylesLogin.buttonTextStyle}> Logga in </Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity style={stylesLogin.buttonStyle} onPress={() => this.props.navigation.navigate("RegisterScreen")}>
                     <Text style={stylesLogin.buttonTextStyle}> Registrera </Text>
                 </TouchableOpacity>
+                
+            </KeyboardAvoidingView>
 
-           </KeyboardAvoidingView>
         </View>
 
-        
       {/* Modal */}
         <View style={{marginTop: 22}}>
         <Modal
@@ -123,15 +183,18 @@ export class Login extends React.Component {
               <Text style={{textAlign: "center", fontSize: 30}}> Välkommen till Samtalsgeneratorn {"\n"}</Text>
               <ScrollView style={stylesLogin.scrollViewContainer}>
                 <Text style={stylesLogin.textStyle}>
-                Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. 
-                Lorem ipsum har varit standard ända sedan 1500-talet, 
-                när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett 
-                provexemplar av en bok.{"\n"} {"\n"} 
+                  Genom smarttelefonens genombrott och framfart har mobiltelefonen på bara några år kommit att bli en av de mest centrala delarna i många individers liv. 
+                  Den används bland annat för att hålla kontakt med familj, vänner och kollegor, för att kommunicera och vara aktiv i olika sociala flöden.{"\n"} {"\n"} 
+                  Många människor är sociala varelser som pratar och kommunicerar med andra individer hela tiden. Men det finns något som håller på att glömmas bort, något som kan tyckas självklart att kunna föra ett muntligt samtal med en annan individ utan att en mobiltelefon på något sätt finns med i bilden.
+                  Sherry Turkle och Professor Jean M. Twenge har under många år bedrivit forskning på barn och unga vuxna som är flitiga användare av sina smarttelefoner. {"\n"} {"\n"} 
+                  Många av dessa unga personer har aldrig haft något annat val än att ha en smarttelefon och hela deras sociala liv existerar genom den. Ett växande fenomen är att många av dessa unga personer kommunicerar med varandra genom text i sina smarttelefoner, även om de sitter bredvid varandra i samma rum. {"\n"} {"\n"} 
+                  Barn leker inte tillsammans som de gjorde förr och deras emotionella utveckling verkar gå allt mer långsamt. 
+                  Syftet med följande undersökning har varit att skapa en motvikt till denna utveckling och genom ett medietekniskt perspektiv presentera en mobilapplikation som uppmuntrar och inspirerar till muntlig dialog mellan individer. 
+
+
+
                 
-                Lorem ipsum har inte bara överlevt fem århundraden, 
-                utan även övergången till elektronisk typografi utan större förändringar. 
-                Det blev allmänt känt på 1960-talet i samband med lanseringen av Letraset-ark 
-                med avsnitt av Lorem Ipsum, och senare med mjukvaror som Aldus PageMaker.
+                {"\n"} {"\n"} 
 
                 </Text>
               </ScrollView>
@@ -184,6 +247,16 @@ const stylesLogin = StyleSheet.create({
     textShadowRadius: 10
   },
 
+  subTitlestyle: {
+    textAlign: "center",
+    fontSize: 20,
+    fontFamily: "sans-serif-light",
+    color: "#fff",
+    textShadowColor: '#0e5572',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
+  },
+
   infoTitle: {
     fontSize: 30,
     color: "#fff",
@@ -202,8 +275,8 @@ const stylesLogin = StyleSheet.create({
   },
 
   scrollViewContainer: {
-    marginTop: 20,
-    height: "auto"
+    marginTop: 5,
+    height: 400
   },
 
 
@@ -255,14 +328,17 @@ const stylesLogin = StyleSheet.create({
   CloseBtnContainer: {},
 
   CloseBtnText: {
-    textAlign: "center",
     color: "#fff",
+    textAlign: "center",
     fontWeight: "bold"
   },
 
   CloseBtnStyle: {
-    backgroundColor: "#56b2d8",
+      backgroundColor: "#c89fe0",
       borderRadius: 30,
+     // borderWidth: 1,
+    //  borderColor: '#222',
+
       marginTop: 20,
       marginRight: "35%",
       marginLeft: "35%",

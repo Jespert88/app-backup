@@ -26,10 +26,11 @@ static navigationOptions = {
       myMinutes: 0, //These are for saving in db.
       mySeconds: 0, //These are for saving in db.
       myPoints: 0, //These are for saving in db.
+    
 
       hour_Counter: '00', //These are for timer.
-      minutes_Counter: '59', //These are for timer.
-      seconds_Counter: '58', //These are for timer.
+      minutes_Counter: '00', //These are for timer.
+      seconds_Counter: '00', //These are for timer.
       startDisable: false //These are for timer.
     }
   }
@@ -116,27 +117,16 @@ static navigationOptions = {
   // Saves the time when user clicks on button.
   postTime = () => {
 
-    this.setState((state) => ({
-      myMinutes: this.state.minutes_Counter,
-      mySeconds: this.state.seconds_Counter,
-    }));
+      this.setState((state) => ({
+        myMinutes: state.minutes_Counter,
+        mySeconds: state.seconds_Counter,
+      }));
+
+    /*
     var newHour = parseInt(this.state.hour_Counter);
     var newMin = parseInt(this.state.myMinutes);
     var newSec = parseInt(this.state.mySeconds);
-   
-    if (newMin >= 29) {
-      checkPoints = () => {
-        this.setState({
-          myPoints: 5
-        });
-      }
-      checkPoints();
-
-      console.log(this.state.myPoints);
-    } else {
-      console.log("Something went wrong..");
-    }
-
+    */
     
     fetch('https://samtal-server.herokuapp.com/post-data-to-user', {
       method: 'POST',
@@ -154,9 +144,12 @@ static navigationOptions = {
     })
     .then(response => response.json())
     .then(responseJson => {
-      console.log(responseJson);
-    });
+      //console.log(responseJson);
+    }); 
+
+    alert("Tid sparad");
   }
+  
 
   //Start timer.
   startTimer = () => {
@@ -189,7 +182,7 @@ static navigationOptions = {
       startDisable: false,
       myMinutes: this.state.minutes_Counter,
       mySeconds: this.state.seconds_Counter,
-
+      myPoints: 1
     }));
   };
 
@@ -204,8 +197,6 @@ static navigationOptions = {
 
 
  
-
-
   /* 
   componentWillMount is done before the INITIAL render of a component, 
   and is used to assess props and do any extra logic based upon them (usually to also update state), 
@@ -261,7 +252,6 @@ static navigationOptions = {
         <View style={stylesTheme.timerContainer}>
           <View style={stylesTheme.timerView}>
             <Text style={stylesTheme.counterText}> 
-            {this.state.myMinutes} : {this.state.mySeconds} {"\n"}
             {this.state.minutes_Counter} : {this.state.seconds_Counter} 
             </Text>
           </View>
@@ -323,7 +313,7 @@ const stylesTheme = StyleSheet.create({
     width: "100%"
   },
   nexBtnStyle: {
-    margin: 5,
+    margin: 10,
     marginRight: 90,
     marginLeft: 90,
     padding: 10,
@@ -340,7 +330,7 @@ const stylesTheme = StyleSheet.create({
   //Timer Style
   timerContainer: {
     //backgroundColor: "orange",
-    marginTop: 30,
+    marginTop: 10,
     width: "100%"
   },
   timerView:{
