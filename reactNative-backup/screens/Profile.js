@@ -17,12 +17,12 @@ constructor(props) {
 
   this.state = {
 
-    myId: null,
-    myUsername: null,
-    myHours: null,
-    myMinutes: null,
-    mySeconds: null, 
-    myPoints: null,
+    myId: 0,
+    myUsername: "",
+    myHours: 0,
+    myMinutes: 0,
+    mySeconds: 0, 
+    myPoints: 0,
 
 
     test: "",
@@ -222,15 +222,7 @@ getProfileData = async () => {
 
           }
           checkAchivement6();
-
-
-
           
-      
-
-
-
-
         })
         .catch((err) => {
           console.log(err);

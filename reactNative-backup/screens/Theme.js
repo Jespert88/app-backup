@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
-import { ifStatement } from '@babel/types';
+import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, Alert  } from 'react-native';
+//import { ifStatement } from '@babel/types';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
@@ -8,234 +9,217 @@ import { ifStatement } from '@babel/types';
 
 export class Theme extends React.Component {
 
-        //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
-        static navigationOptions = {
-          header: null
-        };
+//This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
+static navigationOptions = {
+  header: null
+};
 
+  // Timer example.     
+  constructor(props) {
+    super(props);
 
-         // Timer example.     
-         constructor(props) {
-          super(props);
-      
-          this.state = {
-            myId: null,
-            myUsername: null,
+    this.state = {
+      myId: null, //These are for mobile memory.
+      myUsername: null, //These are for mobile memory.
 
-            timer: null,
-           // myHours: 0,
-            myMinutes: '00', //These varibles are for saving in the database.
-            mySeconds: '00', // Same here.
+      myHours: 0, //These are for saving in db.
+      myMinutes: 0, //These are for saving in db.
+      mySeconds: 0, //These are for saving in db.
+      myPoints: 0, //These are for saving in db.
 
-           // hour_Counter: '00',
-            minutes_Counter: '00', //Change back to '00'
-            seconds_Counter: '00', //Change back to '00'
-            startDisable: false
-          }
-        }
-
-
-
-
-        getProfileData = async () => {
-          try {
-      
-            // Get the AsyncStorage keys.
-            const idFromAsync = await AsyncStorage.getItem('@asyncId');
-            const nameFromAsync = await AsyncStorage.getItem('@asyncName');
-            
-        
-            /*
-              If keys are not null, then make new var and parse key from string back to object.
-              This is done becurse otherwise the this.state.key will show this in App: username example: "Jeppe".
-              And you don't wanna show " <-- this so therefor you must convert back to Json Object 
-              with JSON.parse(key); 
-            */
-            if (idFromAsync !== null) {
-      
-              // New var with parsed back data from string.
-              var userJson = JSON.parse(nameFromAsync);
-      
-              // Set new state to main exsistning keys.
-              this.setState({
-                myId: idFromAsync,
-                myUsername: userJson
-              })
-             
-            } else {
-              console.log("There is no id..");
-            }
-      
-          } catch (e) {
-            console.log(e);
-          }
-        }
+      hour_Counter: '00', //These are for timer.
+      minutes_Counter: '59', //These are for timer.
+      seconds_Counter: '58', //These are for timer.
+      startDisable: false //These are for timer.
+    }
+  }
 
 
 
+  // Get AsyncStorage value and then takes that value and make a http req with post, and sets state from that value.
+  getProfileData = async () => {
+    try {
 
-        // GET request from server that send back a randomize json object. (Created in Server!)
-         getTheme = () => {
-            fetch("https://samtal-server.herokuapp.com/theme/random-theme", {
-              method: "GET"
+      // Get the AsyncStorage keys.
+      const idFromAsync = await AsyncStorage.getItem('@asyncId');
+      const nameFromAsync = await AsyncStorage.getItem('@asyncName');
+
+
+      /*
+        If keys are not null, then make new var and parse key from string back to object.
+        This is done becurse otherwise the this.state.key will show this in App: username example: "Jeppe".
+        And you don't wanna show " <-- this so therefor you must convert back to Json Object 
+        with JSON.parse(key); 
+      */
+
+      if (idFromAsync !== null) {
+
+        fetch('https://samtal-server.herokuapp.com/get-user-data', {
+            method: 'POST',
+            //mode: "cors",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({
+              username: nameFromAsync
+            })
           })
-          .then((response) => response.json())
-          .then((responseJson) => {
-              
-              this.setState({
-                data: responseJson.randomObj
-              })
-          })
-          .catch((error) => {
-              console.error(error);
-          });
-         }
+          .then(response => response.json())
+          .then(responseJson => {
 
-
-
-         PostData = () => {
-  
-          // Post ID to get current document keys with value.
-          fetch('http://samtal-server.herokuapp.com/post-data-to-user', {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                _id: this.state.myId,
-                //hours: this.state.myHours
-                minutes: this.state.myMinutes,
-                seconds: this.state.mySeconds,
-                points: this.state.points
-              }),
-            }).then((response) => response.json())
-            .then((responseJson, error) => {
-        
-              console.log(responseJson);
-      
-              if (!responseJson) {
-        
-                var jsonHours = JSON.stringify(responseJson.hours);
-                var jsonMinutes = JSON.stringify(responseJson.minutes);
-                var jsonSeconds = JSON.stringify(responseJson.seconds);
-                var jsonPoints = JSON.stringify(responseJson.points);
-        
-                this.setState({
-                  myHours: jsonHours,
-                  myMinutes: jsonMinutes,
-                  mySeconds: jsonSeconds,
-                  myPoints: jsonPoints,
-                })
-        
-        
-                console.log(responseJson);
-              } else {
-                console.log(error);
-              } 
-        
-            
-        
+            this.setState({
+              myId: responseJson._id,
+              myUsername: responseJson.username,
+              myHours: responseJson.hours,
+              myMinutes: responseJson.minutes,
+              mySeconds: responseJson.seconds,
+              myPoints: responseJson.points,
             });
-        
-        }
-        
-        
 
-       
-          //Start timer.
-          onButtonStart = () => {
+          })
+          .catch((err) => {
+            console.log(err);
+          });
 
-            var timer = setInterval(() => {
-         
-              var num = (Number(this.state.seconds_Counter) + 1).toString(),
-                count = this.state.minutes_Counter;
-         
-              if (Number(this.state.seconds_Counter) == 59) {
-                count = (Number(this.state.minutes_Counter) + 1).toString();
-                num = '00';
-              }
+      } else {
+        console.log("There is no id..");
+      }
 
-              /*
-              if (Number(this.state.minutes_Counter) == 59) {
-                hour = (Number(this.state.hour_Counter) + 1).toString();
-                console.log(hour); */
-          
-               /* this.setState({
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-                  myHours: myHours + 1
-              
-                }); 
-              }
-              */
+  // GET request from server that send back a randomize json object. (Created in Server!)
+  getTheme = () => {
+    fetch("https://samtal-server.herokuapp.com/theme/random-theme", {
+        method: "GET"
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
 
-
-              this.setState({
-               // hour_Counter: How to count hours?,
-               
-                minutes_Counter: count.length == 1 ? '0' + count : count,
-                seconds_Counter: num.length == 1 ? '0' + num : num,
-              });
-            }, 1000);
-            this.setState({ timer });
-         
-            this.setState({startDisable : true})
-          }
-
-          //Stop timer.
-          onButtonStop = () => {
-              clearInterval(this.state.timer);
-              this.setState({
-                startDisable : false,
-                
-                myMinutes: this.state.minutes_Counter,
-                mySeconds: this.state.seconds_Counter,
-              })
-                console.log(this.state.myHours);
-              
-            }
-
-         
-          //Clear timer.
-          onButtonClear = () => {
-
-            
-
-            postPoints = () => {
-              if (this.state.myMinutes > 59) {
-                alert("Du har fått 1 poäng!");
-              } else {
-                
-              }
-            }
-            postPoints()
-            //postTime() Will execute the post function.
-
-              this.setState({
-                timer: null,
-                minutes_Counter: '00',
-                seconds_Counter: '00'
-              });
-          }
-        //End of timer example.
-        
-      
-            /* 
-            This method is only called one time, which is before the initial render. 
-            Since this method is called before render() our Component will not have access to the Native UI (DOM, etc.).
-            */
-            componentWillUnmount() {
-              clearInterval(this.state.timer);
-            }
-
-            // This function is called when all the elements of the page is rendered correctly.
-            componentDidMount() {
-              this.getTheme()
-            }
+        this.setState({
+          data: responseJson.randomObj
+        })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
 
 
 
+
+  // Saves the time when user clicks on button.
+  postTime = () => {
+
+    this.setState((state) => ({
+      myMinutes: this.state.minutes_Counter,
+      mySeconds: this.state.seconds_Counter,
+    }));
+    var newHour = parseInt(this.state.hour_Counter);
+    var newMin = parseInt(this.state.myMinutes);
+    var newSec = parseInt(this.state.mySeconds);
+   
+    if (newMin >= 29) {
+      checkPoints = () => {
+        this.setState({
+          myPoints: 5
+        });
+      }
+      checkPoints();
+
+      console.log(this.state.myPoints);
+    } else {
+      console.log("Something went wrong..");
+    }
+
+    
+    fetch('https://samtal-server.herokuapp.com/post-data-to-user', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        _id: this.state.myId,
+        hours: this.state.myHours,
+        minutes: this.state.myMinutes,
+        seconds: this.state.mySeconds,
+        points: this.state.myPoints,
+      })
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+      console.log(responseJson);
+    });
+  }
+
+  //Start timer.
+  startTimer = () => {
+
+    let timer = setInterval(() => {
+           
+      var num = (Number(this.state.seconds_Counter) + 1).toString(),
+        count = this.state.minutes_Counter;
+ 
+      if (Number(this.state.seconds_Counter) == 59) {
+        count = (Number(this.state.minutes_Counter) + 1).toString();
+        num = '00';
+      }
+ 
+      this.setState({
+        minutes_Counter: count.length == 1 ? '0' + count : count,
+        seconds_Counter: num.length == 1 ? '0' + num : num
+      });
+    }, 1000);
+    this.setState({ timer });
+ 
+    this.setState({startDisable : true})
+
+  };
+
+  //Stop timer.
+  stopTimer = () => {
+    clearInterval(this.state.timer);
+    this.setState((state) => ({
+      startDisable: false,
+      myMinutes: this.state.minutes_Counter,
+      mySeconds: this.state.seconds_Counter,
+
+    }));
+  };
+
+  //Reset timer.
+  resetTimer = () => {
+    this.setState({
+      timer: null,
+      minutes_Counter: '00',
+      seconds_Counter: '00',
+    });
+  };
+
+
+ 
+
+
+  /* 
+  componentWillMount is done before the INITIAL render of a component, 
+  and is used to assess props and do any extra logic based upon them (usually to also update state), 
+  and as such can be performed on the server in order to get the first server side rendered markup.
+  */
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
+  }
+
+  // This function is called when all the elements of the page is rendered correctly.
+  componentDidMount() {
+    this.getProfileData();
+    this.getTheme();
+  }
 
 
 
@@ -258,75 +242,48 @@ export class Theme extends React.Component {
             </TouchableOpacity>
           </View>
 
-          {/* This is just for checking! 
-          <Text style={{marginLeft: "40%", fontSize: 20}}> Minuter: {this.state.myMinutes} </Text>
-          <Text style={{marginLeft: "40%", fontSize: 20}}> Sekunder: {this.state.mySeconds} </Text>
-          */}
-      
+
+        {/* Shows the result from getTheme req. */}
         <View style={stylesTheme.titleContainer}>
           <Text style={stylesTheme.titleStyle}>{this.state.data} </Text>
         </View>
 
-
+        {/* GetTheme button */}
         <View style={stylesTheme.nextBtnContainer}>
           <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.getTheme}>
             <Text style={stylesTheme.buttonText}> Välj nytt tema </Text>
           </TouchableOpacity >  
         </View>
 
-       
-     
-            {/* This is for show buttons and timer */}
-            <View style={stylesTheme.timerContainer}>
+      
 
-              <View style={stylesTheme.timerView}>
-                <Text style={stylesTheme.counterText}>{this.state.minutes_Counter} : {this.state.seconds_Counter}</Text>
-              </View>
-            
-              <TouchableOpacity
-              onPress={this.onButtonStart}
-              activeOpacity={0.6}
-              style={[stylesTheme.timerButtons, { backgroundColor: this.state.startDisable ? '#FFFFFF' : '#FFFFFF' }]} 
-              disabled={this.state.startDisable} >
-              <Text style={stylesTheme.buttonText}>START</Text>
-              </TouchableOpacity>
-
-
-              <TouchableOpacity
-              onPress={this.onButtonStop}
-              activeOpacity={0.6}
-              style={[stylesTheme.timerButtons, { backgroundColor:  '#FFFFFF'}]} >
-              <Text style={stylesTheme.buttonText}>PAUS</Text>
-              </TouchableOpacity>
-
-  
-              <TouchableOpacity
-              onPress={this.onButtonClear}
-              activeOpacity={0.6}
-              style={stylesTheme.timerButtons} 
-              disabled={this.state.startDisable} >
-              <Text style={stylesTheme.buttonText}> NOLLSTÄLL </Text>
-              </TouchableOpacity>
-            
-
-              {/*
-              <TouchableOpacity
-              onPress={this.PostData}
-              activeOpacity={0.6}
-              style={[stylesTheme.timerButtons, { backgroundColor: this.state.startDisable ? '#FFFFFF' : '#FFFFFF' }]} 
-              disabled={this.state.startDisable} >
-
-              <Text style={stylesTheme.buttonText}>  Post data </Text>
-              </TouchableOpacity>
-              */}
-             
-            </View>
-            {/* End */}
-
-            <View>
+        {/* Timer */}
+        <View style={stylesTheme.timerContainer}>
+          <View style={stylesTheme.timerView}>
+            <Text style={stylesTheme.counterText}> 
+            {this.state.myMinutes} : {this.state.mySeconds} {"\n"}
+            {this.state.minutes_Counter} : {this.state.seconds_Counter} 
+            </Text>
+          </View>
           
+          <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.startTimer}>
+            <Text style={stylesTheme.buttonText}> Start </Text>
+          </TouchableOpacity >  
+
+          <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.stopTimer}>
+            <Text style={stylesTheme.buttonText}> Stop </Text>
+          </TouchableOpacity >  
+
+          <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.resetTimer}>
+            <Text style={stylesTheme.buttonText}> Nollställ </Text>
+          </TouchableOpacity >  
+
+          {/* postTime button */}
+          <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.postTime}>
+            <Text style={stylesTheme.buttonText}> Spara tiden </Text>
+          </TouchableOpacity >
         </View>
-            
+        {/* End of Timer */}
     
         </View>
       </ImageBackground>
@@ -343,7 +300,7 @@ const stylesTheme = StyleSheet.create({
   titleContainer: {
     //backgroundColor: "green",
     position: "absolute",
-    marginTop: "30%",
+    marginTop: "20%",
     justifyContent: "center",
     alignItems: "center",
     width: "100%"
@@ -361,14 +318,14 @@ const stylesTheme = StyleSheet.create({
   
  //Buttonstyle
  nextBtnContainer: {
-   // backgroundColor: "blue",
-    marginTop: 145,
+    //backgroundColor: "blue",
+    marginTop: 110,
     width: "100%"
   },
   nexBtnStyle: {
-    margin: 10,
-    marginRight: 80,
-    marginLeft: 80,
+    margin: 5,
+    marginRight: 90,
+    marginLeft: 90,
     padding: 10,
     backgroundColor: "#fff",
     opacity: 0.7,
@@ -382,8 +339,8 @@ const stylesTheme = StyleSheet.create({
 
   //Timer Style
   timerContainer: {
-   // backgroundColor: "orange",
-    marginTop: 70,
+    //backgroundColor: "orange",
+    marginTop: 30,
     width: "100%"
   },
   timerView:{

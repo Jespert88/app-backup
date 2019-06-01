@@ -1,135 +1,178 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
+//import { ifStatement } from '@babel/types';
+import AsyncStorage from '@react-native-community/async-storage';
+
+
 
 
 
 export class Question extends React.Component {
-        
-  
-        //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
-        static navigationOptions = {
-          header: null
-        };
+
+//This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
+static navigationOptions = {
+  header: null
+};
+
+  // Timer example.     
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      myId: null, //These are for mobile memory.
+      myUsername: null, //These are for mobile memory.
+
+      myHours: null, //These are for saving in db.
+      myMinutes: null, //These are for saving in db.
+      mySeconds: null, //These are for saving in db.
+
+      hour_Counter: '00', //These are for timer.
+      minutes_Counter: '00', //These are for timer.
+      seconds_Counter: '00', //These are for timer.
+      startDisable: false //These are for timer.
+    }
+  }
 
 
-        state = {
-            data: ""
-        }
-  
-        componentDidMount = () => {
-            fetch("https://samtal-server.herokuapp.com/question/random-question", {
-               method: "GET"
-            })
-            .then((response) => response.json())
-            .then((responseJson) => {
-               
-               this.setState({
-                  data: responseJson.randomObj
-               })
-            })
-            .catch((error) => {
-               console.error(error);
-            });
-         }
+
+  // Get AsyncStorage value and then takes that value and make a http req with post, and sets state from that value.
+  getProfileData = async () => {
+    try {
+
+      // Get the AsyncStorage keys.
+      const idFromAsync = await AsyncStorage.getItem('@asyncId');
+      const nameFromAsync = await AsyncStorage.getItem('@asyncName');
 
 
-          // Timer example.     
-          constructor(props) {
-              super(props);
-          
-              this.state = {
-                data: "",
-                timer: null,
-                // myHours: '00',
-                myMinutes: '00', //These varibles are for saving in the database.
-                mySeconds: '00', // Same here.
+      /*
+        If keys are not null, then make new var and parse key from string back to object.
+        This is done becurse otherwise the this.state.key will show this in App: username example: "Jeppe".
+        And you don't wanna show " <-- this so therefor you must convert back to Json Object 
+        with JSON.parse(key); 
+      */
 
-                hour_Counter: '00',
-                minutes_Counter: '00', //Change back to '00'
-                seconds_Counter: '00', //Change back to '00'
-                startDisable: false
-              }
-            }
+      if (idFromAsync !== null) {
 
-            componentWillUnmount() {
-              clearInterval(this.state.timer);
-            }
-         
-            //Start timer.
-            onButtonStart = () => {
- 
-              let timer = setInterval(() => {
-           
-                var num = (Number(this.state.seconds_Counter) + 1).toString(),
-                  count = this.state.minutes_Counter;
-           
-                if (Number(this.state.seconds_Counter) == 59) {
-                  count = (Number(this.state.minutes_Counter) + 1).toString();
-                  num = '00';
-                }
-           
-                this.setState({
-                  minutes_Counter: count.length == 1 ? '0' + count : count,
-                  seconds_Counter: num.length == 1 ? '0' + num : num
-                });
-              }, 1000);
-              this.setState({ timer });
-           
-              this.setState({startDisable : true})
-            }
-
-            //Stop timer.
-            onButtonStop = () => {
-                clearInterval(this.state.timer);
-                this.setState({
-                  startDisable : false,
-
-                  // myHours: this.state.hour_Counter,
-                  myMinutes: this.state.minutes_Counter,
-                  mySeconds: this.state.seconds_Counter
-                 })
-   
-                 //postTime() Will execute the post function.
-              }
-
-
-            //Clear timer.
-            onButtonClear = () => {
-              this.setState({
-                timer: null,
-                minutes_Counter: '00',
-                seconds_Counter: '00',
-              });
-            }
-
-      // Sends a POST request to server with new time varibles.
-        /* 
-        postTime = () => {
-          fetch('http://samtal-server.herokuapp.com/login', {
+        fetch('https://samtal-server.herokuapp.com/get-user-data', {
             method: 'POST',
+            //mode: "cors",
             headers: {
               'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+              'Content-Type': 'application/json',
 
-            // Should i send strings or Ints to server? Must specify in the server and mongoDB User colletion. (Create first!)
+            },
             body: JSON.stringify({
-              minutes: this.state.minutes_Counter,
-              seconds: this.state.seconds_Counter
+              username: nameFromAsync
             })
           })
-            .then((response) => response.json())
-            .then((responseJson) => {
-              
-              
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-        };
-        */
+          .then(response => response.json())
+          .then(responseJson => {
 
-          //End of timer example.
+            this.setState({
+              myId: responseJson._id,
+              myUsername: responseJson.username,
+            });
+
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+      } else {
+        console.log("There is no id..");
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // GET request from server that send back a randomize json object. (Created in Server!)
+  getQuestion = () => {
+    fetch("https://samtal-server.herokuapp.com/question/random-question", {
+        method: "GET"
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.setState({
+          data: responseJson.randomObj
+        })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  // Saves the time when user clicks on button.
+  postTime = () => {
+    console.log("hej");
+  }
+
+
+  //Start timer.
+  startTimer = () => {
+
+    let timer = setInterval(() => {
+           
+      var num = (Number(this.state.seconds_Counter) + 1).toString(),
+        count = this.state.minutes_Counter;
+ 
+      if (Number(this.state.seconds_Counter) == 59) {
+        count = (Number(this.state.minutes_Counter) + 1).toString();
+        num = '00';
+      }
+ 
+      this.setState({
+        minutes_Counter: count.length == 1 ? '0' + count : count,
+        seconds_Counter: num.length == 1 ? '0' + num : num
+      });
+    }, 1000);
+    this.setState({ timer });
+ 
+    this.setState({startDisable : true})
+
+  };
+
+  //Stop timer.
+  stopTimer = () => {
+    clearInterval(this.state.timer);
+    this.setState({
+      startDisable: false,
+
+      // myHours: this.state.hour_Counter,
+      myMinutes: this.state.minutes_Counter,
+      mySeconds: this.state.seconds_Counter
+    })
+  };
+
+  //Reset timer.
+  resetTimer = () => {
+    this.setState({
+      timer: null,
+      minutes_Counter: '00',
+      seconds_Counter: '00',
+    });
+  };
+
+
+  /* 
+  componentWillMount is done before the INITIAL render of a component, 
+  and is used to assess props and do any extra logic based upon them (usually to also update state), 
+  and as such can be performed on the server in order to get the first server side rendered markup.
+  */
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
+  }
+
+  // This function is called when all the elements of the page is rendered correctly.
+  componentDidMount() {
+    this.getProfileData();
+    this.getQuestion();
+  }
+
+
+
+            
 
 
 
@@ -153,56 +196,46 @@ export class Question extends React.Component {
           </View>
 
 
-              
+        {/* Shows the result from getTheme req. */}
         <View style={stylesQuestion.titleContainer}>
           <Text style={stylesQuestion.titleStyle}>{this.state.data} </Text>
         </View>
 
+        {/* GetTheme button */}
         <View style={stylesQuestion.nextBtnContainer}>
-          <TouchableOpacity  style={stylesQuestion.nexBtnStyle} onPress={this.componentDidMount}>
-            <Text style={stylesQuestion.buttonText}> Välj ny fråga </Text>
+          <TouchableOpacity  style={stylesQuestion.nexBtnStyle} onPress={this.getQuestion}>
+            <Text style={stylesQuestion.buttonText}> Välj nytt tema </Text>
           </TouchableOpacity >  
         </View>
 
+      
 
+        {/* Timer */}
+        <View style={stylesQuestion.timerContainer}>
+          <View style={stylesQuestion.timerView}>
+            <Text style={stylesQuestion.counterText}> 
+            {this.state.minutes_Counter} : {this.state.seconds_Counter} 
+            </Text>
+          </View>
+          
+          <TouchableOpacity  style={stylesQuestion.nexBtnStyle} onPress={this.startTimer}>
+            <Text style={stylesQuestion.buttonText}> Start </Text>
+          </TouchableOpacity >  
 
-            {/* This is for show buttons and timer */}
-            <View style={stylesQuestion.timerContainer}>
+          <TouchableOpacity  style={stylesQuestion.nexBtnStyle} onPress={this.stopTimer}>
+            <Text style={stylesQuestion.buttonText}> Stop </Text>
+          </TouchableOpacity >  
 
-              <View style={stylesQuestion.timerView}>
-                <Text style={stylesQuestion.counterText}>{this.state.minutes_Counter} : {this.state.seconds_Counter}</Text>
-              </View>
-            
-              <TouchableOpacity
-              onPress={this.onButtonStart}
-              activeOpacity={0.6}
-              style={[stylesQuestion.timerButtons, { backgroundColor: this.state.startDisable ? '#FFFFFF' : '#FFFFFF' }]} 
-              disabled={this.state.startDisable} >
+          <TouchableOpacity  style={stylesQuestion.nexBtnStyle} onPress={this.resetTimer}>
+            <Text style={stylesQuestion.buttonText}> Nollställ </Text>
+          </TouchableOpacity >  
 
-              <Text style={stylesQuestion.buttonText}>START</Text>
-
-              </TouchableOpacity>
-
-              <TouchableOpacity
-              onPress={this.onButtonStop}
-              activeOpacity={0.6}
-              style={[stylesQuestion.timerButtons, { backgroundColor:  '#FFFFFF'}]} >
-
-              <Text style={stylesQuestion.buttonText}>STOP</Text>
-
-              </TouchableOpacity>
-
-              <TouchableOpacity
-              onPress={this.onButtonClear}
-              activeOpacity={0.6}
-              style={stylesQuestion.timerButtons} 
-              disabled={this.state.startDisable} >
-
-              <Text style={stylesQuestion.buttonText}> CLEAR </Text>
-
-              </TouchableOpacity>
-            </View>
-            {/* End */}
+          {/* postTime button */}
+          <TouchableOpacity  style={stylesQuestion.nexBtnStyle} onPress={this.postTime}>
+            <Text style={stylesQuestion.buttonText}> Spara tiden </Text>
+          </TouchableOpacity >
+        </View>
+        {/* End of Timer */}
     
         </View>
       </ImageBackground>
@@ -219,7 +252,8 @@ const stylesQuestion = StyleSheet.create({
   titleContainer: {
     //backgroundColor: "green",
     position: "absolute",
-    marginTop: "30%",
+    marginTop: "20%",
+    justifyContent: "center",
     alignItems: "center",
     width: "100%"
   },
@@ -230,20 +264,20 @@ const stylesQuestion = StyleSheet.create({
     color: "#fff",
     textShadowColor: '#570682',
     textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10
+    textShadowRadius: 10 
   },
 
   
  //Buttonstyle
  nextBtnContainer: {
-   // backgroundColor: "blue",
-    marginTop: 145,
+    //backgroundColor: "blue",
+    marginTop: 120,
     width: "100%"
   },
   nexBtnStyle: {
-    margin: 10,
-    marginRight: 80,
-    marginLeft: 80,
+    margin: 5,
+    marginRight: 90,
+    marginLeft: 90,
     padding: 10,
     backgroundColor: "#fff",
     opacity: 0.7,
@@ -257,8 +291,8 @@ const stylesQuestion = StyleSheet.create({
 
   //Timer Style
   timerContainer: {
-   // backgroundColor: "orange",
-    marginTop: 70,
+    //backgroundColor: "orange",
+    marginTop: 30,
     width: "100%"
   },
   timerView:{
@@ -286,6 +320,7 @@ const stylesQuestion = StyleSheet.create({
     margin: "5%",
     marginTop: 40
   }
+
 
 });
 

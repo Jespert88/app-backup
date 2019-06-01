@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 
+
 export class Home extends React.Component {
 //This is for styling the stacknavigator backgroundColor: '#56b2d8', or in this case for hidning.
 static navigationOptions = {

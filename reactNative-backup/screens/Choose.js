@@ -21,7 +21,6 @@ export class Choose extends React.Component {
   }
 
   getQrCode = async () => {
-    console.log("hej");
     try {
   
       // Get the AsyncStorage keys.
@@ -64,7 +63,9 @@ export class Choose extends React.Component {
     }
   }
 
-  
+  componentDidMount() {
+    this.getQrCode();
+  }
 
     
 
