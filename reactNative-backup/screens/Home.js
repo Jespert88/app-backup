@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity  } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, Alert  } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
@@ -40,6 +40,9 @@ static navigationOptions = {
     this.props.navigation.navigate('LoginScreen');
   }
 
+  notComplete = () => {
+   alert("Denna funktionen är under uppdatering ^^"); 
+  }
 
 
 
@@ -54,51 +57,38 @@ static navigationOptions = {
         <View style={stylesHome.mainContainer}>
            
 
-        {/* SignOut Container */}
-        <View style={stylesHome.signOutContainer}>
+        {/* Header Container */}
+        <View style={stylesHome.HeaderContainer}>
 
-          {/* Back arrow Container */}
+          {/* Signout Container */}
           <View style={stylesHome.backBtnContainer}>
-              <TouchableOpacity  onPress={this.signOutUser}>
-              <Image source={require('../assets/back.png')} 
-                style={{
-                  margin: 5,
-                  padding: 10,
-                  height: 20,
-                  width: 20,
-                  resizeMode: 'stretch',
-                }}></Image>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity  onPress={this.signOutUser}>
+              <Text style={stylesHome.signOutText}>Logga ut</Text>
+            </TouchableOpacity>
+          </View>
 
-            {/* Profile Container */}
-            <View style={stylesHome.profileContainer}>
-              <TouchableOpacity  onPress={() => this.props.navigation.navigate("ProfileScreen")}>
-                <Image source={require('../assets/user.png')} 
-                  style={{
-                    margin: 10,
-                    padding: 10,
-                    height: 40,
-                    width: "auto",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    resizeMode: 'contain',
-                  }}></Image>
+          {/* Profile Container */}
+          <View style={stylesHome.profileContainer}>
+          <TouchableOpacity  onPress={() => this.props.navigation.navigate("ProfileScreen")}>
+            <Image source={require('../assets/user.png')} 
+            style={{
+            margin: 10,
+            padding: 10,
+            height: 40,
+            width: "auto",
+            justifyContent: "center",
+            alignItems: "center",
+            resizeMode: 'contain',
+            }}></Image>
 
-                {/* Here we show the value from the state varible: user. */}
-                <Text style={stylesHome.profileText}>
+            {/* Here we show the value from the state varible: user. */}
+            <Text style={stylesHome.profileText}> Min profil </Text>
+          </TouchableOpacity>
+          </View>
 
-                {/* Problem: if showing this value, it shows the username that was logged in before until i restart the app?? */}
-                {/*{this.state.user}*/}
-                
-                  Min profil
-
-                </Text>
-
-              </TouchableOpacity>
-            </View>
         </View>
-
+        {/* End of Header Container */}
+    
        
 
 
@@ -115,7 +105,7 @@ static navigationOptions = {
               <Text style={stylesHome.textStyle}> Starta samtal </Text>
             </TouchableOpacity><Text>{"\n"}</Text>
             
-            <TouchableOpacity  style={stylesHome.buttonStyle} onPress={() => this.props.navigation.navigate("JoinScreen")}>
+            <TouchableOpacity  style={stylesHome.buttonStyle} onPress={this.notComplete}>
               <Text style={stylesHome.textStyle}> Delta i samtal </Text>
             </TouchableOpacity>
         </View>
@@ -133,6 +123,58 @@ const stylesHome = StyleSheet.create({
     flex: 1,
     /*backgroundColor: "lightgreen"*/
   },
+  HeaderContainer: {
+    flexDirection: "row",
+    //backgroundColor: "orange",
+  },
+  backBtnContainer: {
+    //backgroundColor: "blue",
+    justifyContent: "flex-end",
+    marginLeft: 20,
+    paddingRight: 5,
+    paddingLeft: 5,
+    //paddingTop: 60,
+  },
+  signOutText:{
+    fontSize: 16,
+    fontFamily: "Roboto",
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+  },
+  profileContainer: {
+    //backgroundColor: "green",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "50%",
+  },
+  profileText: {
+    fontSize: 16,
+    fontFamily: "Roboto",
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+   /* textShadowColor: '#9c29b7',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10 */
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   titleContainer: {
     marginTop: "20%",
     alignItems: "center",
@@ -148,34 +190,8 @@ const stylesHome = StyleSheet.create({
     textShadowRadius: 10 
   },
 
-  profileContainer: {
-    //backgroundColor: "green",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-    marginLeft: "60%"
-  },
-  profileText: {
-    fontSize: 18,
-    fontFamily: "Roboto",
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center"
-   /* textShadowColor: '#9c29b7',
-    textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10 */
-  },
-
-
-  signOutContainer: {
-    flexDirection: "row"
-  },
-
-  backBtnContainer: {
-    marginTop: 50,
-    marginLeft: 20
-  },
+ 
+ 
   textStyle: {
     fontSize: 18,
     color: "#000",
@@ -213,11 +229,6 @@ const stylesHome = StyleSheet.create({
     flexDirection: "row"
   },
 
-
-  backBtnContainer: {
-    marginTop: 50,
-    marginLeft: 20
-  },
 
   usernameTextStyle: {
     marginTop: 50,

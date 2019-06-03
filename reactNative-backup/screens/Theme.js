@@ -220,18 +220,39 @@ static navigationOptions = {
       <ImageBackground source={require('../assets/wallpaper.jpg')} style={{width: "100%", height: "100%"}}>
         <View style={stylesTheme.mainContainer}>
 
-        <View style={stylesTheme.backBtnContainer}>
-            <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
-            <Image source={require('../assets/back.png')} 
-              style={{
-                margin: 5,
-                padding: 10,
-                height: 20,
-                width: 20,
-                resizeMode: 'stretch',
-              }}></Image>
-            </TouchableOpacity>
-          </View>
+
+        <View style={stylesTheme.HeaderContainer}>  
+          <View style={stylesTheme.backBtnContainer}>
+              <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
+              <Image source={require('../assets/back.png')} 
+                style={{
+                  margin: 5,
+                  padding: 10,
+                  height: 20,
+                  width: 20,
+                  resizeMode: 'stretch',
+                }}></Image>
+              </TouchableOpacity>
+            </View>
+
+            {/* Profile Container */}
+            <View style={stylesTheme.profileContainer}>
+                <TouchableOpacity  onPress={() => this.props.navigation.navigate("ProfileScreen")}>
+                  <Image source={require('../assets/user.png')} 
+                    style={{
+                      margin: 10,
+                      padding: 10,
+                      height: 40,
+                      width: "auto",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      resizeMode: 'contain',
+                    }}></Image>
+                  <Text style={stylesTheme.profileText}> Min profil </Text>
+                </TouchableOpacity>
+              </View>
+        </View>
+
 
 
         {/* Shows the result from getTheme req. */}
@@ -263,11 +284,11 @@ static navigationOptions = {
           <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.stopTimer}>
             <Text style={stylesTheme.buttonText}> Stop </Text>
           </TouchableOpacity >  
-
+          {/*
           <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.resetTimer}>
             <Text style={stylesTheme.buttonText}> Nollställ </Text>
           </TouchableOpacity >  
-
+          */}
           {/* postTime button */}
           <TouchableOpacity  style={stylesTheme.nexBtnStyle} onPress={this.postTime}>
             <Text style={stylesTheme.buttonText}> Spara tiden </Text>
@@ -286,11 +307,40 @@ const stylesTheme = StyleSheet.create({
     flex: 1,
   },
 
+  HeaderContainer: {
+    flexDirection: "row",
+    //backgroundColor: "orange",
+  },
+  backBtnContainer: {
+    //backgroundColor: "blue",
+    paddingTop: 30,
+    paddingLeft: 20,
+  },
+  profileContainer: {
+    //backgroundColor: "green",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "60%"
+  },
+  profileText: {
+    fontSize: 16,
+    fontFamily: "Roboto",
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center"
+   /* textShadowColor: '#9c29b7',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10 */
+  },
+
+
+
   //Titlestyle
   titleContainer: {
     //backgroundColor: "green",
     position: "absolute",
-    marginTop: "20%",
+    marginTop: "30%",
     justifyContent: "center",
     alignItems: "center",
     width: "100%"
@@ -309,7 +359,7 @@ const stylesTheme = StyleSheet.create({
  //Buttonstyle
  nextBtnContainer: {
     //backgroundColor: "blue",
-    marginTop: 110,
+    marginTop: 125,
     width: "100%"
   },
   nexBtnStyle: {
@@ -330,7 +380,7 @@ const stylesTheme = StyleSheet.create({
   //Timer Style
   timerContainer: {
     //backgroundColor: "orange",
-    marginTop: 10,
+    marginTop: 35,
     width: "100%"
   },
   timerView:{
@@ -353,11 +403,6 @@ const stylesTheme = StyleSheet.create({
     opacity: 0.7,
     borderRadius: 30
   },
-
-  backBtnContainer: {
-    margin: "5%",
-    marginTop: 40
-  }
 
 
 });

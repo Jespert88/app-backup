@@ -45,7 +45,7 @@ export class Choose extends React.Component {
           .then(jsonData => {
             
             this.setState({
-              myQrCode: jsonData.qrcode
+              myQrCode: "Hej! du har skannat denna användares qr-kod som är: " + jsonData.qrcode
             });
             
             console.log(this.state.myQrCode);
@@ -83,7 +83,7 @@ export class Choose extends React.Component {
         <View style={stylesChoose.mainContainer}>
 
           <View style={stylesChoose.backBtnContainer}>
-            <TouchableOpacity  onPress={() => this.props.navigation.navigate("HomeScreen")}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate("HomeScreen")}>
             <Image source={require('../assets/back.png')} 
               style={{
                 margin: 5,
@@ -106,8 +106,7 @@ export class Choose extends React.Component {
 
             <View style={stylesChoose.subTitlesContainer}>
               <Text style={stylesChoose.subTitles}> 
-                 Andra personer måste skanna {"\n"}
-                din kod för att gruppen ska startas.
+                Låt andra personer {"\n"}skanna din kod.
               </Text>
             </View>
             
@@ -188,7 +187,8 @@ const stylesChoose = StyleSheet.create({
     //backgroundColor: "green",
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 40
+    marginLeft: 50,
+    marginRight: 50,
   },
 
   subTitles: {
@@ -205,8 +205,6 @@ const stylesChoose = StyleSheet.create({
     color: "#000",
     textAlign: "center"
   },
-
-
 
   buttonContainer: {
     //backgroundColor:"#303",
